@@ -12,6 +12,8 @@ from ldm.dream.pngwriter import PngWriter, PromptFormatter
 
 debugging = False
 
+os.chdir(sys.path[0])
+os.chdir('..') # get out of Scripts dir, into main repo dir
 
 def main():
     """Initialize command-line parsers and the diffusion model"""
