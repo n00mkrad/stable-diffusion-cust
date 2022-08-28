@@ -1,6 +1,6 @@
 @echo off
 
-set paths=..\miniconda\Scripts
+set paths=..\mc\Scripts
 
 for %%a in (%paths%) do ( 
  if EXIST "%%a\activate.bat" (
