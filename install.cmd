@@ -1,5 +1,7 @@
 @echo off
 
+curl "https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl&mode=grid&download=1" -o model.ckpt
+
 set paths=..\mc\Scripts
 
 for %%a in (%paths%) do ( 
@@ -20,8 +22,3 @@ call conda env create -f environment.yaml
 call conda env update --file environment.yaml --prune
 call "%CONDA_PATH%\activate.bat" ldo
 rem python "%CD%"\scripts\relauncher.py
-
-conda deactivate
-conda deactivate
-
-curl "https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl&mode=grid&download=1" -o model.ckpt
