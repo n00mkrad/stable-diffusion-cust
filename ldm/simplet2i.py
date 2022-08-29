@@ -7,7 +7,6 @@
 import torch
 import numpy as np
 import random
-import sys
 import os
 from omegaconf import OmegaConf
 from PIL import Image
@@ -21,7 +20,7 @@ from contextlib import contextmanager, nullcontext
 import transformers
 import time
 import re
-import traceback
+import sys
 
 from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
@@ -133,9 +132,9 @@ class T2I:
         full_precision=False,
         strength=0.75,  # default in scripts/img2img.py
         embedding_path=None,
-        latent_diffusion_weights=False,  # just to keep track of this parameter when regenerating prompt
+        # just to keep track of this parameter when regenerating prompt
+        latent_diffusion_weights=False,
         device='cuda',
-        gfpgan=None,
     ):
         self.batch_size = batch_size
         self.iterations = iterations
@@ -157,7 +156,8 @@ class T2I:
         self.sampler = None
         self.latent_diffusion_weights = latent_diffusion_weights
         self.device = device
-        self.gfpgan = gfpgan
+
+        self.session_peakmem = torch.cuda.max_memory_allocated()
         if seed is None:
             self.seed = self._new_seed()
         else:
@@ -175,16 +175,15 @@ class T2I:
             outdir, prompt, kwargs.get('batch_size', self.batch_size)
         )
         for r in results:
-            metadata_str = f'prompt2png("{prompt}" {kwargs} seed={r[1]}'   # gets written into the PNG
             pngwriter.write_image(r[0], r[1])
         return pngwriter.files_written
 
     def txt2img(self, prompt, **kwargs):
-        outdir = kwargs.get('outdir', 'outputs/img-samples')
+        outdir = kwargs.pop('outdir', 'outputs/img-samples')
         return self.prompt2png(prompt, outdir, **kwargs)
 
     def img2img(self, prompt, **kwargs):
-        outdir = kwargs.get('outdir', 'outputs/img-samples')
+        outdir = kwargs.pop('outdir', 'outputs/img-samples')
         assert (
             'init_img' in kwargs
         ), 'call to img2img() must include the init_img argument'
@@ -208,8 +207,11 @@ class T2I:
         # these are specific to img2img
         init_img=None,
         strength=None,
-        gfpgan_strength=None,
+        gfpgan_strength=0,
+        save_original=False,
+        upscale=None,
         variants=None,
+        sampler_name=None,
         **args,
     ):   # eat up additional cruft
         """
@@ -262,14 +264,19 @@ class T2I:
         h = int(height / 64) * 64
         if h != height or w != width:
             print(
-                f'Height and width must be multiples of 64. Resizing to {h}x{w}'
+                f'Height and width must be multiples of 64. Resizing to {h}x{w}.'
             )
             height = h
             width = w
 
         scope = autocast if self.precision == 'autocast' else nullcontext
 
+        if sampler_name and (sampler_name != self.sampler_name):
+            self.sampler_name = sampler_name
+            self._set_sampler()
+
         tic = time.time()
+        torch.cuda.torch.cuda.reset_peak_memory_stats()
         results = list()
 
         try:
@@ -300,28 +307,49 @@ class T2I:
                 )
 
             with scope(self.device.type), self.model.ema_scope():
-                for n in trange(iterations, desc='Sampling'):
+                for n in trange(iterations, desc='Generating'):
                     seed_everything(seed)
                     iter_images = next(images_iterator)
                     for image in iter_images:
-                        try:
-                            # if gfpgan strength is none or less than or equal to 0.0 then 
-                            # don't even attempt to use GFPGAN.
-                            # if the user specified a value of -G that satisifies the condition and 
-                            # --gfpgan wasn't specified, at startup then
-                            # the net result is a message gets printed - nothing else happens.
-                            if gfpgan_strength is not None and gfpgan_strength > 0.0:
-                                image = self._run_gfpgan(
-                                    image, gfpgan_strength
-                                )
-                        except Exception as e:
-                            print(
-                                f'Error running GFPGAN - Your image was not enhanced.\n{e}'
-                            )
                         results.append([image, seed])
                         if image_callback is not None:
                             image_callback(image, seed)
                     seed = self._new_seed()
+
+                if upscale is not None or gfpgan_strength > 0:
+                    for result in results:
+                        image, seed = result
+                        try:
+                            if upscale is not None:
+                                from ldm.gfpgan.gfpgan_tools import (
+                                    real_esrgan_upscale,
+                                )
+                                if len(upscale) < 2:
+                                    upscale.append(0.75)
+                                image = real_esrgan_upscale(
+                                    image,
+                                    upscale[1],
+                                    int(upscale[0]),
+                                    prompt,
+                                    seed,
+                                )
+                            if gfpgan_strength > 0:
+                                from ldm.gfpgan.gfpgan_tools import _run_gfpgan
+
+                                image = _run_gfpgan(
+                                    image, gfpgan_strength, prompt, seed, 1
+                                )
+                        except Exception as e:
+                            print(
+                                f'Error running RealESRGAN - Your image was not upscaled.\n{e}'
+                            )
+                        if image_callback is not None:
+                            if save_original:
+                                image_callback(image, seed)
+                            else:
+                                image_callback(image, seed, upscaled=True)
+                        else: # no callback passed, so we simply replace old image with rescaled one
+                            result[0] = image
 
         except KeyboardInterrupt:
             print('*interrupted*')
@@ -333,7 +361,21 @@ class T2I:
             print('Are you sure your system has an adequate NVIDIA GPU?')
 
         toc = time.time()
-        print(f'{len(results)} images generated in', '%4.2fs' % (toc - tic))
+        self.session_peakmem = max(
+            self.session_peakmem, torch.cuda.max_memory_allocated()
+        )
+        print('Usage stats:')
+        print(
+            f'   {len(results)} image(s) generated in', '%4.2fs' % (toc - tic)
+        )
+        print(
+            f'   Max VRAM used for this generation:',
+            '%4.2fG' % (torch.cuda.max_memory_allocated() / 1e9),
+        )
+        print(
+            f'   Max VRAM used since script start: ',
+            '%4.2fG' % (self.session_peakmem / 1e9),
+        )
         return results
 
     @torch.no_grad()
@@ -492,45 +534,49 @@ class T2I:
                 self.device = self._get_device()
                 model = self._load_model_from_config(config, self.weights)
                 if self.embedding_path is not None:
-                    model.embedding_manager.load(self.embedding_path)
+                    model.embedding_manager.load(
+                        self.embedding_path, self.full_precision
+                    )
                 self.model = model.to(self.device)
                 # model.to doesn't change the cond_stage_model.device used to move the tokenizer output, so set it here
                 self.model.cond_stage_model.device = self.device
             except AttributeError:
+                import traceback
+                print('Error loading model. Only the CUDA backend is supported',file=sys.stderr)
+                print(traceback.format_exc(),file=sys.stderr)
                 raise SystemExit
 
-            msg = f'setting sampler to {self.sampler_name}'
-            if self.sampler_name == 'plms':
-                self.sampler = PLMSSampler(self.model, device=self.device)
-            elif self.sampler_name == 'ddim':
-                self.sampler = DDIMSampler(self.model, device=self.device)
-            elif self.sampler_name == 'k_dpm_2_a':
-                self.sampler = KSampler(
-                    self.model, 'dpm_2_ancestral', device=self.device
-                )
-            elif self.sampler_name == 'k_dpm_2':
-                self.sampler = KSampler(
-                    self.model, 'dpm_2', device=self.device
-                )
-            elif self.sampler_name == 'k_euler_a':
-                self.sampler = KSampler(
-                    self.model, 'euler_ancestral', device=self.device
-                )
-            elif self.sampler_name == 'k_euler':
-                self.sampler = KSampler(
-                    self.model, 'euler', device=self.device
-                )
-            elif self.sampler_name == 'k_heun':
-                self.sampler = KSampler(self.model, 'heun', device=self.device)
-            elif self.sampler_name == 'k_lms':
-                self.sampler = KSampler(self.model, 'lms', device=self.device)
-            else:
-                msg = f'unsupported sampler {self.sampler_name}, defaulting to plms'
-                self.sampler = PLMSSampler(self.model, device=self.device)
-
-            print(msg)
+            self._set_sampler()
 
         return self.model
+
+    def _set_sampler(self):
+        msg = f'>> Setting Sampler to {self.sampler_name}'
+        if self.sampler_name == 'plms':
+            self.sampler = PLMSSampler(self.model, device=self.device)
+        elif self.sampler_name == 'ddim':
+            self.sampler = DDIMSampler(self.model, device=self.device)
+        elif self.sampler_name == 'k_dpm_2_a':
+            self.sampler = KSampler(
+                self.model, 'dpm_2_ancestral', device=self.device
+            )
+        elif self.sampler_name == 'k_dpm_2':
+            self.sampler = KSampler(self.model, 'dpm_2', device=self.device)
+        elif self.sampler_name == 'k_euler_a':
+            self.sampler = KSampler(
+                self.model, 'euler_ancestral', device=self.device
+            )
+        elif self.sampler_name == 'k_euler':
+            self.sampler = KSampler(self.model, 'euler', device=self.device)
+        elif self.sampler_name == 'k_heun':
+            self.sampler = KSampler(self.model, 'heun', device=self.device)
+        elif self.sampler_name == 'k_lms':
+            self.sampler = KSampler(self.model, 'lms', device=self.device)
+        else:
+            msg = f'>> Unsupported Sampler: {self.sampler_name}, Defaulting to plms'
+            self.sampler = PLMSSampler(self.model, device=self.device)
+
+        print(msg)
 
     def _load_model_from_config(self, config, ckpt):
         print(f'Loading model from {ckpt}')
@@ -548,13 +594,16 @@ class T2I:
             )
         else:
             print(
-                'Using half precision math. Call with --full_precision to use slower but more accurate full precision.'
+                'Using half precision math. Call with --full_precision to use more accurate but VRAM-intensive full precision.'
             )
             model.half()
         return model
 
     def _load_img(self, path):
-        image = Image.open(path).convert('RGB')
+        print(f'image path = {path}, cwd = {os.getcwd()}')
+        with Image.open(path) as img:
+            image = img.convert('RGB')
+
         w, h = image.size
         print(f'loaded input image of size ({w}, {h}) from {path}')
         w, h = map(
@@ -612,28 +661,3 @@ class T2I:
                     weights.append(1.0)
                 remaining = 0
         return prompts, weights
-
-    def _run_gfpgan(self, image, strength):
-        if self.gfpgan is None:
-            print(
-                f'GFPGAN not initialized, it must be loaded via the --gfpgan argument'
-            )
-            return image
-
-        image = image.convert('RGB')
-
-        cropped_faces, restored_faces, restored_img = self.gfpgan.enhance(
-            np.array(image, dtype=np.uint8),
-            has_aligned=False,
-            only_center_face=False,
-            paste_back=True,
-        )
-        res = Image.fromarray(restored_img)
-
-        if strength < 1.0:
-            # Resize the image to the new image if the sizes have changed
-            if restored_img.size != image.size:
-                image = image.resize(res.size)
-            res = Image.blend(image, res, strength)
-
-        return res
