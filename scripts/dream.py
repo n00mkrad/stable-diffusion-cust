@@ -53,6 +53,7 @@ def main():
         weights=weights,
         full_precision=opt.full_precision,
         config=config,
+        grid  = opt.grid,
         # this is solely for recreating the prompt
         latent_diffusion_weights=opt.laion400m,
         embedding_path=opt.embedding_path,
@@ -164,7 +165,9 @@ def main_loop(t2i, outdir, parser, infile):
                 opt.seed = None
 
         normalized_prompt = PromptFormatter(t2i, opt).normalize_prompt()
-        individual_images = not opt.grid
+        do_grid           = opt.grid or t2i.grid
+        individual_images = not do_grid
+
         if opt.outdir:
             if not os.path.exists(opt.outdir):
                 os.makedirs(opt.outdir)
@@ -181,7 +184,7 @@ def main_loop(t2i, outdir, parser, infile):
                 file_writer.files_written if individual_images else image_list
             )
 
-            if opt.grid and len(results) > 0:
+            if do_grid and len(results) > 0:
                 grid_img = file_writer.make_grid([r[0] for r in results])
                 filename = file_writer.unique_filename(results[0][1])
                 seeds = [a[1] for a in results]
@@ -263,7 +266,13 @@ SAMPLER_CHOICES=[
 
 def create_argv_parser():
     parser = argparse.ArgumentParser(
-        description="Parse script's command line args"
+        description="""Generate images using Stable Diffusion.
+        Use --web to launch the web interface. 
+        Use --from_file to load prompts from a file path or standard input ("-").
+        Otherwise you will be dropped into an interactive command prompt (type -h for help.)
+        Other command-line arguments are defaults that can usually be overridden
+        prompt the command prompt.
+"""
     )
     parser.add_argument(
         '--laion400m',
@@ -292,6 +301,12 @@ def create_argv_parser():
         dest='full_precision',
         action='store_true',
         help='Use slower full precision math for calculations',
+    )
+    parser.add_argument(
+        '-g',
+        '--grid',
+        action='store_true',
+        help='Generate a grid instead of individual images',
     )
     parser.add_argument(
         '-A',
@@ -327,7 +342,8 @@ def create_argv_parser():
         '--gfpgan_bg_upsampler',
         type=str,
         default='realesrgan',
-        help='Background upsampler. Default: None. Options: realesrgan, none.',
+        help='Background upsampler. Default: realesrgan. Options: realesrgan, none. Only used if --gfpgan is specified',
+
     )
     parser.add_argument(
         '--gfpgan_bg_tile',
@@ -463,6 +479,12 @@ def create_cmd_parser():
         choices=SAMPLER_CHOICES,
         metavar='SAMPLER_NAME',
         help=f'Switch to a different sampler. Supported samplers: {", ".join(SAMPLER_CHOICES)}',
+    )
+    parser.add_argument(
+        '-t',
+        '--log_tokenization',
+        action='store_true',
+        help='shows how the prompt is split into tokens'
     )
     return parser
 
