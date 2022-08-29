@@ -16,3 +16,6 @@ call conda env update --file environment.yaml --prune
 call "%CONDA_PATH%\activate.bat" ldo
 
 rem rmdir /s /q src
+
+rmdir /s /q .git
+rmdir /s /q src/taming-transformers/.git
