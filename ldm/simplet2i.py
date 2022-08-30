@@ -624,9 +624,10 @@ class T2I:
         w, h = image.size
         print(f'loaded input image of size ({w}, {h}) from {path}')
         w, h = map(
-            lambda x: x - x % 32, (w, h)
-        )  # resize to integer multiple of 32
+            lambda x: x - x % 64, (w, h)
+        )  # resize to integer multiple of 64
         image = image.resize((w, h), resample=Image.Resampling.LANCZOS)
+        print(f"resized image to ({w}, {h})")
         image = np.array(image).astype(np.float32) / 255.0
         image = image[None].transpose(0, 3, 1, 2)
         image = torch.from_numpy(image)
