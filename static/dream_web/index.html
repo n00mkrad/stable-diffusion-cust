@@ -1,10 +1,12 @@
-<html>
+<html lang="en">
   <head>
     <title>Stable Diffusion Dream Server</title>
+    <meta charset="utf-8">
     <link rel="icon" href="data:,">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="static/dream_web/index.css">
+    <script src="config.js"></script>
     <script src="static/dream_web/index.js"></script>
   </head>
   <body>
@@ -31,6 +33,7 @@
             <option value="k_dpm_2">KDPM_2</option>
             <option value="k_dpm_2_a">KDPM_2A</option>
             <option value="k_euler">KEULER</option>
+	    <option value="k_euler_a">KEULER_A</option>
             <option value="k_heun">KHEUN</option>
           </select>
           <br>
@@ -64,18 +67,19 @@
           <button type="button" id="reset-seed">&olarr;</button>
           <span>&bull;</span>
           <button type="button" id="reset-all">Reset to Defaults</button>
-          <br>
-          <p><em>The options below require the GFPGAN and ESRGAN packages to be installed</em></p>
-          <label title="Strength of the gfpgan (face fixing) algorithm." for="gfpgan_strength">GPFGAN Strength:</label>
-          <input value="0.8" min="0" max="1" type="number" id="gfpgan_strength" name="gfpgan_strength" step="0.05">
-          <label title="Upscaling to perform using ESRGAN." for="upscale_level">Upscaling Level</label>
-          <select id="upscale_level" name="upscale_level" value="">
-            <option value="" selected></option>
-            <option value="2">2x</option>
-            <option value="4">4x</option>
-          </select>
-          <label title="Strength of the esrgan (upscaling) algorithm." for="upscale_strength">Upscale Strength:</label>
-          <input value="0.75" min="0" max="1" type="number" id="upscale_strength" name="upscale_strength" step="0.05">
+          <div id="gfpgan">
+            <p><em>The options below require the GFPGAN and ESRGAN packages to be installed</em></p>
+            <label title="Strength of the gfpgan (face fixing) algorithm." for="gfpgan_strength">GPFGAN Strength:</label>
+            <input value="0.8" min="0" max="1" type="number" id="gfpgan_strength" name="gfpgan_strength" step="0.05">
+            <label title="Upscaling to perform using ESRGAN." for="upscale_level">Upscaling Level</label>
+            <select id="upscale_level" name="upscale_level" value="">
+              <option value="" selected>None</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+            </select>
+            <label title="Strength of the esrgan (upscaling) algorithm." for="upscale_strength">Upscale Strength:</label>
+            <input value="0.75" min="0" max="1" type="number" id="upscale_strength" name="upscale_strength" step="0.05">
+          </div>
         </fieldset>
       </form>
       <div id="about">For news and support for this web service, visit our <a href="http://github.com/lstein/stable-diffusion">GitHub site</a></div>
