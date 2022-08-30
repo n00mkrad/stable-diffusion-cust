@@ -3,7 +3,7 @@
 echo.
 echo Downloading Stable Diffusion 1.4 model file...
 
-curl "https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl&mode=grid&download=1" -o model.ckpt
+curl "https://dl.nmkd-hz.de/tti/sd/models/1.4/model.ckpt" -o model.ckpt
 
 SET CONDA_PATH=..\mc\Scripts
 
