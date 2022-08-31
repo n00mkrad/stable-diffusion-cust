@@ -3,7 +3,7 @@
 SET CONDA_PATH=..\mc\Scripts
 
 echo.
-echo Setting up python environment...
+echo PRINTME Setting up python environment...
 
 call "%CONDA_PATH%\activate.bat"
 call conda env create -f environment.yaml
