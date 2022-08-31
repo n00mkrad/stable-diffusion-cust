@@ -31,7 +31,7 @@ def main():
         width = 512
         height = 512
         config = 'configs/stable-diffusion/v1-inference.yaml'
-        weights = 'model.ckpt'
+        weights = '../model.ckpt'
 
     print('* Initializing, be patient...\n')
     sys.path.append('.')

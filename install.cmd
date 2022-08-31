@@ -3,7 +3,12 @@
 echo.
 echo Downloading Stable Diffusion 1.4 model file...
 
-curl "https://dl.nmkd-hz.de/tti/sd/models/1.4/model.ckpt" -o model.ckpt
+if exist ../model.ckpt (
+	echo model.ckpt already exists.
+)
+else (
+	curl "https://dl.nmkd-hz.de/tti/sd/models/1.4/model.ckpt" -o ../model.ckpt
+)
 
 SET CONDA_PATH=..\mc\Scripts
 
