@@ -353,4 +353,14 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-Res/
+src
+**/__pycache__/
+outputs
+
+# Logs and associated folders 
+# created from generated embeddings.
+logs
+testtube
+checkpoints
+# If it's a Mac
+.DS_Store
