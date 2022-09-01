@@ -409,7 +409,7 @@ def create_argv_parser():
     parser.add_argument(
         '--gfpgan_model_path',
         type=str,
-        default='experiments/pretrained_models/GFPGANv1.3.pth',
+        default='model.pth',
         help='Indicates the path to the GFPGAN model, relative to --gfpgan_dir.',
     )
     parser.add_argument(
