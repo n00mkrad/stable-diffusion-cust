@@ -63,7 +63,6 @@ def main():
         # this is solely for recreating the prompt
         latent_diffusion_weights=opt.laion400m,
         embedding_path=opt.embedding_path,
-        device=opt.device,
     )
 
     # make sure the output directory exists
@@ -91,7 +90,7 @@ def main():
     tic = time.time()
     t2i.load_model()
     print(
-        f'model loaded in', '%4.2fs' % (time.time() - tic)
+        f'>> model loaded in', '%4.2fs' % (time.time() - tic)
     )
 
     if not infile:
@@ -380,13 +379,6 @@ def create_argv_parser():
         help='Path to a pre-trained embedding manager checkpoint - can only be set on command line',
     )
     parser.add_argument(
-        '--device',
-        '-d',
-        type=str,
-        default='cuda',
-        help='Device to run Stable Diffusion on. Defaults to cuda `torch.cuda.current_device()` if avalible',
-    )
-    parser.add_argument(
         '--prompt_as_dir',
         '-p',
         action='store_true',
@@ -485,6 +477,13 @@ def create_cmd_parser():
         '--init_img',
         type=str,
         help='Path to input image for img2img mode (supersedes width and height)',
+    )
+    parser.add_argument(
+        '-T',
+        '-fit',
+        '--fit',
+        action='store_true',
+        help='If specified, will resize the input image to fit within the dimensions of width x height (512x512 default)',
     )
     parser.add_argument(
         '-f',
