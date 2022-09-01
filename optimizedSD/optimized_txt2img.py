@@ -257,7 +257,7 @@ with torch.no_grad():
     for n in trange(opt.n_iter, desc="Sampling"):
         for prompts in tqdm(data, desc="data"):
 
-            sample_path = os.path.join(outpath, "_".join(re.split(":| ", prompts[0])))[:150]
+            sample_path = outpath
             os.makedirs(sample_path, exist_ok=True)
             base_count = len(os.listdir(sample_path))
 
