@@ -168,7 +168,7 @@ parser.add_argument(
     type=str,
     help="sampler",
     choices=["ddim", "plms"],
-    default="plms",
+    default="ddim",
 )
 opt = parser.parse_args()
 
