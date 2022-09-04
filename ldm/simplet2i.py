@@ -118,7 +118,7 @@ class T2I:
         iterations=1,
         steps=50,
         seed=None,
-        cfg_scale=7.5,
+        cfg_scale=0.0,
         weights='models/ldm/stable-diffusion-v1/model.ckpt',
         config='configs/stable-diffusion/v1-inference.yaml',
         grid=False,
@@ -265,7 +265,7 @@ class T2I:
         model = (
             self.load_model()
         )  # will instantiate the model or return it from cache
-        assert cfg_scale > 1.0, 'CFG_Scale (-C) must be >1.0'
+        # assert cfg_scale > 1.0, 'CFG_Scale (-C) must be >1.0'
         assert (
             0.0 <= strength <= 1.0
         ), 'can only work with strength in [0.0, 1.0]'
