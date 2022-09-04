@@ -6,13 +6,8 @@
 # and the width and height of the images it
 # was trained on.
 
-laion400m:
-    config:  configs/latent-diffusion/txt2img-1p4B-eval.yaml
-    weights: models/ldm/text2img-large/model.ckpt
-    width: 256
-    height: 256
 stable-diffusion-1.4:
     config:  configs/stable-diffusion/v1-inference.yaml
-    weights: models/ldm/stable-diffusion-v1/model.ckpt
+    weights: ../models/stable-diffusion-1.4.ckpt
     width: 512
     height: 512

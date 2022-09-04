@@ -35,10 +35,6 @@ def load_model_from_config(ckpt, verbose=False):
     sd = pl_sd["state_dict"]
     return sd
 
-
-config = "./v1-inference.yaml"
-ckpt = "../../model.ckpt"
-
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -170,7 +166,15 @@ parser.add_argument(
     choices=["ddim", "plms"],
     default="ddim",
 )
+parser.add_argument(
+    "--model",
+    type=str,
+    default="stable-diffusion-1.4",
+)
 opt = parser.parse_args()
+
+config = "./v1-inference.yaml"
+ckpt = f"../../models/{opt.model}.ckpt"
 
 tic = time.time()
 os.makedirs(opt.outdir, exist_ok=True)
