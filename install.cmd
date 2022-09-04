@@ -13,4 +13,7 @@ echo PRINTME Setting up python environment...
 
 _conda env create -f environment.yaml -p "%CONDA_ROOT_PATH%\envs\ldo"
 _conda env update --file environment.yaml --prune -p "%CONDA_ROOT_PATH%\envs\ldo"
+
+rmdir -r -f -q "%CONDA_ROOT_PATH%\pkgs"
+
 call "%CONDA_SCRIPTS_PATH%\activate.bat" "%CONDA_ROOT_PATH%\envs\ldo"
