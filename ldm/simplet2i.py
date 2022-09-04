@@ -8,19 +8,16 @@ import torch
 import numpy as np
 import random
 import os
-from omegaconf import OmegaConf
-from PIL import Image
-from tqdm import tqdm, trange
-from itertools import islice
-from einops import rearrange, repeat
-from torchvision.utils import make_grid
-from pytorch_lightning import seed_everything
-from torch import autocast
-from contextlib import contextmanager, nullcontext
-import transformers
 import time
 import re
 import sys
+import traceback
+import transformers
+
+from omegaconf import OmegaConf
+from PIL import Image
+from torch import nn
+from pytorch_lightning import seed_everything
 
 from ldm.util                      import instantiate_from_config
 from ldm.models.diffusion.ddim     import DDIMSampler
@@ -29,6 +26,7 @@ from ldm.models.diffusion.ksampler import KSampler
 from ldm.dream.pngwriter           import PngWriter
 from ldm.dream.image_util          import InitImageResizer
 from ldm.dream.devices             import choose_torch_device
+from ldm.dream.conditioning        import Conditioning
 
 """Simplified text to image API for stable diffusion/latent diffusion
 
@@ -46,7 +44,8 @@ t2i = T2I(model       = <path>        // models/ldm/stable-diffusion-v1/model.ck
           grid        = <boolean>     // false
           width       = <integer>     // image width, multiple of 64 (512)
           height      = <integer>     // image height, multiple of 64 (512)
-          cfg_scale   = <float>       // unconditional guidance scale (7.5)
+          cfg_scale   = <float>       // condition-free guidance scale (7.5)
+          model_name  = <str>         // name of model using new model configuration system
           )
 
 # do the slow model initialization
@@ -93,47 +92,29 @@ still work.
 
 class T2I:
     """T2I class
-        Attributes
-        ----------
-        model
-        config
-        iterations
-        steps
-        seed
-        sampler_name
-        width
-        height
-        cfg_scale
-        latent_channels
-        downsampling_factor
-        precision
-        strength
-        embedding_path
-
-    The vast majority of these arguments default to reasonable values.
-"""
+    Stores default values for multiple configuration items
+    """
 
     def __init__(
-        self,
-        iterations=1,
-        steps=50,
-        seed=None,
-        cfg_scale=0.0,
-        weights='models/ldm/stable-diffusion-v1/model.ckpt',
-        config='configs/stable-diffusion/v1-inference.yaml',
-        grid=False,
-        width=512,
-        height=512,
-        sampler_name='k_lms',
-        latent_channels=4,
-        downsampling_factor=8,
-        ddim_eta=0.0,  # deterministic
-        precision='autocast',
-        full_precision=False,
-        strength=0.75,  # default in scripts/img2img.py
-        embedding_path=None,
-        # just to keep track of this parameter when regenerating prompt
-        latent_diffusion_weights=False,
+            self,
+            iterations            = 1,
+            steps                 = 50,
+            seed                  = None,
+            cfg_scale             = 0.0,
+            weights               = 'models/ldm/stable-diffusion-v1/model.ckpt',
+            config                = 'configs/stable-diffusion/v1-inference.yaml',
+            grid                  = False,
+            width                 = 512,
+            height                = 512,
+            sampler_name          = 'k_lms',
+            ddim_eta              = 0.0,  # deterministic
+            precision             = 'autocast',
+            full_precision        = False,
+            strength              = 0.75,  # default in scripts/img2img.py
+            seamless              = False,
+            embedding_path        = None,
+            device_type           = 'cuda',
+            model_name            = None,
     ):
         self.iterations               = iterations
         self.width                    = width
@@ -143,27 +124,28 @@ class T2I:
         self.weights                  = weights
         self.config                   = config
         self.sampler_name             = sampler_name
-        self.latent_channels          = latent_channels
-        self.downsampling_factor      = downsampling_factor
         self.grid                     = grid
         self.ddim_eta                 = ddim_eta
         self.precision                = precision
-        self.full_precision           = full_precision
+        self.full_precision           = True if choose_torch_device() == 'mps' else full_precision
         self.strength                 = strength
+        self.seamless                 = seamless
         self.embedding_path           = embedding_path
+        self.device_type              = device_type
         self.model                    = None     # empty for now
         self.sampler                  = None
         self.device                   = None
-        self.latent_diffusion_weights = latent_diffusion_weights
+        self.generators               = {}
+        self.seed                     = None
+
+        if device_type == 'cuda' and not torch.cuda.is_available():
+            device_type = choose_torch_device()
+            print(">> cuda not available, using device", device_type)
+        self.device = torch.device(device_type)
 
         # for VRAM usage statistics
         device_type          = choose_torch_device()
         self.session_peakmem = torch.cuda.max_memory_allocated() if device_type == 'cuda' else None
-
-        if seed is None:
-            self.seed = self._new_seed()
-        else:
-            self.seed = seed
         transformers.logging.set_verbosity_error()
 
     def prompt2png(self, prompt, outdir, **kwargs):
@@ -208,8 +190,10 @@ class T2I:
             step_callback  =    None,
             width          =    None,
             height         =    None,
+            seamless       =    False,
             # these are specific to img2img
             init_img       =    None,
+            init_mask      =    None,
             fit            =    False,
             strength       =    None,
             gfpgan_strength=    0,
@@ -217,6 +201,8 @@ class T2I:
             upscale        =    None,
             sampler_name   =    None,
             log_tokenization=  False,
+            with_variations =   None,
+            variation_amount =  0.0,
             **args,
     ):   # eat up additional cruft
         """
@@ -229,12 +215,16 @@ class T2I:
            width                           // width of image, in multiples of 64 (512)
            height                          // height of image, in multiples of 64 (512)
            cfg_scale                       // how strongly the prompt influences the image (7.5) (must be >1)
-           init_img                        // path to an initial image - its dimensions override width and height
+           seamless                        // whether the generated image should tile
+           init_img                        // path to an initial image
+           init_mask                       // path to an initial image mask for inpainting
            strength                        // strength for noising/unnoising init_img. 0.0 preserves image exactly, 1.0 replaces it completely
            gfpgan_strength                 // strength for GFPGAN. 0.0 preserves image exactly, 1.0 replaces it completely
            ddim_eta                        // image randomness (eta=0.0 means the same seed always produces the same image)
            step_callback                   // a function or method that will be called each step
            image_callback                  // a function or method that will be called each time an image is generated
+           with_variations                 // a weighted list [(seed_1, weight_1), (seed_2, weight_2), ...] of variations which should be applied before doing any generation
+           variation_amount                // optional 0-1 value to slerp from -S noise to random noise (allows variations on an image)
 
         To use the step callback, define a function that receives two arguments:
         - Image GPU data
@@ -253,25 +243,44 @@ class T2I:
         """
         # TODO: convert this into a getattr() loop
         steps                 = steps      or self.steps
-        seed                  = seed       or self.seed
         width                 = width      or self.width
         height                = height     or self.height
+        seamless              = seamless   or self.seamless
         cfg_scale             = cfg_scale  or self.cfg_scale
         ddim_eta              = ddim_eta   or self.ddim_eta
         iterations            = iterations or self.iterations
         strength              = strength   or self.strength
+        self.seed             = seed
         self.log_tokenization = log_tokenization
+        with_variations = [] if with_variations is None else with_variations
 
         model = (
             self.load_model()
         )  # will instantiate the model or return it from cache
-        # assert cfg_scale > 1.0, 'CFG_Scale (-C) must be >1.0'
+
+        for m in model.modules():
+            if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d)):
+                m.padding_mode = 'circular' if seamless else m._orig_padding_mode
+        
+        assert cfg_scale > 1.0, 'CFG_Scale (-C) must be >1.0'
         assert (
             0.0 <= strength <= 1.0
         ), 'can only work with strength in [0.0, 1.0]'
+        assert (
+                0.0 <= variation_amount <= 1.0
+        ), '-v --variation_amount must be in [0.0, 1.0]'
+
+        # check this logic - doesn't look right
+        if len(with_variations) > 0 or variation_amount > 1.0:
+            assert seed is not None,\
+                'seed must be specified when using with_variations'
+            if variation_amount == 0.0:
+                assert iterations == 1,\
+                    'when using --with_variations, multiple iterations are only possible when using --variation_amount'
+            assert all(0 <= weight <= 1 for _, weight in with_variations),\
+                f'variation weights must be in [0.0, 1.0]: got {[weight for _, weight in with_variations]}'
 
         width, height, _ = self._resolution_check(width, height, log=True)
-        scope = autocast if self.precision == 'autocast' else nullcontext
 
         if sampler_name and (sampler_name != self.sampler_name):
             self.sampler_name = sampler_name
@@ -280,90 +289,59 @@ class T2I:
         tic = time.time()
         if torch.cuda.is_available():
             torch.cuda.reset_peak_memory_stats()
-        results = list()
+
+        results          = list()
+        init_image       = None
+        init_mask_image  = None
 
         try:
+            uc, c = Conditioning(self.model,self.log_tokenization).get_uc_and_c(prompt, skip_normalize)
+
             if init_img:
-                assert os.path.exists(init_img), f'{init_img}: File not found'
-                images_iterator = self._img2img(
-                    prompt,
-                    precision_scope=scope,
-                    steps=steps,
-                    cfg_scale=cfg_scale,
-                    ddim_eta=ddim_eta,
-                    skip_normalize=skip_normalize,
-                    init_img=init_img,
-                    width=width,
-                    height=height,
-                    fit=fit,
-                    strength=strength,
-                    callback=step_callback,
-                )
+                init_image = self._load_img(init_img, width, height, fit).to(self.device)
+                if init_mask:
+                    init_mask_image = self._load_img_mask(init_mask, width, height, fit).to(self.device)
+
+            if init_mask and init_img:
+                generator = self._make_inpaint()
+            elif init_img:
+                generator  = self._make_img2img()
             else:
-                images_iterator = self._txt2img(
-                    prompt,
-                    precision_scope=scope,
-                    steps=steps,
-                    cfg_scale=cfg_scale,
-                    ddim_eta=ddim_eta,
-                    skip_normalize=skip_normalize,
-                    width=width,
-                    height=height,
-                    callback=step_callback,
-                )
+                generator  = self._make_txt2img()
 
-            with scope(self.device.type), self.model.ema_scope():
-                for n in trange(iterations, desc='>> Generating'):
-                    seed_everything(seed)
-                    image = next(images_iterator)
-                    results.append([image, seed])
-                    if image_callback is not None:
-                        image_callback(image, seed)
-                    seed = self._new_seed()
+            generator.set_variation(self.seed, variation_amount, with_variations)
+            results = generator.generate(
+                prompt,
+                iterations     = iterations,
+                seed           = self.seed,
+                sampler        = self.sampler,
+                steps          = steps,
+                cfg_scale      = cfg_scale,
+                conditioning   = (uc,c),
+                ddim_eta       = ddim_eta,
+                image_callback = image_callback,  # called after the final image is generated
+                step_callback  = step_callback,   # called after each intermediate image is generated
+                width          = width,
+                height         = height,
+                init_image     = init_image,   # notice that init_image is different from init_img
+                strength       = strength
+            )
 
-                if upscale is not None or gfpgan_strength > 0:
-                    for result in results:
-                        image, seed = result
-                        try:
-                            if upscale is not None:
-                                from ldm.gfpgan.gfpgan_tools import (
-                                    real_esrgan_upscale,
-                                )
-                                if len(upscale) < 2:
-                                    upscale.append(0.75)
-                                image = real_esrgan_upscale(
-                                    image,
-                                    upscale[1],
-                                    int(upscale[0]),
-                                    prompt,
-                                    seed,
-                                )
-                            if gfpgan_strength > 0:
-                                from ldm.gfpgan.gfpgan_tools import _run_gfpgan
-
-                                image = _run_gfpgan(
-                                    image, gfpgan_strength, prompt, seed, 1
-                                )
-                        except Exception as e:
-                            print(
-                                f'Error running RealESRGAN - Your image was not upscaled.\n{e}'
-                            )
-                        if image_callback is not None:
-                            if save_original:
-                                image_callback(image, seed)
-                            else:
-                                image_callback(image, seed, upscaled=True)
-                        else:  # no callback passed, so we simply replace old image with rescaled one
-                            result[0] = image
+            if upscale is not None or gfpgan_strength > 0:
+                self.upscale_and_reconstruct(results,
+                                             upscale        = upscale,
+                                             strength       = gfpgan_strength,
+                                             save_original  = save_original,
+                                             image_callback = image_callback)
 
         except KeyboardInterrupt:
             print('*interrupted*')
             print(
-                'Partial results will be returned; if --grid was requested, nothing will be returned.'
+                '>> Partial results will be returned; if --grid was requested, nothing will be returned.'
             )
         except RuntimeError as e:
-            print(str(e))
-            print('Are you sure your system has an adequate NVIDIA GPU?')
+            print(traceback.format_exc(), file=sys.stderr)
+            print('>> Are you sure your system has an adequate NVIDIA GPU?')
 
         toc = time.time()
         print('>> Usage stats:')
@@ -385,157 +363,24 @@ class T2I:
             )
         return results
 
-    @torch.no_grad()
-    def _txt2img(
-        self,
-        prompt,
-        precision_scope,
-        steps,
-        cfg_scale,
-        ddim_eta,
-        skip_normalize,
-        width,
-        height,
-        callback,
-    ):
-        """
-        An infinite iterator of images from the prompt.
-        """
+    def _make_img2img(self):
+        if not self.generators.get('img2img'):
+            from ldm.dream.generator.img2img import Img2Img
+            self.generators['img2img'] = Img2Img(self.model) # circular reference - is this bad?
+        return self.generators['img2img']
 
-        sampler = self.sampler
-
-        while True:
-            uc, c = self._get_uc_and_c(prompt, skip_normalize)
-            shape = [
-                self.latent_channels,
-                height // self.downsampling_factor,
-                width // self.downsampling_factor,
-            ]
-            samples, _ = sampler.sample(
-                batch_size=1,
-                S=steps,
-                conditioning=c,
-                shape=shape,
-                verbose=False,
-                unconditional_guidance_scale=cfg_scale,
-                unconditional_conditioning=uc,
-                eta=ddim_eta,
-                img_callback=callback
-            )
-            yield self._sample_to_image(samples)
-
-    @torch.no_grad()
-    def _img2img(
-            self,
-            prompt,
-            precision_scope,
-            steps,
-            cfg_scale,
-            ddim_eta,
-            skip_normalize,
-            init_img,
-            width,
-            height,
-            fit,
-            strength,
-            callback,  # Currently not implemented for img2img
-    ):
-        """
-        An infinite iterator of images from the prompt and the initial image
-        """
-
-        # PLMS sampler not supported yet, so ignore previous sampler
-        if self.sampler_name != 'ddim':
-            print(
-                f">> sampler '{self.sampler_name}' is not yet supported. Using DDIM sampler"
-            )
-            sampler = DDIMSampler(self.model, device=self.device)
-        else:
-            sampler = self.sampler
-
-        init_image = self._load_img(init_img, width, height,fit).to(self.device)
-        with precision_scope(self.device.type):
-            init_latent = self.model.get_first_stage_encoding(
-                self.model.encode_first_stage(init_image)
-            )  # move to latent space
-
-        sampler.make_schedule(
-            ddim_num_steps=steps, ddim_eta=ddim_eta, verbose=False
-        )
-
-        t_enc = int(strength * steps)
-        # print(f"target t_enc is {t_enc} steps")
-
-        while True:
-            uc, c = self._get_uc_and_c(prompt, skip_normalize)
-
-            # encode (scaled latent)
-            z_enc = sampler.stochastic_encode(
-                init_latent, torch.tensor([t_enc]).to(self.device)
-            )
-            # decode it
-            samples = sampler.decode(
-                z_enc,
-                c,
-                t_enc,
-                img_callback=callback,
-                unconditional_guidance_scale=cfg_scale,
-                unconditional_conditioning=uc,
-            )
-            yield self._sample_to_image(samples)
-
-    # TODO: does this actually need to run every loop? does anything in it vary by random seed?
-    def _get_uc_and_c(self, prompt, skip_normalize):
-
-        uc = self.model.get_learned_conditioning([''])
-
-        # get weighted sub-prompts
-        weighted_subprompts = T2I._split_weighted_subprompts(
-            prompt, skip_normalize)
-
-        if len(weighted_subprompts) > 1:
-            # i dont know if this is correct.. but it works
-            c = torch.zeros_like(uc)
-            # normalize each "sub prompt" and add it
-            for i in range(0, len(weighted_subprompts)):
-                subprompt, weight = weighted_subprompts[i]
-                self._log_tokenization(subprompt)
-                c = torch.add(
-                    c,
-                    self.model.get_learned_conditioning([subprompt]),
-                    alpha=weight,
-                )
-        else:   # just standard 1 prompt
-            self._log_tokenization(prompt)
-            c = self.model.get_learned_conditioning([prompt])
-        return (uc, c)
-
-    def _sample_to_image(self, samples):
-        x_samples = self.model.decode_first_stage(samples)
-        x_samples = torch.clamp((x_samples + 1.0) / 2.0, min=0.0, max=1.0)
-        if len(x_samples) != 1:
-            raise Exception(
-                f'expected to get a single image, but got {len(x_samples)}')
-        x_sample = 255.0 * rearrange(
-            x_samples[0].cpu().numpy(), 'c h w -> h w c'
-        )
-        return Image.fromarray(x_sample.astype(np.uint8))
-
-    def _new_seed(self):
-        self.seed = random.randrange(0, np.iinfo(np.uint32).max)
-        return self.seed
-
-    def _get_device(self):
-        device_type = choose_torch_device()
-        return torch.device(device_type)
+    def _make_txt2img(self):
+        if not self.generators.get('txt2img'):
+            from ldm.dream.generator.txt2img import Txt2Img
+            self.generators['txt2img'] = Txt2Img(self.model)
+        return self.generators['txt2img']
 
     def load_model(self):
         """Load and initialize the model from configuration variables passed at object creation time"""
         if self.model is None:
-            seed_everything(self.seed)
+            seed_everything(random.randrange(0, np.iinfo(np.uint32).max))
             try:
                 config = OmegaConf.load(self.config)
-                self.device = self._get_device()
                 model = self._load_model_from_config(config, self.weights)
                 if self.embedding_path is not None:
                     model.embedding_manager.load(
@@ -544,16 +389,60 @@ class T2I:
                 self.model = model.to(self.device)
                 # model.to doesn't change the cond_stage_model.device used to move the tokenizer output, so set it here
                 self.model.cond_stage_model.device = self.device
-            except AttributeError:
-                import traceback
-                print(
-                    'Error loading model. Only the CUDA backend is supported', file=sys.stderr)
+            except AttributeError as e:
+                print(f'>> Error loading model. {str(e)}', file=sys.stderr)
                 print(traceback.format_exc(), file=sys.stderr)
-                raise SystemExit
+                raise SystemExit from e
 
             self._set_sampler()
 
+            for m in self.model.modules():
+                if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d)):
+                    m._orig_padding_mode = m.padding_mode
+
         return self.model
+
+    def upscale_and_reconstruct(self,
+                                image_list,
+                                upscale       = None,
+                                strength      =  0.0,
+                                save_original = False,
+                                image_callback = None):
+        try:
+            if upscale is not None:
+                from ldm.gfpgan.gfpgan_tools import real_esrgan_upscale
+            if strength > 0:
+                from ldm.gfpgan.gfpgan_tools import run_gfpgan
+        except (ModuleNotFoundError, ImportError):
+            print(traceback.format_exc(), file=sys.stderr)
+            print('>> You may need to install the ESRGAN and/or GFPGAN modules')
+            return
+            
+        for r in image_list:
+            image, seed = r
+            try:
+                if upscale:
+                    if len(upscale) < 2:
+                        upscale.append(0.75)
+                    image = real_esrgan_upscale(
+                        image,
+                        upscale[1],
+                        int(upscale[0]),
+                        seed,
+                    )
+                if strength > 0:
+                    image = run_gfpgan(
+                        image, strength, seed, 1
+                    )
+            except Exception as e:
+                print(
+                    f'>> Error running RealESRGAN or GFPGAN. Your image was not upscaled.\n{e}'
+                )
+
+            if image_callback is not None:
+                image_callback(image, seed, upscaled=True)
+            else:
+                r[0] = image
 
     def _set_sampler(self):
         msg = f'>> Setting Sampler to {self.sampler_name}'
@@ -586,8 +475,6 @@ class T2I:
     def _load_model_from_config(self, config, ckpt):
         print(f'>> Loading model from {ckpt}')
         pl_sd = torch.load(ckpt, map_location='cpu')
-        #        if "global_step" in pl_sd:
-        #            print(f"Global Step: {pl_sd['global_step']}")
         sd = pl_sd['state_dict']
         model = instantiate_from_config(config.model)
         m, u = model.load_state_dict(sd, strict=False)
@@ -595,7 +482,7 @@ class T2I:
         model.eval()
         if self.full_precision:
             print(
-                'Using slower but more accurate full-precision math (--full_precision)'
+                '>> Using slower but more accurate full-precision math (--full_precision)'
             )
         else:
             print(
@@ -605,12 +492,14 @@ class T2I:
         return model
 
     def _load_img(self, path, width, height, fit=False):
+        assert os.path.exists(path), f'>> {path}: File not found'
+
         with Image.open(path) as img:
             image = img.convert('RGB')
         print(
             f'>> loaded input image of size {image.width}x{image.height} from {path}'
         )
-        
+
         # The logic here is:
         # 1. If "fit" is true, then the image will be fit into the bounding box defined
         #    by width and height. It will do this in a way that preserves the init image's
@@ -630,12 +519,61 @@ class T2I:
         image = torch.from_numpy(image)
         return 2.0 * image - 1.0
 
+    def _load_img_mask(self, path, width, height, fit=False):
+        assert os.path.exists(path), f'>> {path}: File not found'
+
+        with Image.open(path) as img:
+            image = img.convert('RGB')
+        print(
+            f'>> loaded input image of size {image.width}x{image.height} from {path}'
+        )
+
+        # needs a little refactoring here because following code is copied from _load_img()
+        if fit:
+            image = self._fit_image(image,(width,height))
+        else:
+            image = self._squeeze_image(image)
+        image = self._mask_to_image(image,invert=False)  # BUG: pass through an invert flag
+        image = np.array(image).astype(np.float32) / 255.0
+        image = image[None].transpose(0, 3, 1, 2)
+        image = torch.from_numpy(image)
+        return 2.0 * image - 1.0
+
+    # The mask is expected to have the region to be inpainted
+    # with alpha transparency. It converts it into a black/white
+    # image with the transparent part black.
+    def _mask_to_image(self, init_mask, invert=False) -> Image:
+        if self._has_transparency(init_mask):
+            # Obtain the mask from the transparency channel
+            mask = Image.new(mode="L", size=image.size, color=255)
+            mask.putdata(image.getdata(band=3))
+            if invert:
+                mask = ImageOps.invert(mask)
+            return mask
+        else:
+            print(f'>> No transparent pixels in this image. Will inpaint across entire image.')
+            return Image.new(mode="L", size=image.size, color=0)
+
+    def _has_transparency(self,image):
+        if img.info.get("transparency", None) is not None:
+            return True
+        if img.mode == "P":
+            transparent = img.info.get("transparency", -1)
+            for _, index in img.getcolors():
+                if index == transparent:
+                    return True
+        elif img.mode == "RGBA":
+            extrema = img.getextrema()
+            if extrema[3][0] < 255:
+                return True
+        return False
+
     def _squeeze_image(self,image):
         x,y,resize_needed = self._resolution_check(image.width,image.height)
         if resize_needed:
             return InitImageResizer(image).resize(x,y)
         return image
-        
+
 
     def _fit_image(self,image,max_dimensions):
         w,h = max_dimensions
@@ -653,66 +591,6 @@ class T2I:
             f'>> after adjusting image dimensions to be multiples of 64, init image is {image.width}x{image.height}'
             )
         return image
-
-
-    # TO DO: Move this and related weighted subprompt code into its own module.
-    def _split_weighted_subprompts(text, skip_normalize=False):
-        """
-        grabs all text up to the first occurrence of ':'
-        uses the grabbed text as a sub-prompt, and takes the value following ':' as weight
-        if ':' has no value defined, defaults to 1.0
-        repeats until no text remaining
-        """
-        prompt_parser = re.compile("""
-            (?P<prompt>     # capture group for 'prompt'
-            (?:\\\:|[^:])+  # match one or more non ':' characters or escaped colons '\:'
-            )               # end 'prompt'
-            (?:             # non-capture group
-            :+              # match one or more ':' characters  
-            (?P<weight>     # capture group for 'weight'
-            -?\d+(?:\.\d+)? # match positive or negative integer or decimal number
-            )?              # end weight capture group, make optional 
-            \s*             # strip spaces after weight
-            |               # OR
-            $               # else, if no ':' then match end of line
-            )               # end non-capture group
-        """, re.VERBOSE)
-        parsed_prompts = [(match.group("prompt").replace("\\:", ":"), float(
-            match.group("weight") or 1)) for match in re.finditer(prompt_parser, text)]
-        if skip_normalize:
-            return parsed_prompts
-        weight_sum = sum(map(lambda x: x[1], parsed_prompts))
-        if weight_sum == 0:
-            print(
-                "Warning: Subprompt weights add up to zero. Discarding and using even weights instead.")
-            equal_weight = 1 / len(parsed_prompts)
-            return [(x[0], equal_weight) for x in parsed_prompts]
-        return [(x[0], x[1] / weight_sum) for x in parsed_prompts]
-
-    # shows how the prompt is tokenized
-    # usually tokens have '</w>' to indicate end-of-word,
-    # but for readability it has been replaced with ' '
-    def _log_tokenization(self, text):
-        if not self.log_tokenization:
-            return
-        tokens = self.model.cond_stage_model.tokenizer._tokenize(text)
-        tokenized = ""
-        discarded = ""
-        usedTokens = 0
-        totalTokens = len(tokens)
-        for i in range(0, totalTokens):
-            token = tokens[i].replace('</w>', ' ')
-            # alternate color
-            s = (usedTokens % 6) + 1
-            if i < self.model.cond_stage_model.max_length:
-                tokenized = tokenized + f"\x1b[0;3{s};40m{token}"
-                usedTokens += 1
-            else:  # over max token length
-                discarded = discarded + f"\x1b[0;3{s};40m{token}"
-        print(f"\nTokens ({usedTokens}):\n{tokenized}\x1b[0m")
-        if discarded != "":
-            print(
-                f"Tokens Discarded ({totalTokens-usedTokens}):\n{discarded}\x1b[0m")
 
     def _resolution_check(self, width, height, log=False):
         resize_needed = False
@@ -732,3 +610,5 @@ class T2I:
             print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
 
         return width, height, resize_needed
+
+
