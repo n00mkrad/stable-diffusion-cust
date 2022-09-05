@@ -248,7 +248,7 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
             def image_writer(image, seed, upscaled=False):
                 if do_grid:
                     grid_images[seed] = image
-                else:
+                elif not (opt.upscale and (not upscaled and not opt.save_original)):
                     if upscaled and opt.save_original:
                         filename = f'{prefix}.{seed}.postprocessed.png'
                     else:
