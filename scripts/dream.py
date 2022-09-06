@@ -464,7 +464,7 @@ def create_argv_parser():
     parser.add_argument(
         '--gfpgan_dir',
         type=str,
-        default='./GFPGAN',
+        default='../GFPGAN',
         help='Indicates the directory containing the GFPGAN code.',
     )
     parser.add_argument(
