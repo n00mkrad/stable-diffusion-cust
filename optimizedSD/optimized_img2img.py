@@ -14,22 +14,6 @@ from pytorch_lightning import seed_everything
 from torch import autocast
 from contextlib import contextmanager, nullcontext
 from einops import rearrange, repeat
-from ldm.util import instantiate_from_configimport sys
-import argparse, os, re
-import torch
-import numpy as np
-from random import randint
-from omegaconf import OmegaConf
-from PIL import Image
-from tqdm import tqdm, trange
-from itertools import islice
-from einops import rearrange
-from torchvision.utils import make_grid
-import time
-from pytorch_lightning import seed_everything
-from torch import autocast
-from contextlib import contextmanager, nullcontext
-from einops import rearrange, repeat
 from ldm.util import instantiate_from_config
 from optimUtils import split_weighted_subprompts, logger
 from PIL import PngImagePlugin
@@ -129,7 +113,7 @@ parser.add_argument(
 parser.add_argument(
     "--n_samples",
     type=int,
-    default=5,
+    default=1,
     help="how many samples to produce for each given prompt. A.k.a. batch size",
 )
 parser.add_argument(
@@ -299,7 +283,7 @@ with torch.no_grad():
     for n in trange(opt.n_iter, desc="Sampling"):
         for prompts in tqdm(data, desc="data"):
 
-            sample_path = os.path.join(outpath, "_".join(re.split(":| ", prompts[0])))[:150]
+            sample_path = outpath
             os.makedirs(sample_path, exist_ok=True)
             base_count = len(os.listdir(sample_path))
 
@@ -358,7 +342,7 @@ with torch.no_grad():
                     info = PngImagePlugin.PngInfo()
                     info.add_text('Dream', f""""{prompts[0]}" -s{opt.ddim_steps} -W{opt.W} -H{opt.H} -C{opt.scale} -A{opt.sampler} -S{opt.seed}""")
                     Image.fromarray(x_sample.astype(np.uint8)).save(
-                        os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}"), pnginfo=info
+                        os.path.join(sample_path, f"{base_count:05}.{opt.format}"), pnginfo=info
                     )
                     seeds += str(opt.seed) + ","
                     opt.seed += 1

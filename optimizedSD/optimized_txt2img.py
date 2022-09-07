@@ -319,7 +319,7 @@ with torch.no_grad():
                     info = PngImagePlugin.PngInfo()
                     info.add_text('Dream', f""""{prompts[0]}" -s{opt.ddim_steps} -W{opt.W} -H{opt.H} -C{opt.scale} -A{opt.sampler} -S{opt.seed}""")
                     Image.fromarray(x_sample.astype(np.uint8)).save(
-                        os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}"), pnginfo=info
+                        os.path.join(sample_path, f"{base_count:05}.{opt.format}"), pnginfo=info
                     )
                     seeds += str(opt.seed) + ","
                     opt.seed += 1
