@@ -1,4 +1,3 @@
-import os
 import sys
 import argparse, os, re
 import torch
@@ -16,6 +15,7 @@ from torch import autocast
 from contextlib import contextmanager, nullcontext
 from ldm.util import instantiate_from_config
 from optimUtils import split_weighted_subprompts, logger
+from PIL import PngImagePlugin
 from transformers import logging
 logging.set_verbosity_error()
 
@@ -312,12 +312,14 @@ with torch.no_grad():
                 print(samples_ddim.shape)
                 print("saving images")
                 for i in range(batch_size):
-
+                
                     x_samples_ddim = modelFS.decode_first_stage(samples_ddim[i].unsqueeze(0))
                     x_sample = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                     x_sample = 255.0 * rearrange(x_sample[0].cpu().numpy(), "c h w -> h w c")
+                    info = PngImagePlugin.PngInfo()
+                    info.add_text('Dream', f""""{prompts[0]}" -s{opt.ddim_steps} -W{opt.W} -H{opt.H} -C{opt.scale} -A{opt.sampler} -S{opt.seed}""")
                     Image.fromarray(x_sample.astype(np.uint8)).save(
-                        os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}")
+                        os.path.join(sample_path, "seed_" + str(opt.seed) + "_" + f"{base_count:05}.{opt.format}"), pnginfo=info
                     )
                     seeds += str(opt.seed) + ","
                     opt.seed += 1
