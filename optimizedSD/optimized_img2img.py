@@ -14,6 +14,22 @@ from pytorch_lightning import seed_everything
 from torch import autocast
 from contextlib import contextmanager, nullcontext
 from einops import rearrange, repeat
+from ldm.util import instantiate_from_configimport sys
+import argparse, os, re
+import torch
+import numpy as np
+from random import randint
+from omegaconf import OmegaConf
+from PIL import Image
+from tqdm import tqdm, trange
+from itertools import islice
+from einops import rearrange
+from torchvision.utils import make_grid
+import time
+from pytorch_lightning import seed_everything
+from torch import autocast
+from contextlib import contextmanager, nullcontext
+from einops import rearrange, repeat
 from ldm.util import instantiate_from_config
 from optimUtils import split_weighted_subprompts, logger
 from PIL import PngImagePlugin
@@ -54,10 +70,6 @@ def load_img(path, h0, w0):
     image = image[None].transpose(0, 3, 1, 2)
     image = torch.from_numpy(image)
     return 2.0 * image - 1.0
-
-
-config = "optimizedSD/v1-inference.yaml"
-ckpt = "models/ldm/stable-diffusion-v1/model.ckpt"
 
 parser = argparse.ArgumentParser()
 
@@ -177,7 +189,15 @@ parser.add_argument(
     choices=["ddim"],
     default="ddim",
 )
+parser.add_argument(
+    "--model",
+    type=str,
+    default="stable-diffusion-1.4",
+)
 opt = parser.parse_args()
+
+config = "./v1-inference.yaml"
+ckpt = f"../../models/{opt.model}.ckpt"
 
 tic = time.time()
 os.makedirs(opt.outdir, exist_ok=True)
