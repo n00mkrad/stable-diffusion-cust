@@ -250,9 +250,9 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
                     grid_images[seed] = image
                 elif not (opt.upscale and (not upscaled and not opt.save_original)):
                     if upscaled and opt.save_original:
-                        filename = f'{prefix}.{seed}.postprocessed.png'
+                        filename = f'{prefix}.postprocessed.png'
                     else:
-                        filename = f'{prefix}.{seed}.png'
+                        filename = f'{prefix}.png'
                     if opt.variation_amount > 0:
                         iter_opt = argparse.Namespace(**vars(opt)) # copy
                         this_variation = [[seed, opt.variation_amount]]
