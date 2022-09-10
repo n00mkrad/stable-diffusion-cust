@@ -279,6 +279,11 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# WebUI temp files:
+img2img-tmp.png
+
+# Scrapy stuff:
+.scrapy
 # Visual Studio 6 build log
 *.plg
 

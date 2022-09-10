@@ -47,19 +47,18 @@ class GEGLU(nn.Module):
 
 
 class FeedForward(nn.Module):
-    def __init__(self, dim, dim_out=None, mult=4, glu=False, dropout=0.):
+    def __init__(self, dim, dim_out=None, mult=4, glu=False, dropout=0.0):
         super().__init__()
         inner_dim = int(dim * mult)
         dim_out = default(dim_out, dim)
-        project_in = nn.Sequential(
-            nn.Linear(dim, inner_dim),
-            nn.GELU()
-        ) if not glu else GEGLU(dim, inner_dim)
+        project_in = (
+            nn.Sequential(nn.Linear(dim, inner_dim), nn.GELU())
+            if not glu
+            else GEGLU(dim, inner_dim)
+        )
 
         self.net = nn.Sequential(
-            project_in,
-            nn.Dropout(dropout),
-            nn.Linear(inner_dim, dim_out)
+            project_in, nn.Dropout(dropout), nn.Linear(inner_dim, dim_out)
         )
 
     def forward(self, x):
@@ -76,7 +75,9 @@ def zero_module(module):
 
 
 def Normalize(in_channels):
-    return torch.nn.GroupNorm(num_groups=32, num_channels=in_channels, eps=1e-6, affine=True)
+    return torch.nn.GroupNorm(
+        num_groups=32, num_channels=in_channels, eps=1e-6, affine=True
+    )
 
 
 class LinearAttention(nn.Module):
@@ -94,7 +95,13 @@ class LinearAttention(nn.Module):
         k = k.softmax(dim=-1)
         context = torch.einsum('bhdn,bhen->bhde', k, v)
         out = torch.einsum('bhde,bhdn->bhen', context, q)
-        out = rearrange(out, 'b heads c (h w) -> b (heads c) h w', heads=self.heads, h=h, w=w)
+        out = rearrange(
+            out,
+            'b heads c (h w) -> b (heads c) h w',
+            heads=self.heads,
+            h=h,
+            w=w,
+        )
         return self.to_out(out)
 
 
@@ -104,26 +111,18 @@ class SpatialSelfAttention(nn.Module):
         self.in_channels = in_channels
 
         self.norm = Normalize(in_channels)
-        self.q = torch.nn.Conv2d(in_channels,
-                                 in_channels,
-                                 kernel_size=1,
-                                 stride=1,
-                                 padding=0)
-        self.k = torch.nn.Conv2d(in_channels,
-                                 in_channels,
-                                 kernel_size=1,
-                                 stride=1,
-                                 padding=0)
-        self.v = torch.nn.Conv2d(in_channels,
-                                 in_channels,
-                                 kernel_size=1,
-                                 stride=1,
-                                 padding=0)
-        self.proj_out = torch.nn.Conv2d(in_channels,
-                                        in_channels,
-                                        kernel_size=1,
-                                        stride=1,
-                                        padding=0)
+        self.q = torch.nn.Conv2d(
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0
+        )
+        self.k = torch.nn.Conv2d(
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0
+        )
+        self.v = torch.nn.Conv2d(
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0
+        )
+        self.proj_out = torch.nn.Conv2d(
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0
+        )
 
     def forward(self, x):
         h_ = x
@@ -157,7 +156,7 @@ class CrossAttention(nn.Module):
         inner_dim = dim_head * heads
         context_dim = default(context_dim, query_dim)
 
-        self.scale = dim_head ** -0.5
+        self.scale = dim_head**-0.5
         self.heads = heads
 
         self.to_q = nn.Linear(query_dim, inner_dim, bias=False)
@@ -166,8 +165,7 @@ class CrossAttention(nn.Module):
         self.superfastmode = superfastmode
 
         self.to_out = nn.Sequential(
-            nn.Linear(inner_dim, query_dim),
-            nn.Dropout(dropout)
+            nn.Linear(inner_dim, query_dim), nn.Dropout(dropout)
         )
         self.forward = self.fast_forward if superfastmode else self.slow_forward
 
@@ -264,7 +262,9 @@ class BasicTransformerBlock(nn.Module):
         self.checkpoint = checkpoint
 
     def forward(self, x, context=None):
-        return checkpoint(self._forward, (x, context), self.parameters(), self.checkpoint)
+        return checkpoint(
+            self._forward, (x, context), self.parameters(), self.checkpoint
+        )
 
     def _forward(self, x, context=None):
         x = self.attn1(self.norm1(x)) + x

@@ -6,16 +6,17 @@ import torch
 import numpy as  np
 from einops import rearrange, repeat
 from ldm.dream.devices             import choose_autocast_device
-from ldm.dream.generator.base      import Generator
+from ldm.dream.generator.img2img   import Img2Img
 from ldm.models.diffusion.ddim     import DDIMSampler
 
-class Inpaint(Generator):
+class Inpaint(Img2Img):
     def __init__(self,model):
+        self.init_latent = None
         super().__init__(model)
     
     @torch.no_grad()
-    def image_iterator(self,prompt,sampler,steps,cfg_scale,ddim_eta,
-                       conditioning,init_image,init_mask,strength,
+    def get_make_image(self,prompt,sampler,steps,cfg_scale,ddim_eta,
+                       conditioning,init_image,mask_image,strength,
                        step_callback=None,**kwargs):
         """
         Returns a function returning an image derived from the prompt and
@@ -23,8 +24,8 @@ class Inpaint(Generator):
         the time you call it.  kwargs are 'init_latent' and 'strength'
         """
 
-        init_mask = init_mask[0][0].unsqueeze(0).repeat(4,1,1).unsqueeze(0)
-        init_mask = repeat(init_mask, '1 ... -> b ...', b=1)
+        mask_image = mask_image[0][0].unsqueeze(0).repeat(4,1,1).unsqueeze(0)
+        mask_image = repeat(mask_image, '1 ... -> b ...', b=1)
 
         # PLMS sampler not supported yet, so ignore previous sampler
         if not isinstance(sampler,DDIMSampler):
@@ -65,7 +66,7 @@ class Inpaint(Generator):
                 img_callback                 = step_callback,
                 unconditional_guidance_scale = cfg_scale,
                 unconditional_conditioning = uc,
-                mask                       = init_mask,
+                mask                       = mask_image,
                 init_latent                = self.init_latent
             )
             return self.sample_to_image(samples)

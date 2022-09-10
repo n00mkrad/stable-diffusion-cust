@@ -11,9 +11,10 @@ from ldm.models.diffusion.ddim     import DDIMSampler
 class Img2Img(Generator):
     def __init__(self,model):
         super().__init__(model)
+        self.init_latent         = None    # by get_noise()
     
     @torch.no_grad()
-    def image_iterator(self,prompt,sampler,steps,cfg_scale,ddim_eta,
+    def get_make_image(self,prompt,sampler,steps,cfg_scale,ddim_eta,
                        conditioning,init_image,strength,step_callback=None,**kwargs):
         """
         Returns a function returning an image derived from the prompt and the initial image
@@ -60,3 +61,12 @@ class Img2Img(Generator):
             return self.sample_to_image(samples)
 
         return make_image
+
+    def get_noise(self,width,height):
+        device      = self.model.device
+        init_latent = self.init_latent
+        assert init_latent is not None,'call to get_noise() when init_latent not set'
+        if device.type == 'mps':
+            return torch.randn_like(init_latent, device='cpu').to(device)
+        else:
+            return torch.randn_like(init_latent, device=device)

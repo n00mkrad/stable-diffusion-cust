@@ -15,6 +15,11 @@ from ldm.dream.server import DreamServer, ThreadingDreamServer
 from ldm.dream.image_util import make_grid
 from omegaconf import OmegaConf
 
+# Placeholder to be replaced with proper class that tracks the
+# outputs and associates with the prompt that generated them.
+# Just want to get the formatting look right for now.
+output_cntr = 0
+
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
 
@@ -43,7 +48,7 @@ def main():
     print('* Initializing, be patient...\n')
     sys.path.append('.')
     from pytorch_lightning import logging
-    from ldm.simplet2i import T2I
+    from ldm.generate import Generate
 
     # these two lines prevent a horrible warning message from appearing
     # when the frozen CLIP tokenizer is imported
@@ -55,7 +60,7 @@ def main():
     # defaults passed on the command line.
     # additional parameters will be added (or overriden) during
     # the user input loop
-    t2i = T2I(
+    t2i = Generate(
         width          = width,
         height         = height,
         sampler_name   = opt.sampler_name,
@@ -64,10 +69,10 @@ def main():
         config         = config,
         grid           = opt.grid,
         # this is solely for recreating the prompt
-        model_name     = opt.model,
         seamless       = opt.seamless,
         embedding_path = opt.embedding_path,
-        device_type    = opt.device
+        device_type    = opt.device,
+        ignore_ctrl_c  = opt.infile is None,
     )
 
     # make sure the output directory exists
@@ -95,11 +100,7 @@ def main():
         print(">> changed to seamless tiling mode")
 
     # preload the model
-    tic = time.time()
     t2i.load_model()
-    print(
-        f'>> model loaded in', '%4.2fs' % (time.time() - tic)
-    )
 
     if not infile:
         print(
@@ -108,7 +109,7 @@ def main():
 
     cmd_parser = create_cmd_parser()
     if opt.web:
-        dream_server_loop(t2i, opt.host, opt.port)
+        dream_server_loop(t2i, opt.host, opt.port, opt.outdir)
     else:
         main_loop(t2i, opt.outdir, opt.prompt_as_dir, cmd_parser, infile)
 
@@ -300,16 +301,18 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
             print(e)
             continue
 
-        print('Outputs:')
+        print('\033[1mOutputs:\033[0m')
         log_path = os.path.join(current_outdir, 'dream_log.txt')
         write_log_message(results, log_path)
 
-    print('goodbye!')
+    print('goodbye!\033[0m')
 
 
 def get_next_command(infile=None) -> str: #command string
     if infile is None:
-        command = input('dream> ')
+        print('\033[1m') # add some boldface
+        command = input('dream> ')   
+        print('\033[0m',end='')
     else:
         command = infile.readline()
         if not command:
@@ -319,7 +322,7 @@ def get_next_command(infile=None) -> str: #command string
         print(f'#{command}')
     return command
 
-def dream_server_loop(t2i, host, port):
+def dream_server_loop(t2i, host, port, outdir):
     print('\n* --web was specified, starting web server...')
     # Change working directory to the stable-diffusion directory
     os.chdir(
@@ -328,6 +331,7 @@ def dream_server_loop(t2i, host, port):
 
     # Start server
     DreamServer.model = t2i
+    DreamServer.outdir = outdir
     dream_server = ThreadingDreamServer((host, port))
     print(">> Started Stable Diffusion dream server!")
     if host == '0.0.0.0':
@@ -346,8 +350,11 @@ def dream_server_loop(t2i, host, port):
 
 def write_log_message(results, log_path):
     """logs the name of the output image, prompt, and prompt args to the terminal and log file"""
+    global output_cntr
     log_lines = [f'{path}: {prompt}\n' for path, prompt in results]
-    print(*log_lines, sep='')
+    for l in log_lines:
+        output_cntr += 1
+        print(f'\033[1m[{output_cntr}]\033[0m {l}',end='')
 
     with open(log_path, 'a', encoding='utf-8') as file:
         file.writelines(log_lines)
@@ -446,7 +453,7 @@ def create_argv_parser():
         '--gfpgan_bg_upsampler',
         type=str,
         default='realesrgan',
-        help='Background upsampler. Default: realesrgan. Options: realesrgan, none. Only used if --gfpgan is specified',
+        help='Background upsampler. Default: realesrgan. Options: realesrgan, none.',
 
     )
     parser.add_argument(
@@ -571,14 +578,9 @@ def create_cmd_parser():
     )
     parser.add_argument(
         '-M',
-        '--mask',
+        '--init_mask',
         type=str,
-        help='Path to inpainting mask; transparent areas will be painted over',
-    )
-    parser.add_argument(
-        '--invert_mask',
-        action='store_true',
-        help='Invert the inpainting mask; opaque areas will be painted over',
+        help='Path to input mask for inpainting mode (supersedes width and height)',
     )
     parser.add_argument(
         '-T',

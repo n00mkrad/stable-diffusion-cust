@@ -11,23 +11,24 @@ from einops import rearrange, repeat
 from pytorch_lightning import seed_everything
 from ldm.dream.devices import choose_autocast_device
 
+downsampling = 8
+
 class Generator():
     def __init__(self,model):
         self.model               = model
         self.seed                = None
-        self.latent_channels     = 4   # never seems to change
-        self.downsampling_factor = 8   # never seems to change
+        self.latent_channels     = model.channels
+        self.downsampling_factor = downsampling   # BUG: should come from model or config
         self.variation_amount    = 0
-        self.init_latent         = None    # set by img2img and used by get_noise()
-        self.with_variations     = False
+        self.with_variations     = []
 
     # this is going to be overridden in img2img.py, txt2img.py and inpaint.py
-    def image_iterator(self,prompt,**kwargs):
+    def get_make_image(self,prompt,**kwargs):
         """
         Returns a function returning an image derived from the prompt and the initial image
         Return value depends on the seed at the time you call it
         """
-        assert False, "image_iterator() must be implemented in a descendent class"
+        raise NotImplementedError("image_iterator() must be implemented in a descendent class")
 
     def set_variation(self, seed, variation_amount, with_variations):
         self.seed             = seed
@@ -38,7 +39,7 @@ class Generator():
                  image_callback=None, step_callback=None,
                  **kwargs):
         device_type,scope   = choose_autocast_device(self.model.device)
-        make_image          = self.image_iterator(
+        make_image          = self.get_make_image(
             prompt,
             init_image    = init_image,
             width         = width,
@@ -108,27 +109,12 @@ class Generator():
 
     # returns a tensor filled with random numbers from a normal distribution
     def get_noise(self,width,height):
-        device      = self.model.device
-        init_latent = self.init_latent
-        if init_latent is not None:
-            if device.type == 'mps':
-                return torch.randn_like(init_latent, device='cpu').to(device)
-            else:
-                return torch.randn_like(init_latent, device=device)
-
-        if device.type == 'mps':
-            return torch.randn([1,
-                                self.latent_channels,
-                                height // self.downsampling_factor,
-                                width  // self.downsampling_factor],
-                               device='cpu').to(device)
-        else:
-            return torch.randn([1,
-                                self.latent_channels,
-                                height // self.downsampling_factor,
-                                width  // self.downsampling_factor],
-                               device=device)
-
+        """
+        Returns a tensor filled with random numbers, either form a normal distribution
+        (txt2img) or from the latent image (img2img, inpaint)
+        """
+        raise NotImplementedError("get_noise() must be implemented in a descendent class")
+    
     def new_seed(self):
         self.seed = random.randrange(0, np.iinfo(np.uint32).max)
         return self.seed
