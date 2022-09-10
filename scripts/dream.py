@@ -23,6 +23,8 @@ output_cntr = 0
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
 
+step_index = int(0)
+
 def main():
     """Initialize command-line parsers and the diffusion model"""
     arg_parser = create_argv_parser()
@@ -243,13 +245,31 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
         try:
             file_writer = PngWriter(current_outdir)
             prefix = file_writer.unique_prefix()
+            if opt.step_increment > 0:
+                intermediate_dir = str(os.path.join(current_outdir, './int/'))
+                if not os.path.exists(intermediate_dir):
+                   os.makedirs(intermediate_dir)
+                step_writer = PngWriter(intermediate_dir)
+                prefix_e = step_writer.unique_prefix()
             seeds = set()
             results = [] # list of filename, prompt pairs
             grid_images = dict() # seed -> Image, only used if `do_grid`
+            
+            def image_progress(sample, step):
+                global step_index
+                step_index += 1
+                print(f"step {step_index}/{opt.steps}", flush=True)
+                if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
+                    image = t2i._sample_to_image(sample)
+                    name = f'{prefix_e}.{opt.seed}.{step_index}.png'
+                    metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
+                    step_writer.save_image_and_prompt_to_png(image, metadata, name)
+            
             def image_writer(image, seed, upscaled=False):
+                print(f"ups: {upscaled}")
                 if do_grid:
                     grid_images[seed] = image
-                elif not (opt.upscale and (not upscaled and not opt.save_original)):
+                elif not ((opt.upscale or opt.gfpgan_strength > 0) and (not upscaled and not opt.save_original)):
                     if upscaled and opt.save_original:
                         filename = f'{prefix}.postprocessed.png'
                     else:
@@ -277,7 +297,14 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
 
                 seeds.add(seed)
 
-            t2i.prompt2image(image_callback=image_writer, **vars(opt))
+            if opt.step_increment <= 0:
+                t2i.prompt2image(image_callback=image_writer, **vars(opt))
+            else:
+                t2i.prompt2image(image_callback=image_writer, step_callback=image_progress, **vars(opt))
+            global step_index
+            step_index = 0
+            
+            #t2i.prompt2image(image_callback=image_writer, **vars(opt))
 
             if do_grid and len(grid_images) > 0:
                 grid_img = make_grid(list(grid_images.values()))
@@ -655,6 +682,12 @@ def create_cmd_parser():
         default=None,
         type=str,
         help='list of variations to apply, in the format `seed:weight,seed:weight,...'
+    )
+    parser.add_argument(
+        '--step_increment',
+        default=5,
+        type=int,
+        help='for generation animation. show image every X steps'
     )
     return parser
 
