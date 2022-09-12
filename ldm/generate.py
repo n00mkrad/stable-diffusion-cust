@@ -342,20 +342,20 @@ class Generate:
                                              image_callback = image_callback)
 
         except KeyboardInterrupt:
-            print('*interrupted*')
+            print('*interrupted*', flush=True)
             if not self.ignore_ctrl_c:
                 raise KeyboardInterrupt
             print(
-                '>> Partial results will be returned; if --grid was requested, nothing will be returned.'
+                '>> Partial results will be returned; if --grid was requested, nothing will be returned.', flush=True
             )
         except RuntimeError as e:
             print(traceback.format_exc(), file=sys.stderr)
-            print('>> Could not generate image.')
+            print('>> Could not generate image.', flush=True)
 
         toc = time.time()
-        print('>> Usage stats:')
+        print('>> Usage stats:', flush=True)
         print(
-            f'>>   {len(results)} image(s) generated in', '%4.2fs' % (toc - tic)
+            f'>>   {len(results)} image(s) generated in', '%4.2fs' % (toc - tic), flush=True
         )
         if torch.cuda.is_available() and self.device.type == 'cuda':
             print(
@@ -363,6 +363,7 @@ class Generate:
                 '%4.2fG.' % (torch.cuda.max_memory_allocated() / 1e9),
                 'Current VRAM utilization:'
                 '%4.2fG' % (torch.cuda.memory_allocated() / 1e9),
+                flush=True
             )
 
             self.session_peakmem = max(
@@ -371,6 +372,7 @@ class Generate:
             print(
                 f'>>   Max VRAM used since script start: ',
                 '%4.2fG' % (self.session_peakmem / 1e9),
+                flush=True
             )
         return results
 
@@ -384,7 +386,7 @@ class Generate:
         init_image   = self._create_init_image(image)                   # this returns a torch tensor
 
         if self._has_transparency(image) and not mask_path:      # if image has a transparent area and no mask was provided, then try to generate mask
-            print('>> Initial image has transparent areas. Will inpaint in these regions.')
+            print('>> Initial image has transparent areas. Will inpaint in these regions.', flush=True)
             if self._check_for_erasure(image):
                 print(
                     '>> WARNING: Colors underneath the transparent region seem to have been erased.\n',

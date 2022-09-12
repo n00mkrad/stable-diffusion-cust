@@ -118,10 +118,10 @@ def main():
     if opt.web:
         dream_server_loop(t2i, opt.host, opt.port, opt.outdir)
     else:
-        main_loop(t2i, opt.outdir, opt.prompt_as_dir, cmd_parser, infile)
+        main_loop(t2i, opt.outdir, opt.prompt_as_dir, cmd_parser, infile, opt.infile_loop)
 
 
-def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
+def main_loop(t2i, outdir, prompt_as_dir, parser, infile, infile_loop):
     """prompt/read/execute loop"""
     done = False
     path_filter = re.compile(r'[<>:"/\\|?*]')
@@ -134,13 +134,33 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
     else:
         path_max = 260
         name_max = 255
+    
+    ff_check = True
 
     while not done:
+        if infile_loop is not None:
+            if ff_check:
+                while not os.path.exists(infile_loop):
+                    time.sleep(0.5)
+                ff_check = False
+                if os.path.isfile(infile_loop):
+                    infile = None
+                    infile = open(infile_loop, 'r', encoding='utf-8')       
+                else:
+                    continue
+
         try:
             command = get_next_command(infile)
         except EOFError:
-            done = True
-            continue
+            if infile_loop is not None:
+                infile.close()
+                open(infile_loop, 'w').close()
+                os.remove(infile_loop)
+                ff_check = True
+                continue
+            else:
+                done = True
+                break
         except KeyboardInterrupt:
             done = True
             continue
@@ -576,6 +596,12 @@ def create_argv_parser():
         '--print_steps',
         dest='prsteps',
         action='store_true',
+    )
+    parser.add_argument(
+        '--from_file_loop',
+        dest='infile_loop',
+        type=str,
+        help='If specified, automatically load prompts from file',
     )
     return parser
 
