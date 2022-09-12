@@ -1,11 +1,9 @@
+from inspect import isfunction
 import math
-import sys
-
 import torch
 import torch.nn.functional as F
-from einops import rearrange, repeat
-from inspect import isfunction
 from torch import nn, einsum
+from einops import rearrange, repeat
 
 from ldm.modules.diffusionmodules.util import checkpoint
 
@@ -91,7 +89,12 @@ class LinearAttention(nn.Module):
     def forward(self, x):
         b, c, h, w = x.shape
         qkv = self.to_qkv(x)
-        q, k, v = rearrange(qkv, 'b (qkv heads c) h w -> qkv b heads c (h w)', heads=self.heads, qkv=3)
+        q, k, v = rearrange(
+            qkv,
+            'b (qkv heads c) h w -> qkv b heads c (h w)',
+            heads=self.heads,
+            qkv=3,
+        )
         k = k.softmax(dim=-1)
         context = torch.einsum('bhdn,bhen->bhde', k, v)
         out = torch.einsum('bhde,bhdn->bhen', context, q)
@@ -151,7 +154,9 @@ class SpatialSelfAttention(nn.Module):
 
 
 class CrossAttention(nn.Module):
-    def __init__(self, query_dim, superfastmode=True, context_dim=None, heads=8, dim_head=64, dropout=0.):
+    def __init__(
+        self, query_dim, context_dim=None, heads=8, dim_head=64, dropout=0.0
+    ):
         super().__init__()
         inner_dim = dim_head * heads
         context_dim = default(context_dim, query_dim)
@@ -162,108 +167,62 @@ class CrossAttention(nn.Module):
         self.to_q = nn.Linear(query_dim, inner_dim, bias=False)
         self.to_k = nn.Linear(context_dim, inner_dim, bias=False)
         self.to_v = nn.Linear(context_dim, inner_dim, bias=False)
-        self.superfastmode = superfastmode
 
         self.to_out = nn.Sequential(
             nn.Linear(inner_dim, query_dim), nn.Dropout(dropout)
         )
-        self.forward = self.fast_forward if superfastmode else self.slow_forward
 
-        if not torch.cuda.is_available():
-            mem_av = psutil.virtual_memory().available / (1024**3)
-            if mem_av > 32:
-                self.einsum_op = self.einsum_op_v1
-            elif mem_av > 12:
-                self.einsum_op = self.einsum_op_v2
-            else:
-                self.einsum_op = self.einsum_op_v3   
-            del mem_av 
-        else:
-            self.einsum_op = self.einsum_op_v4
+    def forward(self, x, context=None, mask=None):
+        h = self.heads
 
-    # mps 64-128 GB
-    def einsum_op_v1(self, q, k, v, r1):
-        if q.shape[1] <= 4096: # for 512x512: the max q.shape[1] is 4096
-            s1 = einsum('b i d, b j d -> b i j', q, k) * self.scale # aggressive/faster: operation in one go
-            s2 = s1.softmax(dim=-1, dtype=q.dtype)
-            del s1
-            r1 = einsum('b i j, b j d -> b i d', s2, v)
-            del s2
-        else:
-            # q.shape[0] * q.shape[1] * slice_size >= 2**31 throws err
-            # needs around half of that slice_size to not generate noise
-            slice_size = math.floor(2**30 / (q.shape[0] * q.shape[1]))
-            for i in range(0, q.shape[1], slice_size):
-                end = i + slice_size
-                s1 = einsum('b i d, b j d -> b i j', q[:, i:end], k) * self.scale
-                s2 = s1.softmax(dim=-1, dtype=r1.dtype)
-                del s1  
-                r1[:, i:end] = einsum('b i j, b j d -> b i d', s2, v)
-                del s2
-        return r1
+        q = self.to_q(x)
+        context = default(context, x)
+        k = self.to_k(context)
+        v = self.to_v(context)
 
-        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> (b h) n d', h=h), (q_in, k_in, v_in))
-        del q_in, k_in, v_in
+        q, k, v = map(
+            lambda t: rearrange(t, 'b n (h d) -> (b h) n d', h=h), (q, k, v)
+        )
 
-        r1 = torch.zeros(q.shape[0], q.shape[1], v.shape[2], device=q.device)
+        sim = einsum('b i d, b j d -> b i j', q, k) * self.scale
 
-        if device_type == 'mps':
-            mem_free_total = psutil.virtual_memory().available
-        else:
-            stats = torch.cuda.memory_stats(q.device)
-            mem_active = stats['active_bytes.all.current']
-            mem_reserved = stats['reserved_bytes.all.current']
-            mem_free_cuda, _ = torch.cuda.mem_get_info(torch.cuda.current_device())
-            mem_free_torch = mem_reserved - mem_active
-            mem_free_total = mem_free_cuda + mem_free_torch
+        if exists(mask):
+            mask = rearrange(mask, 'b ... -> b (...)')
+            max_neg_value = -torch.finfo(sim.dtype).max
+            mask = repeat(mask, 'b j -> (b h) () j', h=h)
+            sim.masked_fill_(~mask, max_neg_value)
 
-        # mem counted before q k v are generated because they're gonna be stored on cpu
-        allocatable_mem = int(mem_free_total // 2)+1 if dtype == torch.float16 else \
-            int(mem_free_total // 4)+1
-        required_mem = int(q_proj.shape[0] * q_proj.shape[1] * q_proj.shape[2] * 4 * 2 * 50) if dtype == torch.float16 \
-            else int(q_proj.shape[0] * q_proj.shape[1] * q_proj.shape[2] * 8 * 2 * 50)  # the last 50 is for speed
-        chunk_split = (required_mem // allocatable_mem) * 2 if required_mem > allocatable_mem else 1
-        # print(f"allocatable_mem: {allocatable_mem}, required_mem: {required_mem}, chunk_split: {chunk_split}")
-        # print(q.shape) torch.Size([1, 4096, 320])
+        # attention, what we cannot get enough of
+        attn = sim.softmax(dim=-1)
 
-        if mem_required > mem_free_total:
-            steps = 2**(math.ceil(math.log(mem_required / mem_free_total, 2)))
-            # print(f"Expected tensor size:{tensor_size/gb:0.1f}GB, cuda free:{mem_free_cuda/gb:0.1f}GB "
-            #       f"torch free:{mem_free_torch/gb:0.1f} total:{mem_free_total/gb:0.1f} steps:{steps}")
-
-        if steps > 64:
-            max_res = math.floor(math.sqrt(math.sqrt(mem_free_total / 2.5)) / 8) * 64
-            raise RuntimeError(f'Not enough memory, use lower resolution (max approx. {max_res}x{max_res}). '
-                               f'Need: {mem_required/64/gb:0.1f}GB free, Have:{mem_free_total/gb:0.1f}GB free')
-
-        slice_size = q.shape[1] // steps if (q.shape[1] % steps) == 0 else q.shape[1]
-        for i in range(0, q.shape[1], slice_size):
-            end = i + slice_size
-            s1 = einsum('b i d, b j d -> b i j', q[:, i:end], k) * self.scale
-
-            s2 = s1.softmax(dim=-1)
-            del s1
-
-            r1[:, i:end] = einsum('b i j, b j d -> b i d', s2, v)
-            del s2
-
-        del q, k, v
-
-        r2 = rearrange(r1, '(b h) n d -> b n (h d)', h=h)
-        del r1
-
-        return self.to_out(r2)
+        out = einsum('b i j, b j d -> b i d', attn, v)
+        out = rearrange(out, '(b h) n d -> b n (h d)', h=h)
+        return self.to_out(out)
 
 
 class BasicTransformerBlock(nn.Module):
-    def __init__(self, dim, n_heads, d_head, dropout=0., superfastmode=True, context_dim=None, gated_ff=True,
-                 checkpoint=True):
+    def __init__(
+        self,
+        dim,
+        n_heads,
+        d_head,
+        dropout=0.0,
+        context_dim=None,
+        gated_ff=True,
+        checkpoint=True,
+    ):
         super().__init__()
-        self.attn1 = CrossAttention(query_dim=dim, heads=n_heads, dim_head=d_head,
-                                    dropout=dropout, superfastmode=superfastmode)  # is a self-attention
+        self.attn1 = CrossAttention(
+            query_dim=dim, heads=n_heads, dim_head=d_head, dropout=dropout
+        )  # is a self-attention
         self.ff = FeedForward(dim, dropout=dropout, glu=gated_ff)
-        self.attn2 = CrossAttention(query_dim=dim, context_dim=context_dim,
-                                    heads=n_heads, dim_head=d_head, dropout=dropout, superfastmode=superfastmode)
+        self.attn2 = CrossAttention(
+            query_dim=dim,
+            context_dim=context_dim,
+            heads=n_heads,
+            dim_head=d_head,
+            dropout=dropout,
+        )  # is self-attn if context is none
         self.norm1 = nn.LayerNorm(dim)
         self.norm2 = nn.LayerNorm(dim)
         self.norm3 = nn.LayerNorm(dim)
@@ -276,9 +235,9 @@ class BasicTransformerBlock(nn.Module):
 
     def _forward(self, x, context=None):
         x = x.contiguous() if x.device.type == 'mps' else x
-        x = self.attn1(self.norm1(x)) + x
-        x = self.attn2(self.norm2(x), context=context) + x
-        x = self.ff(self.norm3(x)) + x
+        x += self.attn1(self.norm1(x))
+        x += self.attn2(self.norm2(x), context=context)
+        x += self.ff(self.norm3(x))
         return x
 
 
@@ -291,29 +250,42 @@ class SpatialTransformer(nn.Module):
     Finally, reshape to image
     """
 
-    def __init__(self, in_channels, n_heads, d_head,
-                 depth=1, dropout=0., superfastmode=True, context_dim=None):
+    def __init__(
+        self,
+        in_channels,
+        n_heads,
+        d_head,
+        depth=1,
+        dropout=0.0,
+        context_dim=None,
+    ):
         super().__init__()
         self.in_channels = in_channels
         inner_dim = n_heads * d_head
         self.norm = Normalize(in_channels)
 
-        self.proj_in = nn.Conv2d(in_channels,
-                                 inner_dim,
-                                 kernel_size=1,
-                                 stride=1,
-                                 padding=0)
+        self.proj_in = nn.Conv2d(
+            in_channels, inner_dim, kernel_size=1, stride=1, padding=0
+        )
 
         self.transformer_blocks = nn.ModuleList(
-            [BasicTransformerBlock(inner_dim, n_heads, d_head, superfastmode=superfastmode, dropout=dropout,
-                                   context_dim=context_dim)
-             for _ in range(depth)]
+            [
+                BasicTransformerBlock(
+                    inner_dim,
+                    n_heads,
+                    d_head,
+                    dropout=dropout,
+                    context_dim=context_dim,
+                )
+                for d in range(depth)
+            ]
         )
-        self.proj_out = zero_module(nn.Conv2d(inner_dim,
-                                              in_channels,
-                                              kernel_size=1,
-                                              stride=1,
-                                              padding=0))
+
+        self.proj_out = zero_module(
+            nn.Conv2d(
+                inner_dim, in_channels, kernel_size=1, stride=1, padding=0
+            )
+        )
 
     def forward(self, x, context=None):
         # note: if no context is given, cross-attention defaults to self-attention
