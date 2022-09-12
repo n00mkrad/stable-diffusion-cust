@@ -310,6 +310,7 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile, infile_loop):
                 #     print(f"written intermediate img at step {step_index}", flush=True)
             
             def image_writer(image, seed, upscaled=False):
+                path = None
                 if do_grid:
                     grid_images[seed] = image
                 elif not ((opt.upscale or opt.gfpgan_strength > 0) and (not upscaled and not opt.save_original)):
@@ -357,13 +358,14 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile, infile_loop):
             #t2i.prompt2image(image_callback=image_writer, **vars(opt))
 
             if do_grid and len(grid_images) > 0:
-                grid_img = make_grid(list(grid_images.values()))
+                grid_img   = make_grid(list(grid_images.values()))
+                grid_seeds = list(grid_images.keys())
                 first_seed = last_results[0][1]
                 filename = f'{prefix}.{first_seed}.png'
                 # TODO better metadata for grid images
                 normalized_prompt = PromptFormatter(
                     t2i, opt).normalize_prompt()
-                metadata_prompt = f'{normalized_prompt} -S{first_seed} --grid -N{len(grid_images)}'
+                metadata_prompt = f'{normalized_prompt} -S{first_seed} --grid -n{len(grid_images)} # {grid_seeds}'
                 path = file_writer.save_image_and_prompt_to_png(
                     grid_img, metadata_prompt, filename
                 )
@@ -698,13 +700,27 @@ def create_cmd_parser():
         nargs='+',
         default=None,
         type=float,
-        help='Scale factor (2, 4) for upscaling followed by upscaling strength (0-1.0). If strength not specified, defaults to 0.75'
+        help='Scale factor (2, 4) for upscaling final output followed by upscaling strength (0-1.0). If strength not specified, defaults to 0.75'
     )
     parser.add_argument(
         '-save_orig',
         '--save_original',
         action='store_true',
         help='Save original. Use it when upscaling to save both versions.',
+    )
+    parser.add_argument(
+        '-embiggen',
+        nargs='+',
+        default=None,
+        type=float,
+        help='Embiggen tiled img2img for higher resolution and detail without extra VRAM usage. Takes scale factor relative to the size of the --init_img (-I), followed by ESRGAN upscaling strength (0-1.0), followed by minimum amount of overlap between tiles as a decimal ratio (0 - 1.0) or number of pixels. ESRGAN strength defaults to 0.75, and overlap defaults to 0.25 . ESRGAN is used to upscale the init prior to cutting it into tiles/pieces to run through img2img and then stitch back togeather.',
+    )
+    parser.add_argument(
+        '-embiggen_tiles',
+        nargs='+',
+        default=None,
+        type=int,
+        help='If while doing Embiggen we are altering only parts of the image, takes a list of tiles by number to process and replace onto the image e.g. `1 3 5`, useful for redoing problematic spots from a prior Embiggen run',
     )
     # variants is going to be superseded by a generalized "prompt-morph" function
     #    parser.add_argument('-v','--variants',type=int,help="in img2img mode, the first generated image will get passed back to img2img to generate the requested number of variants")
