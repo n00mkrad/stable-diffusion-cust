@@ -275,11 +275,12 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
                 global step_index
                 step_index += 1
                 print(f"step {step_index}/{opt.steps}", flush=True)
-                if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
-                    image = t2i._sample_to_image(sample)
-                    name = f'{prefix_e}.{opt.seed}.{step_index}.png'
-                    metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
-                    step_writer.save_image_and_prompt_to_png(image, metadata, name)
+                # if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
+                #     image = t2i._sample_to_image(sample)
+                #     name = 'intermediate.png'
+                #     metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
+                #     step_writer.save_image_and_prompt_to_png(image, metadata, name)
+                #     print(f"written intermediate img at step {step_index}", flush=True)
             
             def image_writer(image, seed, upscaled=False):
                 if do_grid:
@@ -314,7 +315,10 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
                     if (not upscaled) or opt.save_original:
                         # only append to results if we didn't overwrite an earlier output
                         results.append([path, metadata_prompt])
-                last_results.append([path, seed])
+                try:
+                    last_results.append([path, seed])
+                except:
+                    print("did not append last seed")
 
             if opt.step_increment <= 0:
                 t2i.prompt2image(image_callback=image_writer, **vars(opt))
@@ -518,7 +522,7 @@ def create_argv_parser():
     parser.add_argument(
         '--gfpgan_dir',
         type=str,
-        default='./src/gfpgan',
+        default='../GFPGAN',
         help='Indicates the directory containing the GFPGAN code.',
     )
     parser.add_argument(
