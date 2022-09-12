@@ -24,6 +24,7 @@ os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
 
 step_index = int(0)
+prsteps = False
 
 def main():
     """Initialize command-line parsers and the diffusion model"""
@@ -36,7 +37,11 @@ def main():
     if opt.weights != 'model':
         print('--weights argument has been deprecated. Please configure ./configs/models.yaml, and call it using --model instead.')
         sys.exit(-1)
-
+        
+    global prsteps
+    if opt.prsteps:
+        prsteps = True
+    
     try:
         models = OmegaConf.load(opt.config)
         width = models[opt.model].width
@@ -274,7 +279,9 @@ def main_loop(t2i, outdir, prompt_as_dir, parser, infile):
             def image_progress(sample, step):
                 global step_index
                 step_index += 1
-                print(f"step {step_index}/{opt.steps}", flush=True)
+                global prsteps
+                if prsteps:
+                    print(f"step {step_index}/{opt.steps}", flush=True)
                 # if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
                 #     image = t2i._sample_to_image(sample)
                 #     name = 'intermediate.png'
@@ -564,6 +571,11 @@ def create_argv_parser():
         '--config',
         default='configs/models.yaml',
         help='Path to configuration file for alternate models.',
+    )
+    parser.add_argument(
+        '--print_steps',
+        dest='prsteps',
+        action='store_true',
     )
     return parser
 

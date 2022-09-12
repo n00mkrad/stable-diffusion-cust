@@ -9,6 +9,7 @@ PromptFormatter -- Utility for converting a Namespace of prompt parameters
 import os
 import re
 from PIL import PngImagePlugin
+import time
 
 # -------------------image generation utils-----
 
@@ -20,6 +21,7 @@ class PngWriter:
 
     # gives the next unique prefix in outdir
     def unique_prefix(self):
+        return f"{int(time.time())}"
         # sort reverse alphabetically until we find max+1
         dirlist = sorted(os.listdir(self.outdir), reverse=True)
         # find the first filename that matches our pattern or return 000000.0.png
