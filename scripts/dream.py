@@ -37,6 +37,10 @@ def main():
     if opt.weights != 'model':
         print('--weights argument has been deprecated. Please configure ./configs/models.yaml, and call it using --model instead.')
         sys.exit(-1)
+        
+    global prsteps
+    if opt.prsteps:
+        prsteps = True
 
     print('* Initializing, be patient...\n')
     sys.path.append('.')
@@ -94,9 +98,8 @@ def main():
 
     # web server loops forever
     if opt.web:
-        dream_server_loop(t2i, opt.host, opt.port, opt.outdir)
-    else:
-        main_loop(t2i, opt.outdir, opt.prompt_as_dir, cmd_parser, infile, opt.infile_loop)
+        dream_server_loop(gen, opt.host, opt.port, opt.outdir)
+        sys.exit(0)
 
     cmd_parser = create_cmd_parser()
     main_loop(gen, opt.outdir, opt.prompt_as_dir, cmd_parser, infile, opt.infile_loop)
@@ -273,8 +276,8 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
                 step_writer = PngWriter(intermediate_dir)
                 prefix_e = step_writer.unique_prefix()
             seeds = set()
-            results = []  # list of filename, prompt pairs
-            grid_images = dict()  # seed -> Image, only used if `opt.grid`
+            results = [] # list of filename, prompt pairs
+            grid_images = dict() # seed -> Image, only used if `opt.grid`
             
             def image_progress(sample, step):
                 global step_index
@@ -283,14 +286,13 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
                 if prsteps:
                     print(f"step {step_index}/{opt.steps}", flush=True)
                 # if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
-                #     image = t2i._sample_to_image(sample)
+                #     image = gen._sample_to_image(sample)
                 #     name = 'intermediate.png'
                 #     metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
                 #     step_writer.save_image_and_prompt_to_png(image, metadata, name)
                 #     print(f"written intermediate img at step {step_index}", flush=True)
             
             def image_writer(image, seed, upscaled=False):
-                path = None
                 if opt.grid:
                     grid_images[seed] = image
                 elif not ((opt.upscale or opt.gfpgan_strength > 0) and (not upscaled and not opt.save_original)):
