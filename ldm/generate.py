@@ -704,9 +704,6 @@ class Generate:
             width  = w
             resize_needed = True
 
-        if (width * height) > (self.width * self.height):
-            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
-
         return width, height, resize_needed
 
 

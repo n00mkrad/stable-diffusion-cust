@@ -22,6 +22,7 @@ output_cntr = 0
 
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
+print(f"PID: {os.getpid()}")
 
 step_index = int(0)
 prsteps = False
@@ -119,35 +120,28 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
         path_max = 260
         name_max = 255
     
-    ff_check = True
+    all_lines = False
 
     while not done:
         if infile_loop is not None:
-            if ff_check:
-                while not os.path.exists(infile_loop):
+            if not os.path.exists(infile_loop):
+                all_lines = False
+                while not os.path.os.path.isfile(infile_loop):
                     time.sleep(0.5)
-                ff_check = False
-                if os.path.isfile(infile_loop):
-                    infile = None
-                    infile = open(infile_loop, 'r', encoding='utf-8')       
-                else:
-                    continue
-
-        try:
-            command = get_next_command(infile)
-        except EOFError:
-            if infile_loop is not None:
-                infile.close()
-                open(infile_loop, 'w').close()
-                os.remove(infile_loop)
-                ff_check = True
-                continue
-            else:
+            if not all_lines:
+                prompt_file = open(infile_loop, 'r', encoding='utf-8')
+                all_lines = prompt_file.readlines()
+                prompt_file.close()
+            command = all_lines.pop(0)
+        else:
+            try:
+                command = get_next_command(infile)
+            except EOFError:
                 done = True
                 break
-        except KeyboardInterrupt:
-            done = True
-            continue
+            except KeyboardInterrupt:
+                done = True
+                continue
 
         # skip empty lines
         if not command.strip():
@@ -330,7 +324,7 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
                 except:
                     print("did not append last seed")
 
-            catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
+            catch_ctrl_c = True # if running interactively, we catch keyboard interrupts
             
             if opt.step_increment <= 0:
                 gen.prompt2image(image_callback=image_writer, catch_interrupts=catch_ctrl_c, **vars(opt))
@@ -365,6 +359,8 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
         log_path = os.path.join(current_outdir, 'dream_log.txt')
         write_log_message(results, log_path)
         print()
+        if not all_lines and infile_loop:
+            os.remove(infile_loop)
 
     print('goodbye!')
 
