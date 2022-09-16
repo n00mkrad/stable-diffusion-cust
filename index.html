@@ -1,0 +1,680 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
+    
+    
+      
+        <title>Home - Dream Script Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.8c5ef100.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.9647289d.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Dream Script Docs" class="md-header__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dream Script Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="dark-blue" data-md-color-accent="white"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    lstein/stable-diffusion
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Dream Script Docs" class="md-nav__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dream Script Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    lstein/stable-diffusion
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Home
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-requirements" class="md-nav__link">
+    Hardware Requirements
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    System
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    Memory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk" class="md-nav__link">
+    Disk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    Note
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#major-features" class="md-nav__link">
+    Major Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-features" class="md-nav__link">
+    Other Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latest-changes" class="md-nav__link">
+    Latest Changes
+  </a>
+  
+    <nav class="md-nav" aria-label="Latest Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v114-11-september-2022" class="md-nav__link">
+    v1.14 (11 September 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v113-3-september-2022" class="md-nav__link">
+    v1.13 (3 September 2022
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    Contributing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributors" class="md-nav__link">
+    Contributors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    Support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    Further Reading
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="features/CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<!--
+  The Docs you find here (/docs/*) are built and deployed via mkdocs. If you want to do so from local it is pretty strait forward:
+
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>pip install -r requirements-mkdocs.txt
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>mkdocs serve -a localhost:8080
+</code></pre></div>
+-->
+
+<h1 align='center'><b>Stable Diffusion Dream Script</b></h1>
+
+<p align='center'>
+<img src="./assets/logo.png"/>
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/github/last-commit/lstein/stable-diffusion?logo=Python&logoColor=green&style=for-the-badge" alt="last-commit"/>
+    <img src="https://img.shields.io/github/stars/lstein/stable-diffusion?logo=GitHub&style=for-the-badge" alt="stars"/>
+    <br>
+    <img src="https://img.shields.io/github/issues/lstein/stable-diffusion?logo=GitHub&style=for-the-badge" alt="issues"/>
+    <img src="https://img.shields.io/github/issues-pr/lstein/stable-diffusion?logo=GitHub&style=for-the-badge" alt="pull-requests"/>
+</p>
+
+<p>This is a fork of <a href="https://github.com/CompVis/stable-diffusion">CompVis/stable-diffusion</a>, the open
+source text-to-image generator. It provides a streamlined process with various new features and
+options to aid the image generation process. It runs on Windows, Mac and Linux machines, and runs on
+GPU cards with as little as 4 GB or RAM.</p>
+<p><em>Note: This fork is rapidly evolving. Please use the
+<a href="https://github.com/lstein/stable-diffusion/issues">Issues</a> tab to report bugs and make feature
+requests. Be sure to use the provided templates. They will help aid diagnose issues faster.</em></p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
+<p>This fork is supported across multiple platforms. You can find individual installation instructions
+below.</p>
+<ul>
+<li><a href="installation/INSTALL_LINUX.md">Linux</a></li>
+<li><a href="installation/INSTALL_WINDOWS.md">Windows</a></li>
+<li><a href="installation/INSTALL_MAC.md">Macintosh</a></li>
+</ul>
+<h2 id="hardware-requirements">Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permanent link">#</a></h2>
+<h3 id="system">System<a class="headerlink" href="#system" title="Permanent link">#</a></h3>
+<p>You wil need one of the following:</p>
+<ul>
+<li>An NVIDIA-based graphics card with 4 GB or more VRAM memory.</li>
+<li>An Apple computer with an M1 chip.</li>
+</ul>
+<h3 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">#</a></h3>
+<ul>
+<li>At least 12 GB Main Memory RAM.</li>
+</ul>
+<h3 id="disk">Disk<a class="headerlink" href="#disk" title="Permanent link">#</a></h3>
+<ul>
+<li>At least 6 GB of free disk space for the machine learning model, Python, and all its dependencies.</li>
+</ul>
+<h3 id="note">Note<a class="headerlink" href="#note" title="Permanent link">#</a></h3>
+<p>If you are have a Nvidia 10xx series card (e.g. the 1080ti), please run the dream script in
+full-precision mode as shown below.</p>
+<p>Similarly, specify full-precision mode on Apple M1 hardware.</p>
+<p>To run in full-precision mode, start <code>dream.py</code> with the <code>--full_precision</code> flag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ python scripts/dream.py --full_precision
+</code></pre></div>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">#</a></h2>
+<h3 id="major-features">Major Features<a class="headerlink" href="#major-features" title="Permanent link">#</a></h3>
+<ul>
+<li><a href="features/CLI.md">Interactive Command Line Interface</a></li>
+<li><a href="features/IMG2IMG.md">Image To Image</a></li>
+<li><a href="features/INPAINTING.md">Inpainting Support</a></li>
+<li><a href="features/UPSCALE.md">GFPGAN and Real-ESRGAN Support</a></li>
+<li><a href="features/OTHER.md#seamless-tiling">Seamless Tiling</a></li>
+<li><a href="features/OTHER.md#google-colab">Google Colab</a></li>
+<li><a href="features/WEB.md">Web Server</a></li>
+<li><a href="features/OTHER.md#reading-prompts-from-a-file">Reading Prompts From File</a></li>
+<li><a href="features/OTHER.md#shortcuts-reusing-seeds">Shortcut: Reusing Seeds</a></li>
+<li><a href="features/OTHER.md#weighted-prompts">Weighted Prompts</a></li>
+<li><a href="features/VARIATIONS.md">Variations</a></li>
+<li><a href="features/TEXTUAL_INVERSION.md">Personalizing Text-to-Image Generation</a></li>
+<li><a href="features/OTHER.md#simplified-api">Simplified API for text to image generation</a></li>
+</ul>
+<h3 id="other-features">Other Features<a class="headerlink" href="#other-features" title="Permanent link">#</a></h3>
+<ul>
+<li><a href="features/INPAINTING.md#creating-transparent-regions-for-inpainting">Creating Transparent Regions for Inpainting</a></li>
+<li><a href="features/OTHER.md#preload-models">Preload Models</a></li>
+</ul>
+<h2 id="latest-changes">Latest Changes<a class="headerlink" href="#latest-changes" title="Permanent link">#</a></h2>
+<h3 id="v114-11-september-2022">v1.14 <small>(11 September 2022)</small><a class="headerlink" href="#v114-11-september-2022" title="Permanent link">#</a></h3>
+<ul>
+<li>Memory optimizations for small-RAM cards. 512x512 now possible on 4 GB GPUs.</li>
+<li>Full support for Apple hardware with M1 or M2 chips.</li>
+<li>Add "seamless mode" for circular tiling of image. Generates beautiful effects.
+  (<a href="https://github.com/prixt">prixt</a>).</li>
+<li>Inpainting support.</li>
+<li>Improved web server GUI.</li>
+<li>Lots of code and documentation cleanups.</li>
+</ul>
+<h3 id="v113-3-september-2022">v1.13 <small>(3 September 2022</small><a class="headerlink" href="#v113-3-september-2022" title="Permanent link">#</a></h3>
+<ul>
+<li>Support image variations (see <a href="features/VARIATIONS.md">VARIATIONS</a>
+  (<a href="https://github.com/bakkot">Kevin Gibbons</a> and many contributors and reviewers)</li>
+<li>Supports a Google Colab notebook for a standalone server running on Google hardware
+  <a href="https://github.com/artmen1516">Arturo Mendivil</a></li>
+<li>WebUI supports GFPGAN/ESRGAN facial reconstruction and upscaling
+  <a href="https://github.com/bakkot">Kevin Gibbons</a></li>
+<li>WebUI supports incremental display of in-progress images during generation
+  <a href="https://github.com/bakkot">Kevin Gibbons</a></li>
+<li>A new configuration file scheme that allows new models (including upcoming stable-diffusion-v1.5)
+  to be added without altering the code. (<a href="https://github.com/maddavid12">David Wager</a>)</li>
+<li>Can specify --grid on dream.py command line as the default.</li>
+<li>Miscellaneous internal bug and stability fixes.</li>
+<li>Works on M1 Apple hardware.</li>
+<li>Multiple bug fixes.</li>
+</ul>
+<p>For older changelogs, please visit the <strong><a href="features/CHANGELOG/">CHANGELOG</a></strong>.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
+<p>Please check out our <strong><a href="help/TROUBLESHOOT.md">Q&amp;A</a></strong> to get solutions for common installation
+problems and other issues.</p>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">#</a></h2>
+<p>Anyone who wishes to contribute to this project, whether documentation, features, bug fixes, code
+cleanup, testing, or code reviews, is very much encouraged to do so. If you are unfamiliar with how
+to contribute to GitHub projects, here is a
+<a href="https://opensource.com/article/19/7/create-pull-request-github">Getting Started Guide</a>.</p>
+<p>A full set of contribution guidelines, along with templates, are in progress, but for now the most
+important thing is to <strong>make your pull request against the "development" branch</strong>, and not against
+"main". This will help keep public breakage to a minimum and will allow you to propose more radical
+changes.</p>
+<h2 id="contributors">Contributors<a class="headerlink" href="#contributors" title="Permanent link">#</a></h2>
+<p>This fork is a combined effort of various people from across the world.
+<a href="other/CONTRIBUTORS.md">Check out the list of all these amazing people</a>. We thank them for their
+time, hard work and effort.</p>
+<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link">#</a></h2>
+<p>For support, please use this repository's GitHub Issues tracking service. Feel free to send me an
+email if you use and like the script.</p>
+<p>Original portions of the software are Copyright &copy; 2020
+<a href="https://github.com/lstein">Lincoln D. Stein</a></p>
+<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">#</a></h2>
+<p>Please see the original README for more information on this software and underlying algorithm,
+located in the file <a href="other/README-CompViz.md">README-CompViz.md</a>.</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      2022-09-16
+    
+  </small>
+</div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+      
+        
+        <a href="features/CHANGELOG/" class="md-footer__link md-footer__link--next" aria-label="Next: Changelog" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Changelog
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 Lincoln D. Stein <lincoln.stein@gmail.com>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": ["toc.integrate"], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.748e2769.min.js"></script>
+      
+    
+  </body>
+</html>
