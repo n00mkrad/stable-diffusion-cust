@@ -690,6 +690,7 @@ def create_cmd_parser():
     )
     parser.add_argument(
         '-embiggen',
+        '--embiggen',
         nargs='+',
         default=None,
         type=float,
@@ -697,6 +698,7 @@ def create_cmd_parser():
     )
     parser.add_argument(
         '-embiggen_tiles',
+        '--embiggen_tiles',
         nargs='+',
         default=None,
         type=int,
