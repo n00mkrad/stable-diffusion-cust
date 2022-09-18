@@ -359,7 +359,7 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
         log_path = os.path.join(current_outdir, 'dream_log.txt')
         write_log_message(results, log_path)
         print()
-        if not all_lines and infile_loop:
+        if not all_lines and infile_loop and os.path.exists(infile_loop):
             os.remove(infile_loop)
 
     print('goodbye!')
@@ -690,7 +690,6 @@ def create_cmd_parser():
     )
     parser.add_argument(
         '-embiggen',
-        '--embiggen',
         nargs='+',
         default=None,
         type=float,
@@ -698,7 +697,6 @@ def create_cmd_parser():
     )
     parser.add_argument(
         '-embiggen_tiles',
-        '--embiggen_tiles',
         nargs='+',
         default=None,
         type=int,
