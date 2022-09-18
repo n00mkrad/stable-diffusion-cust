@@ -24,6 +24,7 @@ logging.set_verbosity_error()
 
 os.chdir(sys.path[0])
 
+
 def chunk(it, size):
     it = iter(it)
     return iter(lambda: tuple(islice(it, size)), ())
@@ -99,7 +100,6 @@ parser.add_argument(
 )
 parser.add_argument("--outdir", type=str, nargs="?", help="dir to write results to", default="outputs/txt2img-samples")
 parser.add_argument("--init_img", type=str, nargs="?", help="path to the input image")
-
 parser.add_argument(
     "--skip_grid",
     action="store_true",
@@ -293,11 +293,12 @@ for key in lo:
     sd["model2." + key[6:]] = sd.pop(key)
 
 config = OmegaConf.load(f"{config}")
+
 model = instantiate_from_config(config.modelUNet)
 _, _ = model.load_state_dict(sd, strict=False)
 model.eval()
-model.cdevice = opt.device                          
 model.unet_bs = opt.unet_bs
+model.cdevice = opt.device
 model.turbo = opt.turbo
 
 modelCS = instantiate_from_config(config.modelCondStage)
@@ -311,7 +312,7 @@ modelFS.eval()
 del sd
 
 all_lines = False
-while True:   
+while True:
     if opt.infile_loop is not None:
         if not os.path.exists(opt.infile_loop):
             all_lines = False
