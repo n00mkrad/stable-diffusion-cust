@@ -22,7 +22,6 @@ output_cntr = 0
 
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
-print(f"PID: {os.getpid()}")
 
 step_index = int(0)
 prsteps = False
