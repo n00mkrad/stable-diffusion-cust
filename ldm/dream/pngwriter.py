@@ -21,7 +21,7 @@ class PngWriter:
 
     # gives the next unique prefix in outdir
     def unique_prefix(self):
-        return f"{int(time.time())}"
+        return f"{time.time_ns()}"
         # sort reverse alphabetically until we find max+1
         dirlist = sorted(os.listdir(self.outdir), reverse=True)
         # find the first filename that matches our pattern or return 000000.0.png
