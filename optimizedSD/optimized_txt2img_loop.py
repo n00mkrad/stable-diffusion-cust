@@ -506,7 +506,7 @@ while True:
                             info = PngImagePlugin.PngInfo()
                             info_text = f""""{prompts[0]}" -s{opt.ddim_steps} -W{opt.W} -H{opt.H} -C{opt.scale} -A{opt.sampler} -S{opt.seed}"""
                             if opt_loop.init_img:
-                                info_text += f' -I"{opt_loop.init_img}"'
+                                info_text += f' -I{opt_loop.init_img} -f{opt_loop.strength}'
                             if opt.upscale is not None or opt.gfpgan_strength > 0:
                                 if opt.upscale is not None:
                                     info_text += f' -U{opt.upscale[0]}'
@@ -519,12 +519,12 @@ while True:
                                     opt.upscale,
                                     opt.gfpgan_strength
                                 ).save(
-                                    os.path.join(sample_path, f"{base_count:05}.{opt.format}"), pnginfo=info
+                                    os.path.join(sample_path, f"{time.time_ns()}.{opt.format}"), pnginfo=info
                                 )
                             else:
                                 info.add_text('Dream', info_text)
                                 Image.fromarray(x_sample.astype(np.uint8)).save(
-                                    os.path.join(sample_path, f"{base_count:05}.{opt.format}"), pnginfo=info
+                                    os.path.join(sample_path, f"{time.time_ns()}.{opt.format}"), pnginfo=info
                                 )
                             seeds += str(opt.seed) + ","
                             opt.seed += 1
