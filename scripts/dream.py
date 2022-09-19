@@ -122,245 +122,247 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
     all_lines = False
 
     while not done:
-        if infile_loop is not None:
-            if not os.path.exists(infile_loop):
-                all_lines = False
-                while not os.path.os.path.isfile(infile_loop):
-                    time.sleep(0.5)
-            if not all_lines:
-                prompt_file = open(infile_loop, 'r', encoding='utf-8')
-                all_lines = prompt_file.readlines()
-                prompt_file.close()
-            command = all_lines.pop(0)
-        else:
+        try:
+            if infile_loop is not None:
+                if not os.path.exists(infile_loop):
+                    all_lines = False
+                    while not os.path.os.path.isfile(infile_loop):
+                        time.sleep(0.5)
+                if not all_lines:
+                    prompt_file = open(infile_loop, 'r', encoding='utf-8')
+                    all_lines = prompt_file.readlines()
+                    prompt_file.close()
+                command = all_lines.pop(0)
+            else:
+                try:
+                    command = get_next_command(infile)
+                except EOFError:
+                    done = True
+                    break
+                except KeyboardInterrupt:
+                    done = True
+                    continue
+
+            # skip empty lines
+            if not command.strip():
+                continue
+
+            if command.startswith(('#', '//')):
+                continue
+
+            # before splitting, escape single quotes so as not to mess
+            # up the parser
+            command = command.replace("'", "\\'")
+
             try:
-                command = get_next_command(infile)
-            except EOFError:
+                elements = shlex.split(command)
+            except ValueError as e:
+                print(str(e))
+                continue
+
+            if elements[0] == 'q':
                 done = True
                 break
-            except KeyboardInterrupt:
-                done = True
-                continue
 
-        # skip empty lines
-        if not command.strip():
-            continue
+            if elements[0].startswith(
+                '!dream'
+            ):   # in case a stored prompt still contains the !dream command
+                elements.pop(0)
 
-        if command.startswith(('#', '//')):
-            continue
+            # rearrange the arguments to mimic how it works in the Dream bot.
+            switches = ['']
+            switches_started = False
 
-        # before splitting, escape single quotes so as not to mess
-        # up the parser
-        command = command.replace("'", "\\'")
+            for el in elements:
+                if el[0] == '-' and not switches_started:
+                    switches_started = True
+                if switches_started:
+                    switches.append(el)
+                else:
+                    switches[0] += el
+                    switches[0] += ' '
+            switches[0] = switches[0][: len(switches[0]) - 1]
 
-        try:
-            elements = shlex.split(command)
-        except ValueError as e:
-            print(str(e))
-            continue
-
-        if elements[0] == 'q':
-            done = True
-            break
-
-        if elements[0].startswith(
-            '!dream'
-        ):   # in case a stored prompt still contains the !dream command
-            elements.pop(0)
-
-        # rearrange the arguments to mimic how it works in the Dream bot.
-        switches = ['']
-        switches_started = False
-
-        for el in elements:
-            if el[0] == '-' and not switches_started:
-                switches_started = True
-            if switches_started:
-                switches.append(el)
-            else:
-                switches[0] += el
-                switches[0] += ' '
-        switches[0] = switches[0][: len(switches[0]) - 1]
-
-        try:
-            opt = parser.parse_args(switches)
-        except SystemExit:
-            parser.print_help()
-            continue
-        if len(opt.prompt) == 0:
-            print('Try again with a prompt!')
-            continue
-
-        # retrieve previous value!
-        if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
             try:
-                opt.init_img = last_results[int(opt.init_img)][0]
-                print(f'>> Reusing previous image {opt.init_img}')
-            except IndexError:
-                print(
-                    f'>> No previous initial image at position {opt.init_img} found')
-                opt.init_img = None
+                opt = parser.parse_args(switches)
+            except SystemExit:
+                parser.print_help()
+                continue
+            if len(opt.prompt) == 0:
+                print('Try again with a prompt!')
                 continue
 
-        if opt.seed is not None and opt.seed < 0:   # retrieve previous value!
-            try:
-                opt.seed = last_results[opt.seed][1]
-                print(f'>> Reusing previous seed {opt.seed}')
-            except IndexError:
-                print(f'>> No previous seed at position {opt.seed} found')
-                opt.seed = None
-                continue
-
-        if opt.with_variations is not None:
-            # shotgun parsing, woo
-            parts = []
-            broken = False  # python doesn't have labeled loops...
-            for part in opt.with_variations.split(','):
-                seed_and_weight = part.split(':')
-                if len(seed_and_weight) != 2:
-                    print(f'could not parse with_variation part "{part}"')
-                    broken = True
-                    break
+            # retrieve previous value!
+            if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
                 try:
-                    seed = int(seed_and_weight[0])
-                    weight = float(seed_and_weight[1])
-                except ValueError:
-                    print(f'could not parse with_variation part "{part}"')
-                    broken = True
-                    break
-                parts.append([seed, weight])
-            if broken:
-                continue
-            if len(parts) > 0:
-                opt.with_variations = parts
+                    opt.init_img = last_results[int(opt.init_img)][0]
+                    print(f'>> Reusing previous image {opt.init_img}')
+                except IndexError:
+                    print(
+                        f'>> No previous initial image at position {opt.init_img} found')
+                    opt.init_img = None
+                    continue
+
+            if opt.seed is not None and opt.seed < 0:   # retrieve previous value!
+                try:
+                    opt.seed = last_results[opt.seed][1]
+                    print(f'>> Reusing previous seed {opt.seed}')
+                except IndexError:
+                    print(f'>> No previous seed at position {opt.seed} found')
+                    opt.seed = None
+                    continue
+
+            if opt.with_variations is not None:
+                # shotgun parsing, woo
+                parts = []
+                broken = False  # python doesn't have labeled loops...
+                for part in opt.with_variations.split(','):
+                    seed_and_weight = part.split(':')
+                    if len(seed_and_weight) != 2:
+                        print(f'could not parse with_variation part "{part}"')
+                        broken = True
+                        break
+                    try:
+                        seed = int(seed_and_weight[0])
+                        weight = float(seed_and_weight[1])
+                    except ValueError:
+                        print(f'could not parse with_variation part "{part}"')
+                        broken = True
+                        break
+                    parts.append([seed, weight])
+                if broken:
+                    continue
+                if len(parts) > 0:
+                    opt.with_variations = parts
+                else:
+                    opt.with_variations = None
+
+            if opt.outdir:
+                if not os.path.exists(opt.outdir):
+                    os.makedirs(opt.outdir)
+                current_outdir = opt.outdir
+            elif prompt_as_dir:
+                # sanitize the prompt to a valid folder name
+                subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
+
+                # truncate path to maximum allowed length
+                # 27 is the length of '######.##########.##.png', plus two separators and a NUL
+                subdir = subdir[:(path_max - 27 - len(os.path.abspath(outdir)))]
+                current_outdir = os.path.join(outdir, subdir)
+
+                print('Writing files to directory: "' + current_outdir + '"')
+
+                # make sure the output directory exists
+                if not os.path.exists(current_outdir):
+                    os.makedirs(current_outdir)
             else:
-                opt.with_variations = None
+                current_outdir = outdir
 
-        if opt.outdir:
-            if not os.path.exists(opt.outdir):
-                os.makedirs(opt.outdir)
-            current_outdir = opt.outdir
-        elif prompt_as_dir:
-            # sanitize the prompt to a valid folder name
-            subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
-
-            # truncate path to maximum allowed length
-            # 27 is the length of '######.##########.##.png', plus two separators and a NUL
-            subdir = subdir[:(path_max - 27 - len(os.path.abspath(outdir)))]
-            current_outdir = os.path.join(outdir, subdir)
-
-            print('Writing files to directory: "' + current_outdir + '"')
-
-            # make sure the output directory exists
-            if not os.path.exists(current_outdir):
-                os.makedirs(current_outdir)
-        else:
-            current_outdir = outdir
-
-        # Here is where the images are actually generated!
-        last_results = []
-        try:
-            file_writer = PngWriter(current_outdir)
-            prefix = file_writer.unique_prefix()
-            if opt.step_increment > 0:
-                intermediate_dir = str(os.path.join(current_outdir, './int/'))
-                if not os.path.exists(intermediate_dir):
-                   os.makedirs(intermediate_dir)
-                step_writer = PngWriter(intermediate_dir)
-                prefix_e = step_writer.unique_prefix()
-            seeds = set()
-            results = [] # list of filename, prompt pairs
-            grid_images = dict() # seed -> Image, only used if `opt.grid`
-            
-            def image_progress(sample, step):
-                global step_index
-                step_index += 1
-                global prsteps
-                if prsteps:
-                    print(f"step {step_index}/{opt.steps}", flush=True)
-                # if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
-                #     image = gen._sample_to_image(sample)
-                #     name = 'intermediate.png'
-                #     metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
-                #     step_writer.save_image_and_prompt_to_png(image, metadata, name)
-                #     print(f"written intermediate img at step {step_index}", flush=True)
-            
-            def image_writer(image, seed, upscaled=False):
-                if opt.grid:
-                    grid_images[seed] = image
-                elif not ((opt.upscale or opt.gfpgan_strength > 0) and (not upscaled and not opt.save_original)):
-                    if upscaled and opt.save_original:
-                        filename = f'{prefix}.postprocessed.png'
-                    else:
-                        filename = f'{prefix}.png'
-                    if opt.variation_amount > 0:
-                        iter_opt = argparse.Namespace(**vars(opt)) # copy
-                        this_variation = [[seed, opt.variation_amount]]
-                        if opt.with_variations is None:
-                            iter_opt.with_variations = this_variation
+            # Here is where the images are actually generated!
+            last_results = []
+            try:
+                file_writer = PngWriter(current_outdir)
+                prefix = file_writer.unique_prefix()
+                if opt.step_increment > 0:
+                    intermediate_dir = str(os.path.join(current_outdir, './int/'))
+                    if not os.path.exists(intermediate_dir):
+                       os.makedirs(intermediate_dir)
+                    step_writer = PngWriter(intermediate_dir)
+                    prefix_e = step_writer.unique_prefix()
+                seeds = set()
+                results = [] # list of filename, prompt pairs
+                grid_images = dict() # seed -> Image, only used if `opt.grid`
+                
+                def image_progress(sample, step):
+                    global step_index
+                    step_index += 1
+                    global prsteps
+                    if prsteps:
+                        print(f"step {step_index}/{opt.steps}", flush=True)
+                    # if (step_index < opt.steps) and (step_index % opt.step_increment == 0):
+                    #     image = gen._sample_to_image(sample)
+                    #     name = 'intermediate.png'
+                    #     metadata = f'"{opt.prompt}" -S{opt.seed} [intermediate at step: {step_index}]'
+                    #     step_writer.save_image_and_prompt_to_png(image, metadata, name)
+                    #     print(f"written intermediate img at step {step_index}", flush=True)
+                
+                def image_writer(image, seed, upscaled=False):
+                    if opt.grid:
+                        grid_images[seed] = image
+                    elif not ((opt.upscale or opt.gfpgan_strength > 0) and (not upscaled and not opt.save_original)):
+                        if upscaled and opt.save_original:
+                            filename = f'{prefix}.postprocessed.png'
                         else:
-                            iter_opt.with_variations = opt.with_variations + this_variation
-                        iter_opt.variation_amount = 0
-                        normalized_prompt = PromptFormatter(
-                            gen, iter_opt).normalize_prompt()
-                        metadata_prompt = f'{normalized_prompt} -S{iter_opt.seed}'
-                    elif opt.with_variations is not None:
-                        normalized_prompt = PromptFormatter(
-                            gen, opt).normalize_prompt()
-                        # use the original seed - the per-iteration value is the last variation-seed
-                        metadata_prompt = f'{normalized_prompt} -S{opt.seed}'
-                    else:
-                        normalized_prompt = PromptFormatter(
-                            gen, opt).normalize_prompt()
-                        metadata_prompt = f'{normalized_prompt} -S{seed}'
+                            filename = f'{prefix}.png'
+                        if opt.variation_amount > 0:
+                            iter_opt = argparse.Namespace(**vars(opt)) # copy
+                            this_variation = [[seed, opt.variation_amount]]
+                            if opt.with_variations is None:
+                                iter_opt.with_variations = this_variation
+                            else:
+                                iter_opt.with_variations = opt.with_variations + this_variation
+                            iter_opt.variation_amount = 0
+                            normalized_prompt = PromptFormatter(
+                                gen, iter_opt).normalize_prompt()
+                            metadata_prompt = f'{normalized_prompt} -S{iter_opt.seed}'
+                        elif opt.with_variations is not None:
+                            normalized_prompt = PromptFormatter(
+                                gen, opt).normalize_prompt()
+                            # use the original seed - the per-iteration value is the last variation-seed
+                            metadata_prompt = f'{normalized_prompt} -S{opt.seed}'
+                        else:
+                            normalized_prompt = PromptFormatter(
+                                gen, opt).normalize_prompt()
+                            metadata_prompt = f'{normalized_prompt} -S{seed}'
+                        path = file_writer.save_image_and_prompt_to_png(
+                            image, metadata_prompt, filename)
+                        if (not upscaled) or opt.save_original:
+                            # only append to results if we didn't overwrite an earlier output
+                            results.append([path, metadata_prompt])
+                    try:
+                        last_results.append([path, seed])
+                    except:
+                        print("did not append last seed")
+
+                catch_ctrl_c = True # if running interactively, we catch keyboard interrupts
+                
+                if opt.step_increment <= 0:
+                    gen.prompt2image(image_callback=image_writer, catch_interrupts=catch_ctrl_c, **vars(opt))
+                else:
+                    gen.prompt2image(image_callback=image_writer, catch_interrupts=catch_ctrl_c, step_callback=image_progress, **vars(opt))
+                global step_index
+                step_index = 0
+                
+                if opt.grid and len(grid_images) > 0:
+                    grid_img   = make_grid(list(grid_images.values()))
+                    grid_seeds = list(grid_images.keys())
+                    first_seed = last_results[0][1]
+                    filename = f'{prefix}.{first_seed}.png'
+                    # TODO better metadata for grid images
+                    normalized_prompt = PromptFormatter(
+                        gen, opt).normalize_prompt()
+                    metadata_prompt = f'{normalized_prompt} -S{first_seed} --grid -n{len(grid_images)} # {grid_seeds}'
                     path = file_writer.save_image_and_prompt_to_png(
-                        image, metadata_prompt, filename)
-                    if (not upscaled) or opt.save_original:
-                        # only append to results if we didn't overwrite an earlier output
-                        results.append([path, metadata_prompt])
-                try:
-                    last_results.append([path, seed])
-                except:
-                    print("did not append last seed")
+                        grid_img, metadata_prompt, filename
+                    )
+                    results = [[path, metadata_prompt]]
 
-            catch_ctrl_c = True # if running interactively, we catch keyboard interrupts
-            
-            if opt.step_increment <= 0:
-                gen.prompt2image(image_callback=image_writer, catch_interrupts=catch_ctrl_c, **vars(opt))
-            else:
-                gen.prompt2image(image_callback=image_writer, catch_interrupts=catch_ctrl_c, step_callback=image_progress, **vars(opt))
-            global step_index
-            step_index = 0
-            
-            if opt.grid and len(grid_images) > 0:
-                grid_img   = make_grid(list(grid_images.values()))
-                grid_seeds = list(grid_images.keys())
-                first_seed = last_results[0][1]
-                filename = f'{prefix}.{first_seed}.png'
-                # TODO better metadata for grid images
-                normalized_prompt = PromptFormatter(
-                    gen, opt).normalize_prompt()
-                metadata_prompt = f'{normalized_prompt} -S{first_seed} --grid -n{len(grid_images)} # {grid_seeds}'
-                path = file_writer.save_image_and_prompt_to_png(
-                    grid_img, metadata_prompt, filename
-                )
-                results = [[path, metadata_prompt]]
+            except AssertionError as e:
+                print(e)
+                continue
 
-        except AssertionError as e:
-            print(e)
-            continue
+            except OSError as e:
+                print(e)
+                continue
 
-        except OSError as e:
-            print(e)
-            continue
-
-        print('Outputs:')
-        log_path = os.path.join(current_outdir, 'dream_log.txt')
-        write_log_message(results, log_path)
-        print()
-        if not all_lines and infile_loop and os.path.exists(infile_loop):
-            os.remove(infile_loop)
-
+            print('Outputs:')
+            log_path = os.path.join(current_outdir, 'dream_log.txt')
+            write_log_message(results, log_path)
+            print()
+            if not all_lines and infile_loop and os.path.exists(infile_loop):
+                os.remove(infile_loop)
+        except KeyboardInterrupt:
+            print('**Interrupted** Partial results will be returned.')
     print('goodbye!')
 
 
