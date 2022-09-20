@@ -396,7 +396,8 @@ while True:
                     data = list(chunk(sorted(data), batch_size))
 
         if opt_loop.init_img:
-            init_image = init_image.half()
+            if opt.precision == "autocast" and opt.device != "cpu":
+                init_image = init_image.half()
             modelFS.to(opt.device)
 
             init_image = repeat(init_image, "1 ... -> b ...", b=batch_size)
