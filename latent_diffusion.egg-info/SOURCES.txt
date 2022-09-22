@@ -2,17 +2,6 @@ LICENSE
 LICENSE-ModelWeights.txt
 README.md
 setup.py
-k_diffusion/__init__.py
-k_diffusion/augmentation.py
-k_diffusion/config.py
-k_diffusion/evaluation.py
-k_diffusion/external.py
-k_diffusion/gns.py
-k_diffusion/layers.py
-k_diffusion/sampling.py
-k_diffusion/utils.py
-k_diffusion/models/__init__.py
-k_diffusion/models/image_v1.py
 latent_diffusion.egg-info/PKG-INFO
 latent_diffusion.egg-info/SOURCES.txt
 latent_diffusion.egg-info/dependency_links.txt
