@@ -22,6 +22,11 @@ from omegaconf import OmegaConf
 # Just want to get the formatting look right for now.
 output_cntr = 0
 
+os.chdir(sys.path[0])
+os.chdir('..') # get out of Scripts dir, into main repo dir
+
+step_index = int(0)
+
 def main():
     """Initialize command-line parsers and the diffusion model"""
     opt  = Args()
@@ -145,9 +150,11 @@ def main_loop(gen, opt, infile):
 
         # skip empty lines
         if not command.strip():
+            print("empty line", flush=True)
             continue
 
         if command.startswith(('#', '//')):
+            print("startswith", flush=True)
             continue
 
         if len(command.strip()) == 1 and command.startswith('q'):
@@ -166,6 +173,7 @@ def main_loop(gen, opt, infile):
             operation = 'postprocess'
             
         if opt.parse_cmd(command) is None:
+            print("parse is none", flush=True)
             continue
 
         if opt.init_img:
@@ -265,6 +273,13 @@ def main_loop(gen, opt, infile):
             results          = []  # list of filename, prompt pairs
             grid_images      = dict()  # seed -> Image, only used if `opt.grid`
             prior_variations = opt.with_variations or []
+            
+            def image_progress(sample, step):
+                    global step_index
+                    step_index += 1
+                    # global prsteps
+                    if True:
+                        print(f"step {step_index}/{opt.steps}", flush=True)
 
             def image_writer(image, seed, upscaled=False, first_seed=None):
                 # note the seed is the seed of the current image
@@ -311,9 +326,12 @@ def main_loop(gen, opt, infile):
                 catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
                 gen.prompt2image(
                     image_callback=image_writer,
+                    step_callback=image_progress,
                     catch_interrupts=catch_ctrl_c,
                     **vars(opt)
                 )
+                global step_index
+                step_index = 0
             elif operation == 'postprocess':
                 print(f'>> fixing {opt.prompt}')
                 do_postprocess(gen,opt,image_writer)
