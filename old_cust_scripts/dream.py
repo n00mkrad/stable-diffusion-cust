@@ -103,6 +103,7 @@ def main():
 
     cmd_parser = create_cmd_parser()
     main_loop(gen, opt.outdir, opt.prompt_as_dir, cmd_parser, infile, opt.infile_loop)
+       
 
 # TODO: main_loop() has gotten busy. Needs to be refactored.
 def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
@@ -120,6 +121,7 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
         name_max = 255
     
     all_lines = False
+    cancel = False
 
     while not done:
         try:
@@ -142,6 +144,16 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
                 except KeyboardInterrupt:
                     done = True
                     continue
+
+            print(f"cancel = {cancel}")
+            
+            if command == "uncancel":
+                cancel = False
+                continue
+
+            if cancel:
+                print("canceled loop, skipping.")
+                continue
 
             # skip empty lines
             if not command.strip():
@@ -363,6 +375,7 @@ def main_loop(gen, outdir, prompt_as_dir, parser, infile, infile_loop):
                 os.remove(infile_loop)
         except KeyboardInterrupt:
             print('**Interrupted** Partial results will be returned.')
+            cancel = True
     print('goodbye!')
 
 
@@ -686,7 +699,7 @@ def create_cmd_parser():
     parser.add_argument(
         '-save_orig',
         '--save_original',
-        action='store_true',
+        action='store_false',
         help='Save original. Use it when upscaling to save both versions.',
     )
     parser.add_argument(
