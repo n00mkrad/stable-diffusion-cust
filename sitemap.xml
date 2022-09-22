@@ -95,4 +95,9 @@
          <lastmod>2022-09-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
+    <url>
+         <loc>https://lstein.github.io/stable-diffusion/other/README-CompViz/</loc>
+         <lastmod>2022-09-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
 </urlset>

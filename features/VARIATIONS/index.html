@@ -691,6 +691,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/README-CompViz/" class="md-nav__link">
+        CompViz-Readme
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -809,7 +823,7 @@ requesting six iterations:</p>
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a>./outputs/Xena/000001.465250761.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S465250761
 <a id="__codelineno-0-9" name="__codelineno-0-9"></a>./outputs/Xena/000001.3357757885.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S3357757885
 </code></pre></div>
-<p><img alt="var1" src="../assets/variation_walkthru/000001.3357757885.png" /></p>
+<p><img alt="var1" src="../../assets/variation_walkthru/000001.3357757885.png" /></p>
 <hr />
 <h2 id="step-2-generating-variations">Step 2 - Generating Variations<a class="headerlink" href="#step-2-generating-variations" title="Permanent link">#</a></h2>
 <p>Let's try to generate some variations. Using the same seed, we pass the argument
@@ -832,8 +846,8 @@ subseed" for that image, consisting of a seed followed by the variation amount
 used to generate it.</p>
 <p>This gives us a series of closely-related variations, including the two shown
 here.</p>
-<p><img alt="var2" src="../assets/variation_walkthru/000002.3647897225.png" /></p>
-<p><img alt="var3" src="../assets/variation_walkthru/000002.1614299449.png" /></p>
+<p><img alt="var2" src="../../assets/variation_walkthru/000002.3647897225.png" /></p>
+<p><img alt="var3" src="../../assets/variation_walkthru/000002.1614299449.png" /></p>
 <p>I like the expression on Xena's face in the first one (subseed 3647897225), and
 the armor on her shoulder in the second one (subseed 1614299449). Can we combine
 them to get the best of both worlds?</p>
@@ -845,7 +859,7 @@ provide the seed for the originally-chosen image in order for this to work.</p>
 </code></pre></div>
 <p>Here we are providing equal weights (0.1 and 0.1) for both the subseeds. The
 resulting image is close, but not exactly what I wanted:</p>
-<p><img alt="var4" src="../assets/variation_walkthru/000003.1614299449.png" /></p>
+<p><img alt="var4" src="../../assets/variation_walkthru/000003.1614299449.png" /></p>
 <p>We could either try combining the images with different weights, or we can
 generate more variations around the almost-but-not-quite image. We do the
 latter, using both the <code>-V</code> (combining) and <code>-v</code> (variation strength) options.
@@ -861,7 +875,7 @@ Note that we use <code>-n6</code> to generate 6 variations:</p>
 </code></pre></div>
 <p>This produces six images, all slight variations on the combination of the chosen
 two images. Here's the one I like best:</p>
-<p><img alt="var5" src="../assets/variation_walkthru/000004.3747154981.png" /></p>
+<p><img alt="var5" src="../../assets/variation_walkthru/000004.3747154981.png" /></p>
 <p>As you can see, this is a very powerful tool, which when combined with subprompt
 weighting, gives you great control over the content and quality of your
 generated images.</p>
