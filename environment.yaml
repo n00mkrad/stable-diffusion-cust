@@ -3,8 +3,7 @@ channels:
   - pytorch
   - defaults
 dependencies:
-  - git
-  - python=3.8.5
+  - python>=3.9
   - pip=20.3
   - cudatoolkit=11.3
   - pytorch=1.11.0
@@ -21,6 +20,7 @@ dependencies:
     - realesrgan==0.2.5.0
     - test-tube>=0.7.5
     - streamlit==1.12.0
+    - send2trash==1.8.0
     - pillow==9.2.0
     - einops==0.3.0
     - torch-fidelity==0.3.0
