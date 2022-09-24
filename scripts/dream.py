@@ -305,9 +305,9 @@ def main_loop(gen, opt, infile):
                         if operation == 'postprocess':
                             filename = choose_postprocess_name(opt.prompt)
                         elif upscaled and opt.save_original:
-                            filename = f'{prefix}.{seed}.postprocessed.png'
+                            filename = f'{prefix}.postprocessed.png'
                         else:
-                            filename = f'{prefix}.{seed}.png'
+                            filename = f'{prefix}.png'
                         if opt.variation_amount > 0:
                             first_seed             = first_seed or seed
                             this_variation         = [[seed, opt.variation_amount]]

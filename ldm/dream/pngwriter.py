@@ -23,15 +23,6 @@ class PngWriter:
     # gives the next unique prefix in outdir
     def unique_prefix(self):
         return f"{time.time_ns()}"
-        # sort reverse alphabetically until we find max+1
-        dirlist = sorted(os.listdir(self.outdir), reverse=True)
-        # find the first filename that matches our pattern or return 000000.0.png
-        existing_name = next(
-            (f for f in dirlist if re.match('^(\d+)\..*\.png', f)),
-            '0000000.0.png',
-        )
-        basecount = int(existing_name.split('.', 1)[0]) + 1
-        return f'{basecount:06}'
 
     # saves image named _image_ to outdir/name, writing metadata from prompt
     # returns full path of output
