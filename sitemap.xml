@@ -2,102 +2,102 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://lstein.github.io/stable-diffusion/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/CHANGELOG/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/CLI/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/EMBIGGEN/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/IMG2IMG/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/INPAINTING/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/OTHER/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/OUTPAINTING/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/PROMPTS/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/TEXTUAL_INVERSION/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/UPSCALE/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/VARIATIONS/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/features/WEB/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/help/TROUBLESHOOT/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/installation/INSTALL_DOCKER/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/installation/INSTALL_LINUX/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/installation/INSTALL_MAC/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/installation/INSTALL_WINDOWS/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/other/CONTRIBUTORS/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://lstein.github.io/stable-diffusion/other/README-CompViz/</loc>
-         <lastmod>2022-09-22</lastmod>
+         <lastmod>2022-09-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
