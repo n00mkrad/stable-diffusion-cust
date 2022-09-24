@@ -446,11 +446,11 @@ class Generate:
         except RuntimeError as e:
             print(traceback.format_exc(), file=sys.stderr)
             print('>> Could not generate image.')
-        except KeyboardInterrupt:
-            if catch_interrupts:
-                print('**Interrupted** Partial results will be returned.')
-            else:
-                raise KeyboardInterrupt
+        # except KeyboardInterrupt:
+        #     if catch_interrupts:
+        #         print('**Interrupted** Partial results will be returned.')
+        #     else:
+        #         raise KeyboardInterrupt
 
         toc = time.time()
         print('>> Usage stats:', flush=True)

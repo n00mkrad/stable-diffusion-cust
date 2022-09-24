@@ -138,237 +138,253 @@ def main_loop(gen, opt, infile):
     else:
         path_max = 260
         name_max = 255
+        
+    cancel = False
 
     while not done:
-        operation = 'generate'   # default operation, alternative is 'postprocess'
-        
         try:
-            command = get_next_command(infile)
-        except EOFError:
-            done = True
-            continue
-
-        # skip empty lines
-        if not command.strip():
-            print("empty line", flush=True)
-            continue
-
-        if command.startswith(('#', '//')):
-            print("startswith", flush=True)
-            continue
-
-        if len(command.strip()) == 1 and command.startswith('q'):
-            done = True
-            break
-
-        if command.startswith(
-            '!dream'
-        ):   # in case a stored prompt still contains the !dream command
-            command = command.replace('!dream ','',1)
-
-        if command.startswith(
-                '!fix'
-        ):
-            command = command.replace('!fix ','',1)
-            operation = 'postprocess'
+            operation = 'generate'   # default operation, alternative is 'postprocess'
             
-        if opt.parse_cmd(command) is None:
-            print("parse is none", flush=True)
-            continue
-
-        if opt.init_img:
             try:
-                if not opt.prompt:
-                    oldargs    = metadata_from_png(opt.init_img)
-                    opt.prompt = oldargs.prompt
-                    print(f'>> Retrieved old prompt "{opt.prompt}" from {opt.init_img}')
-            except AttributeError:
-                pass
-            except KeyError:
-                pass
-
-        if len(opt.prompt) == 0:
-            print('\nTry again with a prompt!')
-            continue
-
-        # width and height are set by model if not specified
-        if not opt.width:
-            opt.width = model_config.width
-        if not opt.height:
-            opt.height = model_config.height
-        
-        # retrieve previous value of init image if requested
-        if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
-            try:
-                opt.init_img = last_results[int(opt.init_img)][0]
-                print(f'>> Reusing previous image {opt.init_img}')
-            except IndexError:
-                print(
-                    f'>> No previous initial image at position {opt.init_img} found')
-                opt.init_img = None
+                command = get_next_command(infile)
+            except EOFError:
+                done = True
                 continue
-
-        # retrieve previous valueof seed if requested
-        if opt.seed is not None and opt.seed < 0:   
-            try:
-                opt.seed = last_results[opt.seed][1]
-                print(f'>> Reusing previous seed {opt.seed}')
-            except IndexError:
-                print(f'>> No previous seed at position {opt.seed} found')
-                opt.seed = None
+    
+            print(f"cancel = {cancel}")
+                
+            if command == "!reset":
+                cancel = False
                 continue
-
-        if opt.strength is None:
-            opt.strength = 0.75 if opt.out_direction is None else 0.83
-
-        if opt.with_variations is not None:
-            # shotgun parsing, woo
-            parts = []
-            broken = False  # python doesn't have labeled loops...
-            for part in opt.with_variations.split(','):
-                seed_and_weight = part.split(':')
-                if len(seed_and_weight) != 2:
-                    print(f'could not parse with_variation part "{part}"')
-                    broken = True
-                    break
+    
+            if cancel:
+                continue
+    
+            # skip empty lines
+            if not command.strip():
+                print("empty line", flush=True)
+                continue
+    
+            if command.startswith(('#', '//')):
+                print("startswith", flush=True)
+                continue
+    
+            if len(command.strip()) == 1 and command.startswith('q'):
+                done = True
+                break
+    
+            if command.startswith(
+                '!dream'
+            ):   # in case a stored prompt still contains the !dream command
+                command = command.replace('!dream ','',1)
+    
+            if command.startswith(
+                    '!fix'
+            ):
+                command = command.replace('!fix ','',1)
+                operation = 'postprocess'
+                
+            if opt.parse_cmd(command) is None:
+                print("parse is none", flush=True)
+                continue
+    
+            if opt.init_img:
                 try:
-                    seed = int(seed_and_weight[0])
-                    weight = float(seed_and_weight[1])
-                except ValueError:
-                    print(f'could not parse with_variation part "{part}"')
-                    broken = True
-                    break
-                parts.append([seed, weight])
-            if broken:
+                    if not opt.prompt:
+                        oldargs    = metadata_from_png(opt.init_img)
+                        opt.prompt = oldargs.prompt
+                        print(f'>> Retrieved old prompt "{opt.prompt}" from {opt.init_img}')
+                except AttributeError:
+                    pass
+                except KeyError:
+                    pass
+    
+            if len(opt.prompt) == 0:
+                print('\nTry again with a prompt!')
                 continue
-            if len(parts) > 0:
-                opt.with_variations = parts
-            else:
-                opt.with_variations = None
-
-        if opt.prompt_as_dir:
-            # sanitize the prompt to a valid folder name
-            subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
-
-            # truncate path to maximum allowed length
-            # 27 is the length of '######.##########.##.png', plus two separators and a NUL
-            subdir = subdir[:(path_max - 27 - len(os.path.abspath(opt.outdir)))]
-            current_outdir = os.path.join(opt.outdir, subdir)
-
-            print('Writing files to directory: "' + current_outdir + '"')
-
-            # make sure the output directory exists
-            if not os.path.exists(current_outdir):
-                os.makedirs(current_outdir)
-        else:
-            if not os.path.exists(opt.outdir):
-                os.makedirs(opt.outdir)
-            current_outdir = opt.outdir
-
-        # Here is where the images are actually generated!
-        last_results = []
-        try:
-            file_writer      = PngWriter(current_outdir)
-            prefix           = file_writer.unique_prefix()
-            results          = []  # list of filename, prompt pairs
-            grid_images      = dict()  # seed -> Image, only used if `opt.grid`
-            prior_variations = opt.with_variations or []
+    
+            # width and height are set by model if not specified
+            if not opt.width:
+                opt.width = model_config.width
+            if not opt.height:
+                opt.height = model_config.height
             
-            def image_progress(sample, step):
-                    global step_index
-                    step_index += 1
-                    # global prsteps
-                    if True:
-                        print(f"step {step_index}/{opt.steps}", flush=True)
-
-            def image_writer(image, seed, upscaled=False, first_seed=None):
-                # note the seed is the seed of the current image
-                # the first_seed is the original seed that noise is added to
-                # when the -v switch is used to generate variations
-                path = None
-                nonlocal prior_variations
-                if opt.grid:
-                    grid_images[seed] = image
+            # retrieve previous value of init image if requested
+            if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
+                try:
+                    opt.init_img = last_results[int(opt.init_img)][0]
+                    print(f'>> Reusing previous image {opt.init_img}')
+                except IndexError:
+                    print(
+                        f'>> No previous initial image at position {opt.init_img} found')
+                    opt.init_img = None
+                    continue
+    
+            # retrieve previous valueof seed if requested
+            if opt.seed is not None and opt.seed < 0:   
+                try:
+                    opt.seed = last_results[opt.seed][1]
+                    print(f'>> Reusing previous seed {opt.seed}')
+                except IndexError:
+                    print(f'>> No previous seed at position {opt.seed} found')
+                    opt.seed = None
+                    continue
+    
+            if opt.strength is None:
+                opt.strength = 0.75 if opt.out_direction is None else 0.83
+    
+            if opt.with_variations is not None:
+                # shotgun parsing, woo
+                parts = []
+                broken = False  # python doesn't have labeled loops...
+                for part in opt.with_variations.split(','):
+                    seed_and_weight = part.split(':')
+                    if len(seed_and_weight) != 2:
+                        print(f'could not parse with_variation part "{part}"')
+                        broken = True
+                        break
+                    try:
+                        seed = int(seed_and_weight[0])
+                        weight = float(seed_and_weight[1])
+                    except ValueError:
+                        print(f'could not parse with_variation part "{part}"')
+                        broken = True
+                        break
+                    parts.append([seed, weight])
+                if broken:
+                    continue
+                if len(parts) > 0:
+                    opt.with_variations = parts
                 else:
-                    if operation == 'postprocess':
-                        filename = choose_postprocess_name(opt.prompt)
-                    elif upscaled and opt.save_original:
-                        filename = f'{prefix}.{seed}.postprocessed.png'
+                    opt.with_variations = None
+    
+            if opt.prompt_as_dir:
+                # sanitize the prompt to a valid folder name
+                subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
+    
+                # truncate path to maximum allowed length
+                # 27 is the length of '######.##########.##.png', plus two separators and a NUL
+                subdir = subdir[:(path_max - 27 - len(os.path.abspath(opt.outdir)))]
+                current_outdir = os.path.join(opt.outdir, subdir)
+    
+                print('Writing files to directory: "' + current_outdir + '"')
+    
+                # make sure the output directory exists
+                if not os.path.exists(current_outdir):
+                    os.makedirs(current_outdir)
+            else:
+                if not os.path.exists(opt.outdir):
+                    os.makedirs(opt.outdir)
+                current_outdir = opt.outdir
+    
+            # Here is where the images are actually generated!
+            last_results = []
+            try:
+                file_writer      = PngWriter(current_outdir)
+                prefix           = file_writer.unique_prefix()
+                results          = []  # list of filename, prompt pairs
+                grid_images      = dict()  # seed -> Image, only used if `opt.grid`
+                prior_variations = opt.with_variations or []
+                
+                def image_progress(sample, step):
+                        global step_index
+                        step_index += 1
+                        # global prsteps
+                        if True:
+                            print(f"step {step_index}/{opt.steps}", flush=True)
+    
+                def image_writer(image, seed, upscaled=False, first_seed=None):
+                    # note the seed is the seed of the current image
+                    # the first_seed is the original seed that noise is added to
+                    # when the -v switch is used to generate variations
+                    path = None
+                    nonlocal prior_variations
+                    if opt.grid:
+                        grid_images[seed] = image
                     else:
-                        filename = f'{prefix}.{seed}.png'
-                    if opt.variation_amount > 0:
-                        first_seed             = first_seed or seed
-                        this_variation         = [[seed, opt.variation_amount]]
-                        opt.with_variations    = prior_variations + this_variation
-                        formatted_dream_prompt = opt.dream_prompt_str(seed=first_seed)
-                    elif len(prior_variations) > 0:
-                        formatted_dream_prompt = opt.dream_prompt_str(seed=first_seed)
-                    elif operation == 'postprocess':
-                        formatted_dream_prompt = '!fix '+opt.dream_prompt_str(seed=seed)
-                    else:
-                        formatted_dream_prompt = opt.dream_prompt_str(seed=seed)
+                        if operation == 'postprocess':
+                            filename = choose_postprocess_name(opt.prompt)
+                        elif upscaled and opt.save_original:
+                            filename = f'{prefix}.{seed}.postprocessed.png'
+                        else:
+                            filename = f'{prefix}.{seed}.png'
+                        if opt.variation_amount > 0:
+                            first_seed             = first_seed or seed
+                            this_variation         = [[seed, opt.variation_amount]]
+                            opt.with_variations    = prior_variations + this_variation
+                            formatted_dream_prompt = opt.dream_prompt_str(seed=first_seed)
+                        elif len(prior_variations) > 0:
+                            formatted_dream_prompt = opt.dream_prompt_str(seed=first_seed)
+                        elif operation == 'postprocess':
+                            formatted_dream_prompt = '!fix '+opt.dream_prompt_str(seed=seed)
+                        else:
+                            formatted_dream_prompt = opt.dream_prompt_str(seed=seed)
+                        path = file_writer.save_image_and_prompt_to_png(
+                            image           = image,
+                            dream_prompt    = formatted_dream_prompt,
+                            metadata        = metadata_dumps(
+                                opt,
+                                seeds      = [seed],
+                                model_hash = gen.model_hash,
+                            ),
+                            name      = filename,
+                        )
+                        if (not upscaled) or opt.save_original:
+                            # only append to results if we didn't overwrite an earlier output
+                            results.append([path, formatted_dream_prompt])
+                    last_results.append([path, seed])
+    
+                if operation == 'generate':
+                    catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
+                    gen.prompt2image(
+                        image_callback=image_writer,
+                        step_callback=image_progress,
+                        catch_interrupts=catch_ctrl_c,
+                        **vars(opt)
+                    )
+                    global step_index
+                    step_index = 0
+                elif operation == 'postprocess':
+                    print(f'>> fixing {opt.prompt}')
+                    do_postprocess(gen,opt,image_writer)
+    
+                if opt.grid and len(grid_images) > 0:
+                    grid_img   = make_grid(list(grid_images.values()))
+                    grid_seeds = list(grid_images.keys())
+                    first_seed = last_results[0][1]
+                    filename   = f'{prefix}.{first_seed}.png'
+                    formatted_dream_prompt  = opt.dream_prompt_str(seed=first_seed,grid=True,iterations=len(grid_images))
+                    formatted_dream_prompt += f' # {grid_seeds}'
+                    metadata = metadata_dumps(
+                        opt,
+                        seeds      = grid_seeds,
+                        model_hash = gen.model_hash
+                        )
                     path = file_writer.save_image_and_prompt_to_png(
-                        image           = image,
-                        dream_prompt    = formatted_dream_prompt,
-                        metadata        = metadata_dumps(
-                            opt,
-                            seeds      = [seed],
-                            model_hash = gen.model_hash,
-                        ),
-                        name      = filename,
+                        image        = grid_img,
+                        dream_prompt = formatted_dream_prompt,
+                        metadata     = metadata,
+                        name         = filename
                     )
-                    if (not upscaled) or opt.save_original:
-                        # only append to results if we didn't overwrite an earlier output
-                        results.append([path, formatted_dream_prompt])
-                last_results.append([path, seed])
-
-            if operation == 'generate':
-                catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
-                gen.prompt2image(
-                    image_callback=image_writer,
-                    step_callback=image_progress,
-                    catch_interrupts=catch_ctrl_c,
-                    **vars(opt)
-                )
-                global step_index
-                step_index = 0
-            elif operation == 'postprocess':
-                print(f'>> fixing {opt.prompt}')
-                do_postprocess(gen,opt,image_writer)
-
-            if opt.grid and len(grid_images) > 0:
-                grid_img   = make_grid(list(grid_images.values()))
-                grid_seeds = list(grid_images.keys())
-                first_seed = last_results[0][1]
-                filename   = f'{prefix}.{first_seed}.png'
-                formatted_dream_prompt  = opt.dream_prompt_str(seed=first_seed,grid=True,iterations=len(grid_images))
-                formatted_dream_prompt += f' # {grid_seeds}'
-                metadata = metadata_dumps(
-                    opt,
-                    seeds      = grid_seeds,
-                    model_hash = gen.model_hash
-                    )
-                path = file_writer.save_image_and_prompt_to_png(
-                    image        = grid_img,
-                    dream_prompt = formatted_dream_prompt,
-                    metadata     = metadata,
-                    name         = filename
-                )
-                results = [[path, formatted_dream_prompt]]
-
-        except AssertionError as e:
-            print(e)
-            continue
-
-        except OSError as e:
-            print(e)
-            continue
-
-        print('Outputs:')
-        log_path = os.path.join(current_outdir, 'dream_log')
-        global output_cntr
-        output_cntr = write_log(results, log_path ,('txt', 'md'), output_cntr)
-        print()
+                    results = [[path, formatted_dream_prompt]]
+    
+            except AssertionError as e:
+                print(e)
+                continue
+    
+            except OSError as e:
+                print(e)
+                continue
+    
+            print('Outputs:')
+            log_path = os.path.join(current_outdir, 'dream_log')
+            global output_cntr
+            output_cntr = write_log(results, log_path ,('txt', 'md'), output_cntr)
+            print()
+        except KeyboardInterrupt:
+            print('Detected CTRL+C, canceling.')
+            step_index = int(0)
+            cancel = True
 
     print('goodbye!')
 
