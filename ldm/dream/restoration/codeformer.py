@@ -35,7 +35,7 @@ class CodeFormerRestoration():
             
             cf = cf_class(dim_embd=512, codebook_size=1024, n_head=8, n_layers=9, connect_list=['32', '64', '128', '256']).to(device)
             
-            checkpoint_path = load_file_from_url(url=pretrained_model_url, model_dir=os.path.abspath('ldm/dream/restoration/codeformer/weights'), progress=True)
+            checkpoint_path = load_file_from_url(url=pretrained_model_url, model_dir=os.path.abspath("../codeformer"), progress=True)
             checkpoint = torch.load(checkpoint_path)['params_ema']
             cf.load_state_dict(checkpoint)
             cf.eval()
