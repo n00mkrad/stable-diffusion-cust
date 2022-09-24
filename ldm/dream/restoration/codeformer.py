@@ -8,8 +8,8 @@ pretrained_model_url = 'https://github.com/sczhou/CodeFormer/releases/download/v
 
 class CodeFormerRestoration():
     def __init__(self,
-            codeformer_dir='ldm/dream/restoration/codeformer',
-            codeformer_model_path='weights/codeformer.pth') -> None:
+            codeformer_dir='../codeformer',
+            codeformer_model_path='codeformer.pth') -> None:
         self.model_path = os.path.join(codeformer_dir, codeformer_model_path)
         self.codeformer_model_exists = os.path.isfile(self.model_path)
 
