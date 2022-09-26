@@ -540,13 +540,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
-    SOLUTION
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#question_1" class="md-nav__link">
     QUESTION
   </a>
@@ -554,7 +547,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_1" class="md-nav__link">
+  <a href="#solution" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -568,7 +561,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_2" class="md-nav__link">
+  <a href="#solution_1" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -582,7 +575,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_3" class="md-nav__link">
+  <a href="#solution_2" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -829,13 +822,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
-    SOLUTION
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#question_1" class="md-nav__link">
     QUESTION
   </a>
@@ -843,7 +829,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_1" class="md-nav__link">
+  <a href="#solution" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -857,7 +843,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_2" class="md-nav__link">
+  <a href="#solution_1" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -871,7 +857,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#solution_3" class="md-nav__link">
+  <a href="#solution_2" class="md-nav__link">
     SOLUTION
   </a>
   
@@ -934,28 +920,47 @@ incomplete installations or crashes during the install process.</p>
 <hr />
 <h3 id="question"><strong>QUESTION</strong><a class="headerlink" href="#question" title="Permanent link">#</a></h3>
 <p>During <code>conda env create -f environment.yaml</code>, conda hangs indefinitely.</p>
-<h3 id="solution"><strong>SOLUTION</strong><a class="headerlink" href="#solution" title="Permanent link">#</a></h3>
-<p>Enter the stable-diffusion directory and completely remove the <code>src</code> directory and all its contents.
-The safest way to do this is to enter the stable-diffusion directory and give the command
-<code>git clean -f</code>. If this still doesn't fix the problem, try "conda clean -all" and then restart at
-the <code>conda env create</code> step.</p>
+<p>If it is because of the last PIP step (usually stuck in the Git Clone step, you can check the detailed log by this method):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nb">export</span> <span class="nv">PIP_LOG</span><span class="o">=</span><span class="s2">&quot;/tmp/pip_log.txt&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>touch <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>tail -f <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span> <span class="p">&amp;</span> 
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>conda env create -f environment-mac.yaml --debug --verbose
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a>killall tail
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>rm <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span>
+</code></pre></div></p>
+<p><strong>SOLUTION</strong></p>
+<p>Conda sometimes gets stuck  at the last PIP step, in which several git repositories are
+cloned and built.</p>
+<p>Enter the stable-diffusion directory and completely remove the <code>src</code>
+directory and all its contents.  The safest way to do this is to enter
+the stable-diffusion directory and give the command <code>git clean -f</code>. If
+this still doesn't fix the problem, try "conda clean -all" and then
+restart at the <code>conda env create</code> step.</p>
+<p>To further understand the problem to checking the install lot using this method:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nb">export</span> <span class="nv">PIP_LOG</span><span class="o">=</span><span class="s2">&quot;/tmp/pip_log.txt&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a>touch <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>tail -f <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span> <span class="p">&amp;</span> 
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a>conda env create -f environment-mac.yaml --debug --verbose
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a>killall tail
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a>rm <span class="si">${</span><span class="nv">PIP_LOG</span><span class="si">}</span>
+</code></pre></div>
 <hr />
 <h3 id="question_1"><strong>QUESTION</strong><a class="headerlink" href="#question_1" title="Permanent link">#</a></h3>
 <p><code>dream.py</code> crashes with the complaint that it can't find <code>ldm.simplet2i.py</code>. Or it complains that
 function is being passed incorrect parameters.</p>
-<h3 id="solution_1"><strong>SOLUTION</strong><a class="headerlink" href="#solution_1" title="Permanent link">#</a></h3>
+<h3 id="solution"><strong>SOLUTION</strong><a class="headerlink" href="#solution" title="Permanent link">#</a></h3>
 <p>Reinstall the stable diffusion modules. Enter the <code>stable-diffusion</code> directory and give the command
 <code>pip install -e .</code></p>
 <hr />
 <h3 id="question_2"><strong>QUESTION</strong><a class="headerlink" href="#question_2" title="Permanent link">#</a></h3>
 <p><code>dream.py</code> dies, complaining of various missing modules, none of which starts with `ldm``.</p>
-<h3 id="solution_2"><strong>SOLUTION</strong><a class="headerlink" href="#solution_2" title="Permanent link">#</a></h3>
+<h3 id="solution_1"><strong>SOLUTION</strong><a class="headerlink" href="#solution_1" title="Permanent link">#</a></h3>
 <p>From within the <code>stable-diffusion</code> directory, run <code>conda env update -f environment.yaml</code> This is
 also frequently the solution to complaints about an unknown function in a module.</p>
 <hr />
 <h3 id="question_3"><strong>QUESTION</strong><a class="headerlink" href="#question_3" title="Permanent link">#</a></h3>
 <p>There's a feature or bugfix in the Stable Diffusion GitHub that you want to try out.</p>
-<h3 id="solution_3"><strong>SOLUTION</strong><a class="headerlink" href="#solution_3" title="Permanent link">#</a></h3>
+<h3 id="solution_2"><strong>SOLUTION</strong><a class="headerlink" href="#solution_2" title="Permanent link">#</a></h3>
 <h4 id="main-branch"><strong>Main Branch</strong><a class="headerlink" href="#main-branch" title="Permanent link">#</a></h4>
 <p>If the fix/feature is on the <code>main</code> branch, enter the stable-diffusion directory and do a
 <code>git pull</code>.</p>
@@ -985,7 +990,7 @@ dependencies are already loaded.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 18, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 26, 2022</span>
       
         <br>
         Created:

@@ -1115,17 +1115,18 @@ If you don't know what we are talking about, choose Standalone</p>
 </div>
 <div class="annotate highlight"><span class="filename">local repo setup</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1"># clone the repo</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2"></a>git clone https://github.com/invoke-ai/InvokeAI.git
-<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="nb">cd</span> stable-diffusion
-<a id="__codelineno-5-4" name="__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="c1"># wait until the checkpoint file has downloaded, then proceed</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6"></a>
-<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="c1"># create symlink to checkpoint</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8"></a>mkdir -p models/ldm/stable-diffusion-v1/
-<a id="__codelineno-5-9" name="__codelineno-5-9"></a>
-<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="nv">PATH_TO_CKPT</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/Downloads&quot;</span> <span class="c1"># (1)!</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11"></a>
-<a id="__codelineno-5-12" name="__codelineno-5-12"></a>ln -s <span class="s2">&quot;</span><span class="nv">$PATH_TO_CKPT</span><span class="s2">/sd-v1-4.ckpt&quot;</span> <span class="se">\</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13"></a>  models/ldm/stable-diffusion-v1/model.ckpt
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="nb">cd</span> InvokeAI
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="c1"># wait until the checkpoint file has downloaded, then proceed</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="c1"># create symlink to checkpoint</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a>mkdir -p models/ldm/stable-diffusion-v1/
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="nv">PATH_TO_CKPT</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/Downloads&quot;</span> <span class="c1"># (1)!</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a>ln -s <span class="s2">&quot;</span><span class="nv">$PATH_TO_CKPT</span><span class="s2">/sd-v1-4.ckpt&quot;</span> <span class="se">\</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a>  models/ldm/stable-diffusion-v1/model.ckpt
 </code></pre></div>
 <ol>
 <li>or wherever you saved sd-v1-4.ckpt</li>
@@ -1142,7 +1143,7 @@ If you don't know what we are talking about, choose Standalone</p>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w <span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-x86_64 <span class="se">\</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w <span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-64 <span class="se">\</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2"></a>  conda env create <span class="se">\</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3"></a>  -f environment-mac.yaml <span class="se">\</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4"></a>  <span class="o">&amp;&amp;</span> conda activate ldm
