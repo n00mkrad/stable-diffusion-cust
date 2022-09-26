@@ -602,6 +602,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
+        SAMPLER CONVERGENCE
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../help/TROUBLESHOOT/" class="md-nav__link">
         F.A.Q.
       </a>
@@ -908,29 +922,34 @@
   <h1>Upscale</h1>
 
 <h2 id="intro">Intro<a class="headerlink" href="#intro" title="Permanent link">#</a></h2>
-<p>The script provides the ability to restore faces and upscale. You can apply these operations
-at the time you generate the images, or at any time to a previously-generated PNG file, using 
-the <a href="#fixing-previously-generated-images">!fix</a> command.</p>
+<p>The script provides the ability to restore faces and upscale. You can apply
+these operations at the time you generate the images, or at any time to a
+previously-generated PNG file, using the
+<a href="#fixing-previously-generated-images">!fix</a> command.</p>
 <h2 id="face-fixing">Face Fixing<a class="headerlink" href="#face-fixing" title="Permanent link">#</a></h2>
-<p>The default face restoration module is GFPGAN. The default upscale is Real-ESRGAN. For an alternative
-face restoration module, see [CodeFormer Support] below.</p>
-<p>As of version 1.14, environment.yaml will install the Real-ESRGAN package into the standard install
-location for python packages, and will put GFPGAN into a subdirectory of "src" in the
-stable-diffusion directory. (The reason for this is that the standard GFPGAN distribution has a
-minor bug that adversely affects image color.) Upscaling with Real-ESRGAN should "just work" without
-further intervention. Simply pass the --upscale (-U) option on the dream&gt; command line, or indicate
-the desired scale on the popup in the Web GUI.</p>
-<p>For <strong>GFPGAN</strong> to work, there is one additional step needed. You will need to download and copy the
-GFPGAN <a href="https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth">models file</a>
-into <strong>src/gfpgan/experiments/pretrained_models</strong>. On Mac and Linux systems, here's how you'd do it
-using <strong>wget</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>&gt; wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth src/gfpgan/experiments/pretrained_models/
+<p>The default face restoration module is GFPGAN. The default upscale is
+Real-ESRGAN. For an alternative face restoration module, see [CodeFormer
+Support] below.</p>
+<p>As of version 1.14, environment.yaml will install the Real-ESRGAN package into
+the standard install location for python packages, and will put GFPGAN into a
+subdirectory of "src" in the stable-diffusion directory. (The reason for this is
+that the standard GFPGAN distribution has a minor bug that adversely affects
+image color.) Upscaling with Real-ESRGAN should "just work" without further
+intervention. Simply pass the --upscale (-U) option on the dream&gt; command line,
+or indicate the desired scale on the popup in the Web GUI.</p>
+<p>For <strong>GFPGAN</strong> to work, there is one additional step needed. You will need to
+download and copy the GFPGAN
+<a href="https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth">models file</a>
+into <strong>src/gfpgan/experiments/pretrained_models</strong>. On Mac and Linux systems,
+here's how you'd do it using <strong>wget</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>&gt; wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth src/gfpgan/experiments/pretrained_models/
 </code></pre></div>
 <p>Make sure that you're in the stable-diffusion directory when you do this.</p>
-<p>Alternatively, if you have GFPGAN installed elsewhere, or if you are using an earlier version of
-this package which asked you to install GFPGAN in a sibling directory, you may use the
-<code>--gfpgan_dir</code> argument with <code>dream.py</code> to set a custom path to your GFPGAN directory. <em>There are
-other GFPGAN related boot arguments if you wish to customize further.</em></p>
+<p>Alternatively, if you have GFPGAN installed elsewhere, or if you are using an
+earlier version of this package which asked you to install GFPGAN in a sibling
+directory, you may use the <code>--gfpgan_dir</code> argument with <code>dream.py</code> to set a
+custom path to your GFPGAN directory. <em>There are other GFPGAN related boot
+arguments if you wish to customize further.</em></p>
 <div class="admonition warning">
 <p class="admonition-title">Internet connection needed</p>
 <p>Users whose GPU machines are isolated from the Internet (e.g.
@@ -943,24 +962,26 @@ dependencies.</p>
 <p>You will now have access to two new prompt arguments.</p>
 <h3 id="upscaling">Upscaling<a class="headerlink" href="#upscaling" title="Permanent link">#</a></h3>
 <p><code>-U : &lt;upscaling_factor&gt; &lt;upscaling_strength&gt;</code></p>
-<p>The upscaling prompt argument takes two values. The first value is a scaling factor and should be
-set to either <code>2</code> or <code>4</code> only. This will either scale the image 2x or 4x respectively using
-different models.</p>
-<p>You can set the scaling stength between <code>0</code> and <code>1.0</code> to control intensity of the of the scaling.
-This is handy because AI upscalers generally tend to smooth out texture details. If you wish to
-retain some of those for natural looking results, we recommend using values between <code>0.5 to 0.8</code>.</p>
+<p>The upscaling prompt argument takes two values. The first value is a scaling
+factor and should be set to either <code>2</code> or <code>4</code> only. This will either scale the
+image 2x or 4x respectively using different models.</p>
+<p>You can set the scaling stength between <code>0</code> and <code>1.0</code> to control intensity of
+the of the scaling. This is handy because AI upscalers generally tend to smooth
+out texture details. If you wish to retain some of those for natural looking
+results, we recommend using values between <code>0.5 to 0.8</code>.</p>
 <p>If you do not explicitly specify an upscaling_strength, it will default to 0.75.</p>
 <h3 id="face-restoration">Face Restoration<a class="headerlink" href="#face-restoration" title="Permanent link">#</a></h3>
 <p><code>-G : &lt;gfpgan_strength&gt;</code></p>
-<p>This prompt argument controls the strength of the face restoration that is being applied. Similar to
-upscaling, values between <code>0.5 to 0.8</code> are recommended.</p>
-<p>You can use either one or both without any conflicts. In cases where you use both, the image will be
-first upscaled and then the face restoration process will be executed to ensure you get the highest
-quality facial features.</p>
+<p>This prompt argument controls the strength of the face restoration that is being
+applied. Similar to upscaling, values between <code>0.5 to 0.8</code> are recommended.</p>
+<p>You can use either one or both without any conflicts. In cases where you use
+both, the image will be first upscaled and then the face restoration process
+will be executed to ensure you get the highest quality facial features.</p>
 <p><code>--save_orig</code></p>
-<p>When you use either <code>-U</code> or <code>-G</code>, the final result you get is upscaled or face modified. If you want
-to save the original Stable Diffusion generation, you can use the <code>-save_orig</code> prompt argument to
-save the original unaffected version too.</p>
+<p>When you use either <code>-U</code> or <code>-G</code>, the final result you get is upscaled or face
+modified. If you want to save the original Stable Diffusion generation, you can
+use the <code>-save_orig</code> prompt argument to save the original unaffected version
+too.</p>
 <h3 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>dream&gt; superman dancing with a panda bear -U <span class="m">2</span> <span class="m">0</span>.6 -G <span class="m">0</span>.4
 </code></pre></div>
@@ -977,52 +998,61 @@ iterations, the images will first be generated and then upscaled and face restor
 process is complete. While the image generation is taking place, you will still be able to preview
 the base images.</p>
 </div>
-<p>If you wish to stop during the image generation but want to upscale or face restore a particular
-generated image, pass it again with the same prompt and generated seed along with the <code>-U</code> and <code>-G</code>
-prompt arguments to perform those actions.</p>
+<p>If you wish to stop during the image generation but want to upscale or face
+restore a particular generated image, pass it again with the same prompt and
+generated seed along with the <code>-U</code> and <code>-G</code> prompt arguments to perform those
+actions.</p>
 <h2 id="codeformer-support">CodeFormer Support<a class="headerlink" href="#codeformer-support" title="Permanent link">#</a></h2>
 <p>This repo also allows you to perform face restoration using
 <a href="https://github.com/sczhou/CodeFormer">CodeFormer</a>.</p>
-<p>In order to setup CodeFormer to work, you need to download the models like with GFPGAN. You can do
-this either by running <code>preload_models.py</code> or by manually downloading the
-<a href="https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth">model file</a> and
-saving it to <code>ldm/restoration/codeformer/weights</code> folder.</p>
-<p>You can use <code>-ft</code> prompt argument to swap between CodeFormer and the default GFPGAN. The above
-mentioned <code>-G</code> prompt argument will allow you to control the strength of the restoration effect.</p>
+<p>In order to setup CodeFormer to work, you need to download the models like with
+GFPGAN. You can do this either by running <code>preload_models.py</code> or by manually
+downloading the
+<a href="https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth">model file</a>
+and saving it to <code>ldm/restoration/codeformer/weights</code> folder.</p>
+<p>You can use <code>-ft</code> prompt argument to swap between CodeFormer and the default
+GFPGAN. The above mentioned <code>-G</code> prompt argument will allow you to control the
+strength of the restoration effect.</p>
 <h3 id="usage_1">Usage:<a class="headerlink" href="#usage_1" title="Permanent link">#</a></h3>
-<p>The following command will perform face restoration with CodeFormer instead of the default gfpgan.</p>
+<p>The following command will perform face restoration with CodeFormer instead of
+the default gfpgan.</p>
 <p><code>&lt;prompt&gt; -G 0.8 -ft codeformer</code></p>
 <h3 id="other-options">Other Options:<a class="headerlink" href="#other-options" title="Permanent link">#</a></h3>
 <ul>
-<li><code>-cf</code> - cf or CodeFormer Fidelity takes values between <code>0</code> and <code>1</code>. 0 produces high quality
-  results but low accuracy and 1 produces lower quality results but higher accuacy to your original
-  face.</li>
+<li><code>-cf</code> - cf or CodeFormer Fidelity takes values between <code>0</code> and <code>1</code>. 0 produces
+  high quality results but low accuracy and 1 produces lower quality results but
+  higher accuacy to your original face.</li>
 </ul>
-<p>The following command will perform face restoration with CodeFormer. CodeFormer will output a result
-that is closely matching to the input face.</p>
+<p>The following command will perform face restoration with CodeFormer. CodeFormer
+will output a result that is closely matching to the input face.</p>
 <p><code>&lt;prompt&gt; -G 1.0 -ft codeformer -cf 0.9</code></p>
-<p>The following command will perform face restoration with CodeFormer. CodeFormer will output a result
-that is the best restoration possible. This may deviate slightly from the original face. This is an
-excellent option to use in situations when there is very little facial data to work with.</p>
+<p>The following command will perform face restoration with CodeFormer. CodeFormer
+will output a result that is the best restoration possible. This may deviate
+slightly from the original face. This is an excellent option to use in
+situations when there is very little facial data to work with.</p>
 <p><code>&lt;prompt&gt; -G 1.0 -ft codeformer -cf 0.1</code></p>
 <h2 id="fixing-previously-generated-images">Fixing Previously-Generated Images<a class="headerlink" href="#fixing-previously-generated-images" title="Permanent link">#</a></h2>
-<p>It is easy to apply face restoration and/or upscaling to any previously-generated file. Just use the
-syntax <code>!fix path/to/file.png &lt;options&gt;</code>. For example, to apply GFPGAN at strength 0.8 and upscale 2X
-for a file named <code>./outputs/img-samples/000044.2945021133.png</code>, just run:</p>
+<p>It is easy to apply face restoration and/or upscaling to any
+previously-generated file. Just use the syntax
+<code>!fix path/to/file.png &lt;options&gt;</code>. For example, to apply GFPGAN at strength 0.8
+and upscale 2X for a file named <code>./outputs/img-samples/000044.2945021133.png</code>,
+just run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>dream&gt; !fix ./outputs/img-samples/000044.2945021133.png -G 0.8 -U 2
 </code></pre></div>
-<p>A new file named <code>000044.2945021133.fixed.png</code> will be created in the output directory. Note that
-the <code>!fix</code> command does not replace the original file, unlike the behavior at generate time.</p>
+<p>A new file named <code>000044.2945021133.fixed.png</code> will be created in the output
+directory. Note that the <code>!fix</code> command does not replace the original file,
+unlike the behavior at generate time.</p>
 <h3 id="disabling">Disabling:<a class="headerlink" href="#disabling" title="Permanent link">#</a></h3>
-<p>If, for some reason, you do not wish to load the GFPGAN and/or ESRGAN libraries, you can disable them 
-on the dream.py command line with the <code>--no_restore</code> and <code>--no_upscale</code> options, respectively.</p>
+<p>If, for some reason, you do not wish to load the GFPGAN and/or ESRGAN libraries,
+you can disable them on the dream.py command line with the <code>--no_restore</code> and
+<code>--no_upscale</code> options, respectively.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 21, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 23, 2022</span>
       
         <br>
         Created:

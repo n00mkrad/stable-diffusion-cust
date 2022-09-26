@@ -10,14 +10,14 @@
         <meta name="author" content="mauwii">
       
       
-        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/installation/INSTALL_WINDOWS/">
+        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/help/SAMPLER_CONVERGENCE/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
     
     
       
-        <title>Windows - Dream Script Docs</title>
+        <title>SAMPLER CONVERGENCE - Dream Script Docs</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#windows" class="md-skip">
+        <a href="#sampler-convergence" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Windows
+              SAMPLER CONVERGENCE
             
           </span>
         </div>
@@ -447,12 +447,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -473,11 +475,96 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          SAMPLER CONVERGENCE
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         SAMPLER CONVERGENCE
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sampler-convergence" class="md-nav__link">
+    Sampler Convergence
+  </a>
+  
+    <nav class="md-nav" aria-label="Sampler Convergence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sampler-results" class="md-nav__link">
+    Sampler results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sampler-convergence_1" class="md-nav__link">
+    Sampler convergence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-generation-speedup" class="md-nav__link">
+    Batch generation speedup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-convergance" class="md-nav__link">
+    Topic convergance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sampler-generation-times" class="md-nav__link">
+    Sampler generation times
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-key-points" class="md-nav__link">
+    Three key points
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -489,7 +576,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../help/TROUBLESHOOT/" class="md-nav__link">
+      <a href="../TROUBLESHOOT/" class="md-nav__link">
         F.A.Q.
       </a>
     </li>
@@ -509,14 +596,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -539,7 +624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../INSTALL_DOCKER/" class="md-nav__link">
+      <a href="../../installation/INSTALL_DOCKER/" class="md-nav__link">
         Before you begin
       </a>
     </li>
@@ -553,7 +638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../INSTALL_LINUX/" class="md-nav__link">
+      <a href="../../installation/INSTALL_LINUX/" class="md-nav__link">
         Linux
       </a>
     </li>
@@ -567,7 +652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../INSTALL_MAC/" class="md-nav__link">
+      <a href="../../installation/INSTALL_MAC/" class="md-nav__link">
         macOS
       </a>
     </li>
@@ -579,86 +664,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Windows
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/INSTALL_WINDOWS/" class="md-nav__link">
         Windows
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#notebook-install-semi-automated" class="md-nav__link">
-    Notebook install (semi-automated)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#manual-install" class="md-nav__link">
-    Manual Install
-  </a>
-  
-    <nav class="md-nav" aria-label="Manual Install">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pip" class="md-nav__link">
-    pip
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#conda" class="md-nav__link">
-    Conda
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updating-to-newer-versions-of-the-script" class="md-nav__link">
-    Updating to newer versions of the script
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -749,8 +759,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -759,43 +767,57 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#notebook-install-semi-automated" class="md-nav__link">
-    Notebook install (semi-automated)
+  <a href="#sampler-convergence" class="md-nav__link">
+    Sampler Convergence
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#manual-install" class="md-nav__link">
-    Manual Install
-  </a>
-  
-    <nav class="md-nav" aria-label="Manual Install">
+    <nav class="md-nav" aria-label="Sampler Convergence">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pip" class="md-nav__link">
-    pip
+  <a href="#sampler-results" class="md-nav__link">
+    Sampler results
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#conda" class="md-nav__link">
-    Conda
+  <a href="#sampler-convergence_1" class="md-nav__link">
+    Sampler convergence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-generation-speedup" class="md-nav__link">
+    Batch generation speedup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-convergance" class="md-nav__link">
+    Topic convergance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sampler-generation-times" class="md-nav__link">
+    Sampler generation times
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-key-points" class="md-nav__link">
+    Three key points
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updating-to-newer-versions-of-the-script" class="md-nav__link">
-    Updating to newer versions of the script
-  </a>
   
 </li>
       
@@ -811,137 +833,175 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/installation/INSTALL_WINDOWS.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/help/SAMPLER_CONVERGENCE.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-<h1 id="windows"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="m0 93.7 183.6-25.3v177.4H0V93.7zm0 324.6 183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"/></svg></span> Windows<a class="headerlink" href="#windows" title="Permanent link">#</a></h1>
-<h2 id="notebook-install-semi-automated"><strong>Notebook install (semi-automated)</strong><a class="headerlink" href="#notebook-install-semi-automated" title="Permanent link">#</a></h2>
-<p>We have a
-<a href="https://github.com/invoke-ai/InvokeAI/blob/main/notebooks/Stable-Diffusion-local-Windows.ipynb">Jupyter notebook</a>
-with cell-by-cell installation steps. It will download the code in this repo as
-one of the steps, so instead of cloning this repo, simply download the notebook
-from the link above and load it up in VSCode (with the appropriate extensions
-installed)/Jupyter/JupyterLab and start running the cells one-by-one.</p>
-<p>Note that you will need NVIDIA drivers, Python 3.10, and Git installed
-beforehand - simplified
-<a href="https://github.com/invoke-ai/InvokeAI/wiki/Easy-peasy-Windows-install">step-by-step instructions</a>
-are available in the wiki (you'll only need steps 1, 2, &amp; 3 ).</p>
-<h2 id="manual-install"><strong>Manual Install</strong><a class="headerlink" href="#manual-install" title="Permanent link">#</a></h2>
-<h3 id="pip"><strong>pip</strong><a class="headerlink" href="#pip" title="Permanent link">#</a></h3>
-<p>See
-<a href="https://github.com/invoke-ai/InvokeAI/wiki/Easy-peasy-Windows-install">Easy-peasy Windows install</a>
-in the wiki</p>
+  <h1>SAMPLER CONVERGENCE</h1>
+
+<h2 id="sampler-convergence"><em>Sampler Convergence</em><a class="headerlink" href="#sampler-convergence" title="Permanent link">#</a></h2>
+<p>As features keep increasing, making the right choices for your needs can become increasingly difficult. What sampler to use? And for how many steps? Do you change the CFG value? Do you use prompt weighting? Do you allow variations?</p>
+<p>Even once you have a result, do you blend it with other images? Pass it through <code>img2img</code>? With what strength? Do you use inpainting to correct small details? Outpainting to extend cropped sections?</p>
+<p>The purpose of this series of documents is to help you better understand these tools, so you can make the best out of them. Feel free to contribute with your own findings!</p>
+<p>In this document, we will talk about sampler convergence.</p>
+<p>Looking for a short version? Here's a TL;DR in 3 tables.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Remember</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Results converge as steps (<code>-s</code>) are increased (except for <code>K_DPM_2_A</code> and <code>K_EULER_A</code>). Often at ≥ <code>-s100</code>, but may require ≥ <code>-s700</code>).</td>
+</tr>
+<tr>
+<td align="left">Producing a batch of candidate images at low (<code>-s8</code> to <code>-s30</code>) step counts can save you hours of computation.</td>
+</tr>
+<tr>
+<td align="left"><code>K_HEUN</code> and <code>K_DPM_2</code>  converge in less steps (but are slower).</td>
+</tr>
+<tr>
+<td align="left"><code>K_DPM_2_A</code> and <code>K_EULER_A</code> incorporate a lot of creativity/variability.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Sampler</th>
+<th>(3 sample avg) it/s (M1 Max 64GB, 512x512)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DDIM</code></td>
+<td>1.89</td>
+</tr>
+<tr>
+<td><code>PLMS</code></td>
+<td>1.86</td>
+</tr>
+<tr>
+<td><code>K_EULER</code></td>
+<td>1.86</td>
+</tr>
+<tr>
+<td><code>K_LMS</code></td>
+<td>1.91</td>
+</tr>
+<tr>
+<td><code>K_HEUN</code></td>
+<td>0.95 (slower)</td>
+</tr>
+<tr>
+<td><code>K_DPM_2</code></td>
+<td>0.95 (slower)</td>
+</tr>
+<tr>
+<td><code>K_DPM_2_A</code></td>
+<td>0.95 (slower)</td>
+</tr>
+<tr>
+<td><code>K_EULER_A</code></td>
+<td>1.86</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="left">Suggestions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">For most use cases, <code>K_LMS</code>, <code>K_HEUN</code> and <code>K_DPM_2</code> are the best choices (the latter 2 run 0.5x as quick, but tend to converge 2x as quick as <code>K_LMS</code>). At very low steps (≤ <code>-s8</code>), <code>K_HEUN</code> and <code>K_DPM_2</code> are not recommended. Use <code>K_LMS</code> instead.</td>
+</tr>
+<tr>
+<td align="left">For variability, use <code>K_EULER_A</code> (runs 2x as quick as <code>K_DPM_2_A</code>).</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h3 id="conda"><strong>Conda</strong><a class="headerlink" href="#conda" title="Permanent link">#</a></h3>
-<ol>
-<li>
-<p>Install Anaconda3 (miniconda3 version) from <a href="https://docs.anaconda.com/anaconda/install/windows/">here</a></p>
-</li>
-<li>
-<p>Install Git from <a href="https://git-scm.com/download/win">here</a></p>
-</li>
-<li>
-<p>Launch Anaconda from the Windows Start menu. This will bring up a command
-   window. Type all the remaining commands in this window.</p>
-</li>
-<li>
-<p>Run the command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git clone https://github.com/invoke-ai/InvokeAI.git
-</code></pre></div>
-<p>This will create stable-diffusion folder where you will follow the rest of
-the steps.</p>
-</li>
-<li>
-<p>Enter the newly-created stable-diffusion folder. From this step forward make
-   sure that you are working in the stable-diffusion directory!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">cd</span> stable-diffusion
-</code></pre></div>
-</li>
-<li>
-<p>Run the following two commands:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>conda env create -f environment.yaml
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a>conda activate ldm
-</code></pre></div>
-<p>This will install all python requirements and activate the "ldm" environment
-which sets PATH and other environment variables properly.</p>
-</li>
-<li>
-<p>Run the command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>python scripts\preload_models.py
-</code></pre></div>
-<p>This installs several machine learning models that stable diffusion requires.</p>
-<p>Note: This step is required. This was done because some users may might be
-blocked by firewalls or have limited internet connectivity for the models to
-be downloaded just-in-time.</p>
-</li>
-<li>
-<p>Now you need to install the weights for the big stable diffusion model.</p>
+<h3 id="sampler-results"><em>Sampler results</em><a class="headerlink" href="#sampler-results" title="Permanent link">#</a></h3>
+<p>Let's start by choosing a prompt and using it with each of our 8 samplers, running it for 10, 20, 30, 40, 50 and 100 steps.</p>
+<p>Anime. <code>"an anime girl" -W512 -H512 -C7.5 -S3031912972</code></p>
+<p><img alt="191636411-083c8282-6ed1-4f78-9273-ee87c0a0f1b6-min (1)" src="https://user-images.githubusercontent.com/50542132/191868725-7f7af991-e254-4c1f-83e7-bed8c9b2d34f.png" /></p>
+<h3 id="sampler-convergence_1"><em>Sampler convergence</em><a class="headerlink" href="#sampler-convergence_1" title="Permanent link">#</a></h3>
+<p>Immediately, you can notice results tend to converge -that is, as <code>-s</code> (step) values increase, images look more and more similar until there comes a point where the image no longer changes.</p>
+<p>You can also notice how <code>DDIM</code> and <code>PLMS</code> eventually tend to converge to K-sampler results as steps are increased.
+Among K-samplers, <code>K_HEUN</code> and <code>K_DPM_2</code> seem to require the fewest steps to converge, and even at low step counts they are good indicators of the final result. And finally, <code>K_DPM_2_A</code> and <code>K_EULER_A</code> seem to do a bit of their own thing and don't keep much similarity with the rest of the samplers.</p>
+<h3 id="batch-generation-speedup"><em>Batch generation speedup</em><a class="headerlink" href="#batch-generation-speedup" title="Permanent link">#</a></h3>
+<p>This realization is very useful because it means you don't need to create a batch of 100 images (<code>-n100</code>) at <code>-s100</code> to choose your favorite 2 or 3 images.
+You can produce the same 100 images at <code>-s10</code> to <code>-s30</code> using a K-sampler (since they converge faster), get a rough idea of the final result, choose your 2 or 3 favorite ones, and then run <code>-s100</code> on those images to polish some details.
+The latter technique is 3-8x as quick.</p>
+<p>Example:</p>
+<p>At 60s per 100 steps.</p>
+<p>(Option A) 60s * 100 images = 6000s (100 images at <code>-s100</code>, manually picking 3 favorites)</p>
+<p>(Option B) 6s * 100 images + 60s * 3 images = 780s (100 images at <code>-s10</code>, manually picking 3 favorites, and running those 3 at <code>-s100</code> to polish details)</p>
+<p>The result is 1 hour and 40 minutes (Option A) vs 13 minutes (Option B).</p>
+<h3 id="topic-convergance"><em>Topic convergance</em><a class="headerlink" href="#topic-convergance" title="Permanent link">#</a></h3>
+<p>Now, these results seem interesting, but do they hold for other topics? How about nature? Food? People? Animals? Let's try!</p>
+<p>Nature. <code>"valley landscape wallpaper, d&amp;d art, fantasy, painted, 4k, high detail, sharp focus, washed colors, elaborate excellent painted illustration" -W512 -H512 -C7.5 -S1458228930</code></p>
+<p><img alt="191736091-dda76929-00d1-4590-bef4-7314ea4ea419-min (1)" src="https://user-images.githubusercontent.com/50542132/191868763-b151c69e-0a72-4cf1-a151-5a64edd0c93e.png" /></p>
+<p>With nature, you can see how initial results are even more indicative of final result -more so than with characters/people. <code>K_HEUN</code> and <code>K_DPM_2</code> are again the quickest indicators, almost right from the start. Results also converge faster (e.g. <code>K_HEUN</code> converged at <code>-s21</code>).</p>
+<p>Food. <code>"a hamburger with a bowl of french fries" -W512 -H512 -C7.5 -S4053222918</code></p>
+<p><img alt="191639011-f81d9d38-0a15-45f0-9442-a5e8d5c25f1f-min (1)" src="https://user-images.githubusercontent.com/50542132/191868898-98801a62-885f-4ea1-aee8-563503522aa9.png" /></p>
+<p>Again, <code>K_HEUN</code> and <code>K_DPM_2</code> take the fewest number of steps to be good indicators of the final result. <code>K_DPM_2_A</code> and <code>K_EULER_A</code> seem to incorporate a lot of creativity/variability, capable of producing rotten hamburgers, but also of adding lettuce to the mix. And they're the only samplers that produced an actual 'bowl of fries'!</p>
+<p>Animals. <code>"grown tiger, full body" -W512 -H512 -C7.5 -S3721629802</code></p>
+<p><img alt="191771922-6029a4f5-f707-4684-9011-c6f96e25fe56-min (1)" src="https://user-images.githubusercontent.com/50542132/191868870-9e3b7d82-b909-429f-893a-13f6ec343454.png" /></p>
+<p><code>K_HEUN</code> and <code>K_DPM_2</code> once again require the least number of steps to be indicative of the final result (around <code>-s30</code>), while other samplers are still struggling with several tails or malformed back legs.</p>
+<p>It also takes longer to converge (for comparison, <code>K_HEUN</code> required around 150 steps to converge). This is normal, as producing human/animal faces/bodies is one of the things the model struggles the most with. For these topics, running for more steps will often increase coherence within the composition.</p>
+<p>People. <code>"Ultra realistic photo, (Miranda Bloom-Kerr), young, stunning model, blue eyes, blond hair, beautiful face, intricate, highly detailed, smooth, art by artgerm and greg rutkowski and alphonse mucha, stained glass" -W512 -H512 -C7.5 -S2131956332</code>. This time, we will go up to 300 steps.</p>
+<p><img alt="Screenshot 2022-09-23 at 02 05 48-min (1)" src="https://user-images.githubusercontent.com/50542132/191871743-6802f199-0ffd-4986-98c5-df2d8db30d18.png" /></p>
+<p>Observing the results, it again takes longer for all samplers to converge (<code>K_HEUN</code> took around 150 steps), but we can observe good indicative results much earlier (see: <code>K_HEUN</code>). Conversely, <code>DDIM</code> and <code>PLMS</code> are still undergoing moderate changes (see: lace around her neck), even at <code>-s300</code>.</p>
+<p>In fact, as we can see in this other experiment, some samplers can take 700+ steps to converge when generating people.</p>
+<p><img alt="191988191-c586b75a-2d7f-4351-b705-83cc1149881a-min (1)" src="https://user-images.githubusercontent.com/50542132/191992123-7e0759d6-6220-42c4-a961-88c7071c5ee6.png" /></p>
+<p>Note also the point of convergence may not be the most desirable state (e.g. I prefer an earlier version of the face, more rounded), but it will probably be the most coherent arms/hands/face attributes-wise. You can always merge different images with a photo editing tool and pass it through <code>img2img</code> to smoothen the composition.</p>
+<h3 id="sampler-generation-times"><em>Sampler generation times</em><a class="headerlink" href="#sampler-generation-times" title="Permanent link">#</a></h3>
+<p>Once we understand the concept of sampler convergence, we must look into the performance of each sampler in terms of steps (iterations) per second, as not all samplers run at the same speed.</p>
+<p>On my M1 Max with 64GB of RAM, for a 512x512 image:
+| Sampler   | (3 sample average) it/s |
+|---|---|
+|  <code>DDIM</code> | 1.89  |
+|  <code>PLMS</code> | 1.86  |
+|  <code>K_EULER</code> | 1.86  |
+|  <code>K_LMS</code> | 1.91  |
+|  <code>K_HEUN</code> | 0.95 (slower)  |
+|  <code>K_DPM_2</code> | 0.95 (slower)  |
+|  <code>K_DPM_2_A</code> | 0.95 (slower)  |
+|  <code>K_EULER_A</code> | 1.86  |</p>
+<p>Combining our results with the steps per second of each sampler, three choices come out on top: <code>K_LMS</code>, <code>K_HEUN</code> and <code>K_DPM_2</code> (where the latter two run 0.5x as quick but tend to converge 2x as quick as <code>K_LMS</code>). For creativity and a lot of variation between iterations, <code>K_EULER_A</code> can be a good choice (which runs 2x as quick as <code>K_DPM_2_A</code>).</p>
+<p>Additionally, image generation at very low steps (≤ <code>-s8</code>) is not recommended for <code>K_HEUN</code> and <code>K_DPM_2</code>. Use <code>K_LMS</code> instead.</p>
+<p><img width="397" alt="192044949-67d5d441-a0d5-4d5a-be30-5dda4fc28a00-min" src="https://user-images.githubusercontent.com/50542132/192046823-2714cb29-bbf3-4eb1-9213-e27a0963905c.png"></p>
+<h3 id="three-key-points"><em>Three key points</em><a class="headerlink" href="#three-key-points" title="Permanent link">#</a></h3>
+<p>Finally, it is relevant to mention that, in general, there are 3 important moments in the process of image formation as steps increase:</p>
 <ul>
-<li>For running with the released weights, you will first need to set up an
-    acount with <a href="https://huggingface.co">Hugging Face</a>.</li>
-<li>Use your credentials to log in, and then point your browser at
-    <a href="https://huggingface.co/CompVis/stable-diffusion-v-1-4-original">https://huggingface.co/CompVis/stable-diffusion-v-1-4-original</a>.</li>
-<li>You may be asked to sign a license agreement at this point.</li>
-<li>Click on "Files and versions" near the top of the page, and then click on
-    the file named <code>sd-v1-4.ckpt</code>. You'll be taken to a page that prompts you
-    to click the "download" link. Now save the file somewhere safe on your
-    local machine.</li>
-<li>The weight file is &gt;4 GB in size, so downloading may take a while.</li>
+<li>
+<p>The (earliest) point at which an image becomes a good indicator of the final result (useful for batch generation at low step values, to then improve the quality/coherence of the chosen images via running the same prompt and seed for more steps).</p>
+</li>
+<li>
+<p>The (earliest) point at which an image becomes coherent, even if different from the result if steps are increased (useful for batch generation at low step values, where quality/coherence is improved via techniques other than increasing the steps -e.g. via inpainting).</p>
+</li>
+<li>
+<p>The point at which an image fully converges.</p>
+</li>
 </ul>
-<p>Now run the following commands from <strong>within the stable-diffusion directory</strong>
-  to copy the weights file to the right place:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">mkdir</span> -p models\ldm\stable-diffusion-v1
-<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="k">copy</span> C:\path\to\sd-v1-4.ckpt models\ldm\stable-diffusion-v1\model.ckpt
-</code></pre></div>
-<p>Please replace <code>C:\path\to\sd-v1.4.ckpt</code> with the correct path to wherever
-you stashed this file. If you prefer not to copy or move the .ckpt file, you
-may instead create a shortcut to it from within
-<code>models\ldm\stable-diffusion-v1\</code>.</p>
-</li>
-<li>
-<p>Start generating images!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a># for the pre-release weights
-<a id="__codelineno-5-2" name="__codelineno-5-2"></a>python scripts\dream.py -l
-<a id="__codelineno-5-3" name="__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4"></a># for the post-release weights
-<a id="__codelineno-5-5" name="__codelineno-5-5"></a>python scripts\dream.py
-</code></pre></div>
-</li>
-<li>
-<p>Subsequently, to relaunch the script, first activate the Anaconda command
-    window (step 3),enter the stable-diffusion directory (step 5,
-    <code>cd \path\to\stable-diffusion</code>), run <code>conda activate ldm</code> (step 6b), and
-    then launch the dream script (step 9).</p>
-<p><strong>Note:</strong> Tildebyte has written an alternative
-<a href="https://github.com/invoke-ai/InvokeAI/wiki/Easy-peasy-Windows-install">"Easy peasy Windows install"</a>
-which uses the Windows Powershell and pew. If you are having trouble with
-Anaconda on Windows, give this a try (or try it first!)</p>
-</li>
-</ol>
-<hr />
-<h2 id="updating-to-newer-versions-of-the-script">Updating to newer versions of the script<a class="headerlink" href="#updating-to-newer-versions-of-the-script" title="Permanent link">#</a></h2>
-<p>This distribution is changing rapidly. If you used the <code>git clone</code> method
-(step 5) to download the stable-diffusion directory, then to update to the
-latest and greatest version, launch the Anaconda window, enter
-<code>stable-diffusion</code>, and type:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>git pull
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a>conda env update -f environment.yaml
-</code></pre></div>
-<p>This will bring your local copy into sync with the remote one.</p>
+<p>Hence, remember that your workflow/strategy should define your optimal number of steps, even for the same prompt and seed (for example, if you seek full convergence, you may run <code>K_LMS</code> for <code>-s200</code> in the case of the red-haired girl, but <code>K_LMS</code> and <code>-s20</code>-taking one tenth the time- may do as well if your workflow includes adding small details, such as the missing shoulder strap, via <code>img2img</code>).</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 21, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 24, 2022</span>
       
         <br>
         Created:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 11, 2022</span>
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 24, 2022</span>
       
     
   </small>
@@ -959,7 +1019,7 @@ latest and greatest version, launch the Anaconda window, enter
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../INSTALL_MAC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: macOS" rel="prev">
+        <a href="../../features/WEB/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Barebones Web Server" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -968,20 +1028,20 @@ latest and greatest version, launch the Anaconda window, enter
               <span class="md-footer__direction">
                 Previous
               </span>
-              macOS
+              Barebones Web Server
             </div>
           </div>
         </a>
       
       
         
-        <a href="../../other/CONTRIBUTORS/" class="md-footer__link md-footer__link--next" aria-label="Next: Contributors" rel="next">
+        <a href="../TROUBLESHOOT/" class="md-footer__link md-footer__link--next" aria-label="Next: F.A.Q." rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Contributors
+              F.A.Q.
             </div>
           </div>
           <div class="md-footer__button md-icon">

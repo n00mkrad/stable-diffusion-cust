@@ -594,6 +594,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
+        SAMPLER CONVERGENCE
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../help/TROUBLESHOOT/" class="md-nav__link">
         F.A.Q.
       </a>
@@ -889,17 +903,20 @@
 
 <h1 id="cli"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9h2.31l.32-3h2l-.32 3h2l.32-3h2l-.32 3H15v2h-1.9l-.2 2H15v2h-2.31l-.32 3h-2l.32-3h-2l-.32 3h-2l.32-3H5v-2h1.9l.2-2H5V9m4.1 2-.2 2h2l.2-2M19 6h-2v8h2m0 2h-2v2h2Z"/></svg></span> CLI<a class="headerlink" href="#cli" title="Permanent link">#</a></h1>
 <h2 id="interactive-command-line-interface"><strong>Interactive Command Line Interface</strong><a class="headerlink" href="#interactive-command-line-interface" title="Permanent link">#</a></h2>
-<p>The <code>dream.py</code> script, located in <code>scripts/dream.py</code>, provides an interactive interface to image
-generation similar to the "dream mothership" bot that Stable AI provided on its Discord server.</p>
+<p>The <code>dream.py</code> script, located in <code>scripts/dream.py</code>, provides an interactive
+interface to image generation similar to the "dream mothership" bot that Stable
+AI provided on its Discord server.</p>
 <p>Unlike the <code>txt2img.py</code> and <code>img2img.py</code> scripts provided in the original
-<a href="https://github.com/CompVis/stable-diffusion">CompVis/stable-diffusion</a> source code repository, the
-time-consuming initialization of the AI model initialization only happens once. After that image
-generation from the command-line interface is very fast.</p>
-<p>The script uses the readline library to allow for in-line editing, command history (<span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and
-<span class="keys"><kbd class="key-arrow-down">Down</kbd></span>), autocompletion, and more. To help keep track of which prompts generated which images, the
-script writes a log file of image names and prompts to the selected output directory.</p>
-<p>In addition, as of version 1.02, it also writes the prompt into the PNG file's metadata where it can
-be retrieved using <code>scripts/images2prompt.py</code></p>
+<a href="https://github.com/CompVis/stable-diffusion">CompVis/stable-diffusion</a> source
+code repository, the time-consuming initialization of the AI model
+initialization only happens once. After that image generation from the
+command-line interface is very fast.</p>
+<p>The script uses the readline library to allow for in-line editing, command
+history (<span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and <span class="keys"><kbd class="key-arrow-down">Down</kbd></span>), autocompletion, and more. To help keep track of
+which prompts generated which images, the script writes a log file of image
+names and prompts to the selected output directory.</p>
+<p>In addition, as of version 1.02, it also writes the prompt into the PNG file's
+metadata where it can be retrieved using <code>scripts/images2prompt.py</code></p>
 <p>The script is confirmed to work on Linux, Windows and Mac systems.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -929,17 +946,20 @@ currently rudimentary, but a much better replacement is on its way.</p>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="m">00011</span>.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
 </code></pre></div>
 <p><img alt="dream-py-demo" src="../../assets/dream-py-demo.png" /></p>
-<p>The <code>dream&gt;</code> prompt's arguments are pretty much identical to those used in the Discord bot, except
-you don't need to type "!dream" (it doesn't hurt if you do). A significant change is that creation
-of individual images is now the default unless <code>--grid</code> (<code>-g</code>) is given. A full list is given in
+<p>The <code>dream&gt;</code> prompt's arguments are pretty much identical to those used in the
+Discord bot, except you don't need to type "!dream" (it doesn't hurt if you do).
+A significant change is that creation of individual images is now the default
+unless <code>--grid</code> (<code>-g</code>) is given. A full list is given in
 <a href="#list-of-prompt-arguments">List of prompt arguments</a>.</p>
 <h2 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link">#</a></h2>
-<p>The script itself also recognizes a series of command-line switches that will change important
-global defaults, such as the directory for image outputs and the location of the model weight files.</p>
+<p>The script itself also recognizes a series of command-line switches that will
+change important global defaults, such as the directory for image outputs and
+the location of the model weight files.</p>
 <h3 id="list-of-arguments-recognized-at-the-command-line">List of arguments recognized at the command line<a class="headerlink" href="#list-of-arguments-recognized-at-the-command-line" title="Permanent link">#</a></h3>
-<p>These command-line arguments can be passed to <code>dream.py</code> when you first run it from the Windows, Mac
-or Linux command line. Some set defaults that can be overridden on a per-prompt basis (see [List of
-prompt arguments] (#list-of-prompt-arguments). Others</p>
+<p>These command-line arguments can be passed to <code>dream.py</code> when you first run it
+from the Windows, Mac or Linux command line. Some set defaults that can be
+overridden on a per-prompt basis (see [List of prompt arguments]
+(#list-of-prompt-arguments). Others</p>
 <table>
 <thead>
 <tr>
@@ -1049,7 +1069,7 @@ prompt arguments] (#list-of-prompt-arguments). Others</p>
 <tr>
 <td><code>--gfpgan_model_path</code></td>
 <td></td>
-<td><code>experiments/pretrained_models/GFPGANv1.3.pth</code></td>
+<td><code>experiments/pretrained_models/GFPGANv1.4.pth</code></td>
 <td>Path to GFPGAN model file, relative to <code>--gfpgan_dir</code>.</td>
 </tr>
 <tr>
@@ -1096,9 +1116,10 @@ slashes (ick): <code>C:\\path\\to\\my\\file</code>, or use Linux/Mac style forwa
 <code>C:/path/to/my/file</code>.</p>
 </div>
 <h3 id="list-of-prompt-arguments">List of prompt arguments<a class="headerlink" href="#list-of-prompt-arguments" title="Permanent link">#</a></h3>
-<p>After the <code>dream.py</code> script initializes, it will present you with a <strong><code>dream&gt;</code></strong> prompt. Here you
-can enter information to generate images from text (txt2img), to embellish an existing image or
-sketch (img2img), or to selectively alter chosen regions of the image (inpainting).</p>
+<p>After the <code>dream.py</code> script initializes, it will present you with a <strong><code>dream&gt;</code></strong>
+prompt. Here you can enter information to generate images from text (txt2img),
+to embellish an existing image or sketch (img2img), or to selectively alter
+chosen regions of the image (inpainting).</p>
 <h4 id="txt2img">txt2img<a class="headerlink" href="#txt2img" title="Permanent link">#</a></h4>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
@@ -1248,11 +1269,12 @@ vary greatly depending on what is in the image. We also ask to --fit the image i
 than 640x480. Otherwise the image size will be identical to the provided photo and you may run out
 of memory if it is large.</p>
 </div>
-<p>Repeated chaining of img2img on an image can result in significant color shifts in the output,
-especially if run with lower strength. Color correction can be run against a reference image to fix
-this issue. Use the original input image to the chain as the the reference image for each step in
-the chain.</p>
-<p>In addition to the command-line options recognized by txt2img, img2img accepts additional options:</p>
+<p>Repeated chaining of img2img on an image can result in significant color shifts
+in the output, especially if run with lower strength. Color correction can be
+run against a reference image to fix this issue. Use the original input image to
+the chain as the the reference image for each step in the chain.</p>
+<p>In addition to the command-line options recognized by txt2img, img2img accepts
+additional options:</p>
 <table>
 <thead>
 <tr>
@@ -1299,8 +1321,8 @@ areas defined by the mask file specified by <code>-M</code>. You may also supply
 the areas to overpaint made transparent, but you must be careful not to destroy the pixels
 underneath when you create the transparent areas. See <a href="../INPAINTING/">Inpainting</a> for details.</p>
 </div>
-<p>Inpainting accepts all the arguments used for txt2img and img2img, as well as the <code>--mask</code> (<code>-M</code>)
-argument:</p>
+<p>Inpainting accepts all the arguments used for txt2img and img2img, as well as
+the <code>--mask</code> (<code>-M</code>) argument:</p>
 <table>
 <thead>
 <tr>
@@ -1320,32 +1342,37 @@ argument:</p>
 </tbody>
 </table>
 <h2 id="command-line-editing-and-completion">Command-line editing and completion<a class="headerlink" href="#command-line-editing-and-completion" title="Permanent link">#</a></h2>
-<p>If you are on a Macintosh or Linux machine, the command-line offers convenient history tracking,
-editing, and command completion.</p>
+<p>If you are on a Macintosh or Linux machine, the command-line offers convenient
+history tracking, editing, and command completion.</p>
 <ul>
-<li>To scroll through previous commands and potentially edit/reuse them, use the <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and <span class="keys"><kbd class="key-arrow-down">Down</kbd></span>
-  cursor keys.</li>
-<li>To edit the current command, use the <span class="keys"><kbd class="key-arrow-left">Left</kbd></span> and <span class="keys"><kbd class="key-arrow-right">Right</kbd></span> cursor keys to position the cursor,
-  and then <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span> or <span class="keys"><kbd class="key-insert">Ins</kbd></span> characters.</li>
-<li>To move to the very beginning of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-a">A</kbd></span> (or <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-a">A</kbd></span> on the Mac)</li>
+<li>To scroll through previous commands and potentially edit/reuse them, use the
+  <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and <span class="keys"><kbd class="key-arrow-down">Down</kbd></span> cursor keys.</li>
+<li>To edit the current command, use the <span class="keys"><kbd class="key-arrow-left">Left</kbd></span> and <span class="keys"><kbd class="key-arrow-right">Right</kbd></span> cursor keys to
+  position the cursor, and then <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span> or <span class="keys"><kbd class="key-insert">Ins</kbd></span>
+  characters.</li>
+<li>To move to the very beginning of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-a">A</kbd></span> (or
+  <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-a">A</kbd></span> on the Mac)</li>
 <li>To move to the end of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-e">E</kbd></span>.</li>
-<li>To cut a section of the command, position the cursor where you want to start cutting and type
-  <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-k">K</kbd></span>.</li>
-<li>To paste a cut section back in, position the cursor where you want to paste, and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-y">Y</kbd></span></li>
+<li>To cut a section of the command, position the cursor where you want to start
+  cutting and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-k">K</kbd></span>.</li>
+<li>To paste a cut section back in, position the cursor where you want to paste,
+  and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-y">Y</kbd></span></li>
 </ul>
-<p>Windows users can get similar, but more limited, functionality if they launch <code>dream.py</code> with the
-"winpty" program:</p>
+<p>Windows users can get similar, but more limited, functionality if they launch
+<code>dream.py</code> with the "winpty" program:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>winpty python scripts\dream.py
 </code></pre></div>
-<p>On the Mac and Linux platforms, when you exit <code>dream.py</code>, the last 1000 lines of your command-line
-history will be saved. When you restart <code>dream.py</code>, you can access the saved history using the
-<span class="keys"><kbd class="key-arrow-up">Up</kbd></span> key.</p>
-<p>In addition, limited command-line completion is installed. In various contexts, you can start typing
-your command and press tab. A list of potential completions will be presented to you. You can then
-type a little more, hit tab again, and eventually autocomplete what you want.</p>
-<p>When specifying file paths using the one-letter shortcuts, the CLI will attempt to complete
-pathnames for you. This is most handy for the <code>-I</code> (init image) and <code>-M</code> (init mask) paths. To
-initiate completion, start the path with a slash <code>/</code> or <code>./</code>, for example:</p>
+<p>On the Mac and Linux platforms, when you exit <code>dream.py</code>, the last 1000 lines of
+your command-line history will be saved. When you restart <code>dream.py</code>, you can
+access the saved history using the <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> key.</p>
+<p>In addition, limited command-line completion is installed. In various contexts,
+you can start typing your command and press tab. A list of potential completions
+will be presented to you. You can then type a little more, hit tab again, and
+eventually autocomplete what you want.</p>
+<p>When specifying file paths using the one-letter shortcuts, the CLI will attempt
+to complete pathnames for you. This is most handy for the <code>-I</code> (init image) and
+<code>-M</code> (init mask) paths. To initiate completion, start the path with a slash <code>/</code>
+or <code>./</code>, for example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>dream&gt; <span class="s2">&quot;zebra with a mustache&quot;</span> -I./test-pictures&lt;TAB&gt;
 <a id="__codelineno-5-2" name="__codelineno-5-2"></a>-I./test-pictures/Lincoln-and-Parrot.png  -I./test-pictures/zebra.jpg        -I./test-pictures/madonna.png
 <a id="__codelineno-5-3" name="__codelineno-5-3"></a>-I./test-pictures/bad-sketch.png          -I./test-pictures/man_with_eagle/
@@ -1358,7 +1385,7 @@ initiate completion, start the path with a slash <code>/</code> or <code>./</cod
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 20, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 23, 2022</span>
       
         <br>
         Created:

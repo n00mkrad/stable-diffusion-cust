@@ -475,6 +475,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
+        SAMPLER CONVERGENCE
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../help/TROUBLESHOOT/" class="md-nav__link">
         F.A.Q.
       </a>
@@ -771,40 +785,41 @@ the installation worked, your command prompt will be prefixed by the name of the
 current anaconda environment - <code>(base)</code>.</p>
 </li>
 <li>
-<p>Copy the stable-diffusion source code from GitHub:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="o">(</span>base<span class="o">)</span> ~$ git clone https://github.com/invoke-ai/InvokeAI.git
-</code></pre></div>
-<p>This will create stable-diffusion folder where you will follow the rest of the
-steps.</p>
+<p>Copy the InvokeAI source code from GitHub:</p>
 </li>
-<li>
-<p>Enter the newly-created stable-diffusion folder. From this step forward make
-   sure that you are working in the stable-diffusion directory!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="o">(</span>base<span class="o">)</span> ~$ <span class="nb">cd</span> stable-diffusion
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="o">(</span>base<span class="o">)</span> ~/stable-diffusion$
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>(base) ~$ git clone https://github.com/invoke-ai/InvokeAI.git
 </code></pre></div>
-</li>
-<li>
-<p>Use anaconda to copy necessary python packages, create a new python
-   environment named <code>ldm</code> and activate the environment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="o">(</span>base<span class="o">)</span> ~/stable-diffusion$ conda env create -f environment.yaml
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="o">(</span>base<span class="o">)</span> ~/stable-diffusion$ conda activate ldm
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$
+<p>This will create InvokeAI folder where you will follow the rest of the steps.</p>
+<ol>
+<li>Enter the newly-created InvokeAI folder. From this step forward make sure that you are working in the InvokeAI directory!</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>(base) ~$ cd InvokeAI
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>(base) ~/InvokeAI$
 </code></pre></div>
-<p>After these steps, your command prompt will be prefixed by <code>(ldm)</code> as shown
-above.</p>
-</li>
-<li>
-<p>Load a couple of small machine-learning models required by stable diffusion:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ python3 scripts/preload_models.py
+<ol>
+<li>Use anaconda to copy necessary python packages, create a new python
+   environment named <code>ldm</code> and activate the environment.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>(base) ~/InvokeAI$ conda env create -f environment.yaml
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>(base) ~/InvokeAI$ conda activate ldm
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>(ldm) ~/InvokeAI$
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This step is necessary because I modified the original just-in-time
-model loading scheme to allow the script to work on GPU machines that are not
-internet connected. See <a href="../../features/OTHER/#preload-models">Preload Models</a></p>
-</div>
-</li>
+<div class="highlight"><pre><span></span><code>After these steps, your command prompt will be prefixed by `(ldm)` as shown
+above.
+</code></pre></div>
+<ol>
+<li>Load a couple of small machine-learning models required by stable diffusion:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>(ldm) ~/InvokeAI$ python3 scripts/preload_models.py
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>!!! note
+
+    This step is necessary because I modified the original just-in-time
+    model loading scheme to allow the script to work on GPU machines that are not
+    internet connected. See [Preload Models](../features/OTHER.md#preload-models)
+</code></pre></div>
+<ol>
 <li>
 <p>Now you need to install the weights for the stable diffusion model.</p>
 <ul>
@@ -819,35 +834,29 @@ internet connected. See <a href="../../features/OTHER/#preload-models">Preload M
 <p>Now run the following commands from within the stable-diffusion directory.
   This will create a symbolic link from the stable-diffusion model.ckpt file, to
   the true location of the <code>sd-v1-4.ckpt</code> file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ mkdir -p models/ldm/stable-diffusion-v1
-<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ ln -sf /path/to/sd-v1-4.ckpt models/ldm/stable-diffusion-v1/model.ckpt
-</code></pre></div>
-</li>
-<li>
-<p>Start generating images!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1"># for the pre-release weights use the -l or --liaon400m switch</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ python3 scripts/dream.py -l
-<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1"># for the post-release weights do not use the switch</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ python3 scripts/dream.py
-<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c1"># for additional configuration switches and arguments, use -h or --help</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ python3 scripts/dream.py -h
-</code></pre></div>
-</li>
-<li>
-<p>Subsequently, to relaunch the script, be sure to run "conda activate ldm"
-   (step 5, second command), enter the <code>stable-diffusion</code> directory, and then
-   launch the dream script (step 8). If you forget to activate the ldm
-   environment, the script will fail with multiple <code>ModuleNotFound</code> errors.</p>
 </li>
 </ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>(ldm) ~/InvokeAI$ mkdir -p models/ldm/stable-diffusion-v1
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>(ldm) ~/InvokeAI$ ln -sf /path/to/sd-v1-4.ckpt models/ldm/stable-diffusion-v1/model.ckpt
+</code></pre></div>
+<ol>
+<li>Start generating images!</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a># for the pre-release weights use the -l or --liaon400m switch
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>(ldm) ~/InvokeAI$ python3 scripts/dream.py -l
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a># for the post-release weights do not use the switch
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>(ldm) ~/InvokeAI$ python3 scripts/dream.py
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a># for additional configuration switches and arguments, use -h or --help
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>(ldm) ~/InvokeAI$ python3 scripts/dream.py -h
+</code></pre></div>
+<ol>
+<li>Subsequently, to relaunch the script, be sure to run "conda activate ldm" (step 5, second command), enter the <code>InvokeAI</code> directory, and then launch the dream script (step 8). If you forget to activate the ldm environment, the script will fail with multiple <code>ModuleNotFound</code> errors.</li>
+</ol>
 <h2 id="updating-to-newer-versions-of-the-script">Updating to newer versions of the script<a class="headerlink" href="#updating-to-newer-versions-of-the-script" title="Permanent link">#</a></h2>
-<p>This distribution is changing rapidly. If you used the <code>git clone</code> method
-(step 5) to download the stable-diffusion directory, then to update to the
-latest and greatest version, launch the Anaconda window, enter
-<code>stable-diffusion</code> and type:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="o">(</span>ldm<span class="o">)</span> ~/stable-diffusion$ git pull
+<p>This distribution is changing rapidly. If you used the <code>git clone</code> method (step 5) to download the InvokeAI directory, then to update to the latest and greatest version, launch the Anaconda window, enter <code>InvokeAI</code> and type:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>(ldm) ~/InvokeAI$ git pull
 </code></pre></div>
 <p>This will bring your local copy into sync with the remote one.</p>
 
@@ -856,7 +865,7 @@ latest and greatest version, launch the Anaconda window, enter
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 21, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 23, 2022</span>
       
         <br>
         Created:
