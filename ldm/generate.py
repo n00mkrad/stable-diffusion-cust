@@ -804,7 +804,7 @@ class Generate:
         c     = OmegaConf.load(config)
         with open(weights,'rb') as f:
             weight_bytes = f.read()
-        self.model_hash  = self._cached_sha256(weights,weight_bytes)
+        self.model_hash  = 0
         pl_sd = torch.load(io.BytesIO(weight_bytes), map_location='cpu')
         del weight_bytes
         sd    = pl_sd['state_dict']
