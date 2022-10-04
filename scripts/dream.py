@@ -155,11 +155,10 @@ def main_loop(gen, opt, infile):
             except EOFError:
                 done = True
                 continue
-    
-            print(f"cancel = {cancel}")
-                
+                    
             if command == "!reset":
                 cancel = False
+                print("reset.", flush=True)
                 continue
     
             if cancel:
