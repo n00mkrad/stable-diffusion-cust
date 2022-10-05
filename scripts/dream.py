@@ -162,6 +162,7 @@ def main_loop(gen, opt, infile):
                 continue
     
             if cancel:
+                print("skipped.", flush=True)
                 continue
     
             # skip empty lines
