@@ -115,6 +115,12 @@ def main():
     gen.load_model()
     #set additional option
     gen.free_gpu_mem = opt.free_gpu_mem
+    
+    gen.model.cond_stage_model.clip_extend = True
+    gen.model.cond_stage_model.max_clip_extend = 75 * 3
+    gen.model.cond_stage_model.return_layer = -2
+    gen.model.cond_stage_model.do_final_ln = True
+    gen.model.cond_stage_model.inference_mode = False
 
     if not infile:
         print(
