@@ -598,7 +598,8 @@ if __name__ == "__main__":
             now = os.path.basename(os.path.normpath(opt.data_root)) + now
             
         nowname = now + name + opt.postfix
-        logdir = os.path.join(opt.logdir, nowname)
+        #logdir = os.path.join(opt.logdir, nowname)
+        logdir = opt.logdir
 
     ckptdir = os.path.join(logdir, "checkpoints")
     cfgdir = os.path.join(logdir, "configs")
@@ -688,7 +689,7 @@ if __name__ == "__main__":
         if hasattr(model, "monitor"):
             print(f"Monitoring {model.monitor} as checkpoint metric.")
             default_modelckpt_cfg["params"]["monitor"] = model.monitor
-            default_modelckpt_cfg["params"]["save_top_k"] = 1
+            default_modelckpt_cfg["params"]["save_top_k"] = 0
 
         if "modelcheckpoint" in lightning_config:
             modelckpt_cfg = lightning_config.modelcheckpoint
