@@ -56,7 +56,7 @@ if not opt.outpath:
 
 def prune(config_path, in_path, out_path, fp16=False):
     if fp16:
-        print("Saving model as fp16 (half-precision). This cuts the file size in half but may slightly reduce quality.")
+        print("Saving model as fp16 (half-precision). This cuts the file size in half but may slightly reduce quality.", flush=True)
         torch.set_default_tensor_type(torch.HalfTensor)
         torch.set_default_dtype(torch.float16)
     pl_sd = torch.load(in_path, map_location='cpu')
@@ -69,8 +69,8 @@ def prune(config_path, in_path, out_path, fp16=False):
         torch.set_default_tensor_type(torch.FloatTensor)
         torch.set_default_dtype(torch.float32)
 
-print("Pruning...")
+print("Pruning...", flush=True)
 
 prune(opt.configpath, opt.inpath, opt.outpath, opt.fp16)
 
-print("Done.")
+print("Done.", flush=True)
