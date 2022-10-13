@@ -1,6 +1,6 @@
 import argparse
 import os
-from ldm.dream.args import PRECISION_CHOICES
+from ldm.invoke.args import PRECISION_CHOICES
 
 
 def create_cmd_parser():
@@ -44,6 +44,12 @@ def create_cmd_parser():
         metavar="PRECISION",
         help=f'Set model precision. Defaults to auto selected based on device. Options: {", ".join(PRECISION_CHOICES)}',
         default="auto",
+    )
+    parser.add_argument(
+        '--free_gpu_mem',
+        dest='free_gpu_mem',
+        action='store_true',
+        help='Force free gpu memory before final decoding',
     )
 
     return parser

@@ -30,10 +30,10 @@ from send2trash import send2trash
 
 
 from ldm.generate import Generate
-from ldm.dream.restoration import Restoration
-from ldm.dream.pngwriter import PngWriter, retrieve_metadata
-from ldm.dream.args import APP_ID, APP_VERSION, calculate_init_img_hash
-from ldm.dream.conditioning import split_weighted_subprompts
+from ldm.invoke.restoration import Restoration
+from ldm.invoke.pngwriter import PngWriter, retrieve_metadata
+from ldm.invoke.args import APP_ID, APP_VERSION, calculate_init_img_hash
+from ldm.invoke.conditioning import split_weighted_subprompts
 
 from modules.parameters import parameters_to_command
 
@@ -50,6 +50,7 @@ host = opt.host  # Web & socket.io host
 port = opt.port  # Web & socket.io port
 verbose = opt.verbose  # enables copious socket.io logging
 precision = opt.precision
+free_gpu_mem = opt.free_gpu_mem
 embedding_path = opt.embedding_path
 additional_allowed_origins = (
     opt.cors if opt.cors else []
@@ -124,7 +125,7 @@ class CanceledException(Exception):
 
 try:
     gfpgan, codeformer, esrgan = None, None, None
-    from ldm.dream.restoration.base import Restoration
+    from ldm.invoke.restoration.base import Restoration
 
     restoration = Restoration()
     gfpgan, codeformer = restoration.load_face_restore_models()
@@ -148,6 +149,7 @@ generate = Generate(
     precision=precision,
     embedding_path=embedding_path,
 )
+generate.free_gpu_mem = free_gpu_mem
 generate.load_model()
 
 
@@ -162,7 +164,7 @@ init_image_path = os.path.join(result_path, "init-images/")
 mask_image_path = os.path.join(result_path, "mask-images/")
 
 # txt log
-log_path = os.path.join(result_path, "dream_log.txt")
+log_path = os.path.join(result_path, "invoke_log.txt")
 
 # make all output paths
 [
@@ -484,6 +486,8 @@ def parameters_to_generated_image_metadata(parameters):
         "variations",
         "steps",
         "cfg_scale",
+        "threshold",
+        "perlin",
         "step_number",
         "width",
         "height",

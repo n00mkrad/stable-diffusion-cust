@@ -19,6 +19,7 @@ import cv2
 import skimage
 
 from omegaconf import OmegaConf
+from ldm.invoke.generator.base import downsampling
 from PIL import Image, ImageOps
 from torch import nn
 from pytorch_lightning import seed_everything, logging
@@ -27,47 +28,11 @@ from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 from ldm.models.diffusion.ksampler import KSampler
-from ldm.dream.pngwriter import PngWriter
-from ldm.dream.args import metadata_from_png
-from ldm.dream.image_util import InitImageResizer
-from ldm.dream.devices import choose_torch_device, choose_precision
-from ldm.dream.conditioning import get_uc_and_c
-
-def fix_func(orig):
-    if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
-        def new_func(*args, **kw):
-            device = kw.get("device", "mps")
-            kw["device"]="cpu"
-            return orig(*args, **kw).to(device)
-        return new_func
-    return orig
-
-torch.rand = fix_func(torch.rand)
-torch.rand_like = fix_func(torch.rand_like)
-torch.randn = fix_func(torch.randn)
-torch.randn_like = fix_func(torch.randn_like)
-torch.randint = fix_func(torch.randint)
-torch.randint_like = fix_func(torch.randint_like)
-torch.bernoulli = fix_func(torch.bernoulli)
-torch.multinomial = fix_func(torch.multinomial)
-
-def fix_func(orig):
-    if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
-        def new_func(*args, **kw):
-            device = kw.get("device", "mps")
-            kw["device"]="cpu"
-            return orig(*args, **kw).to(device)
-        return new_func
-    return orig
-
-torch.rand = fix_func(torch.rand)
-torch.rand_like = fix_func(torch.rand_like)
-torch.randn = fix_func(torch.randn)
-torch.randn_like = fix_func(torch.randn_like)
-torch.randint = fix_func(torch.randint)
-torch.randint_like = fix_func(torch.randint_like)
-torch.bernoulli = fix_func(torch.bernoulli)
-torch.multinomial = fix_func(torch.multinomial)
+from ldm.invoke.pngwriter import PngWriter
+from ldm.invoke.args import metadata_from_png
+from ldm.invoke.image_util import InitImageResizer
+from ldm.invoke.devices import choose_torch_device, choose_precision
+from ldm.invoke.conditioning import get_uc_and_c
 
 def fix_func(orig):
     if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
@@ -173,7 +138,8 @@ class Generate:
             config                = None,
             gfpgan=None,
             codeformer=None,
-            esrgan=None
+            esrgan=None,
+            free_gpu_mem=False,
     ):
         models              = OmegaConf.load(conf)
         mconfig             = models[model]
@@ -200,6 +166,7 @@ class Generate:
         self.gfpgan = gfpgan
         self.codeformer = codeformer
         self.esrgan = esrgan
+        self.free_gpu_mem = free_gpu_mem
 
         # Note that in previous versions, there was an option to pass the
         # device to Generate(). However the device was then ignored, so
@@ -269,6 +236,8 @@ class Generate:
             log_tokenization = False,
             with_variations  = None,
             variation_amount = 0.0,
+            threshold        = 0.0,
+            perlin           = 0.0,
             # these are specific to img2img and inpaint
             init_img         = None,
             init_mask        = None,
@@ -278,7 +247,6 @@ class Generate:
             # these are specific to embiggen (which also relies on img2img args)
             embiggen       =    None,
             embiggen_tiles =    None,
-            out_direction  =    None,
             # these are specific to GFPGAN/ESRGAN
             facetool         = None,
             gfpgan_strength  = 0,
@@ -287,6 +255,7 @@ class Generate:
             upscale          = None,
             # Set this True to handle KeyboardInterrupt internally
             catch_interrupts = False,
+            hires_fix        = False,
             **args,
     ):   # eat up additional cruft
         """
@@ -308,6 +277,8 @@ class Generate:
            image_callback                  // a function or method that will be called each time an image is generated
            with_variations                 // a weighted list [(seed_1, weight_1), (seed_2, weight_2), ...] of variations which should be applied before doing any generation
            variation_amount                // optional 0-1 value to slerp from -S noise to random noise (allows variations on an image)
+           threshold                       // optional value >=0 to add thresholding to latent values for k-diffusion samplers (0 disables)
+           perlin                          // optional 0-1 value to add a percentage of perlin noise to the initial noise
            embiggen                        // scale factor relative to the size of the --init_img (-I), followed by ESRGAN upscaling strength (0-1.0), followed by minimum amount of overlap between tiles as a decimal ratio (0 - 1.0) or number of pixels
            embiggen_tiles                  // list of tiles by number in order to process and replace onto the image e.g. `0 2 4`
 
@@ -322,9 +293,9 @@ class Generate:
             def process_image(image,seed):
                 image.save(f{'images/seed.png'})
 
-        The callback used by the prompt2png() can be found in ldm/dream_util.py. It contains code
-        to create the requested output directory, select a unique informative name for each image, and
-        write the prompt into the PNG metadata.
+        The code used to save images to a directory can be found in ldm/invoke/pngwriter.py. 
+        It contains code to create the requested output directory, select a unique informative
+        name for each image, and write the prompt into the PNG metadata.
         """
         # TODO: convert this into a getattr() loop
         steps = steps or self.steps
@@ -348,12 +319,16 @@ class Generate:
                 m.padding_mode = 'circular' if seamless else m._orig_padding_mode
 
         assert cfg_scale > 1.0, 'CFG_Scale (-C) must be >1.0'
+        assert threshold >= 0.0, '--threshold must be >=0.0'
         assert (
             0.0 < strength < 1.0
         ), 'img2img and inpaint strength can only work with 0.0 < strength < 1.0'
         assert (
             0.0 <= variation_amount <= 1.0
         ), '-v --variation_amount must be in [0.0, 1.0]'
+        assert (
+                0.0 <= perlin <= 1.0
+        ), '--perlin must be in [0.0, 1.0]'
         assert (
             (embiggen == None and embiggen_tiles == None) or (
                 (embiggen != None or embiggen_tiles != None) and init_img != None)
@@ -395,7 +370,6 @@ class Generate:
                 width,
                 height,
                 fit=fit,
-                out_direction=out_direction,
             )
             if (init_image is not None) and (mask_image is not None):
                 generator = self._make_inpaint()
@@ -403,11 +377,14 @@ class Generate:
                 generator = self._make_embiggen()
             elif init_image is not None:
                 generator = self._make_img2img()
+            elif hires_fix:
+                generator = self._make_txt2img2img()
             else:
                 generator = self._make_txt2img()
 
             generator.set_variation(
-                self.seed, variation_amount, with_variations)
+                self.seed, variation_amount, with_variations
+            )
             results = generator.generate(
                 prompt,
                 iterations=iterations,
@@ -425,6 +402,8 @@ class Generate:
                 init_image=init_image,      # notice that init_image is different from init_img
                 mask_image=mask_image,
                 strength=strength,
+                threshold=threshold,
+                perlin=perlin,
                 embiggen=embiggen,
                 embiggen_tiles=embiggen_tiles,
             )
@@ -487,35 +466,42 @@ class Generate:
             codeformer_fidelity = 0.75,
             upscale             = None,
             out_direction       = None,
+            outcrop             = [],
             save_original       = True, # to get new name
             callback            = None,
             opt                 = None,
             ):
         # retrieve the seed from the image;
-        # note that we will try both the new way and the old way, since not all files have the
-        # metadata (yet)
         seed   = None
         image_metadata = None
         prompt = None
-        try:
-            args = metadata_from_png(image_path)
-            seed   = args.seed
-            prompt = args.prompt
-            print(f'>> retrieved seed {seed} and prompt "{prompt}" from {image_path}')
-        except:
-            m    = re.search('(\d+)\.png$',image_path)
-            if m:
-                seed = m.group(1)
+
+        args   = metadata_from_png(image_path)
+        seed   = args.seed
+        prompt = args.prompt
+        print(f'>> retrieved seed {seed} and prompt "{prompt}" from {image_path}')
 
         if not seed:
             print('* Could not recover seed for image. Replacing with 42. This will not affect image quality')
             seed = 42
-        
+
+        # try to reuse the same filename prefix as the original file.
+        # we take everything up to the first period
+        prefix = None
+        m    = re.match('^([^.]+)\.',os.path.basename(image_path))
+        if m:
+            prefix = m.groups()[0]
+
         # face fixers and esrgan take an Image, but embiggen takes a path
         image = Image.open(image_path)
 
-        # Note that we need to adopt a uniform API for the postprocessors.
-        # This is completely ad hoc ATCM
+        # used by multiple postfixers
+        uc, c = get_uc_and_c(
+            prompt, model =self.model,
+            skip_normalize=opt.skip_normalize,
+            log_tokens    =opt.log_tokenization
+        )
+
         if tool in ('gfpgan','codeformer','upscale'):
             if tool == 'gfpgan':
                 facetool = 'gfpgan'
@@ -532,16 +518,27 @@ class Generate:
                 save_original = save_original,
                 upscale = upscale,
                 image_callback = callback,
+                prefix = prefix,
+            )
+
+        elif tool == 'outcrop':
+            from ldm.invoke.restoration.outcrop import Outcrop
+            extend_instructions = {}
+            for direction,pixels in _pairwise(opt.outcrop):
+                extend_instructions[direction]=int(pixels)
+
+            restorer = Outcrop(image,self,)
+            return restorer.process (
+                extend_instructions,
+                opt            = opt,
+                orig_opt       = args,
+                image_callback = callback,
+                prefix = prefix,
             )
 
         elif tool == 'embiggen':
             # fetch the metadata from the image
             generator = self._make_embiggen()
-            uc, c = get_uc_and_c(
-                prompt, model =self.model,
-                skip_normalize=opt.skip_normalize,
-                log_tokens    =opt.log_tokenization
-            )
             opt.strength  = 0.40
             print(f'>> Setting img2img strength to {opt.strength} for happy embiggening')
             # embiggen takes a image path (sigh)
@@ -562,27 +559,18 @@ class Generate:
                 image_callback = callback,
             )
         elif tool == 'outpaint':
-            oldargs      = metadata_from_png(image_path)
-            opt.strength = 0.83
-            opt.init_img = image_path
-            return self.prompt2image(
-                oldargs.prompt,
-                out_direction  = opt.out_direction,
-                sampler     = self.sampler,
-                steps       = opt.steps,
-                cfg_scale   = opt.cfg_scale,
-                ddim_eta    = self.ddim_eta,
-                conditioning= get_uc_and_c(
-                    oldargs.prompt, model =self.model,
-                    skip_normalize=opt.skip_normalize,
-                    log_tokens    =opt.log_tokenization
-                ),
-                width       = opt.width,
-                height      = opt.height,
-                init_img    = image_path,  # not the Image! (sigh)
-                strength    = opt.strength,
+            from ldm.invoke.restoration.outpaint import Outpaint
+            restorer = Outpaint(image,self)
+            return restorer.process(
+                opt,
+                args,
                 image_callback = callback,
-                )
+                prefix         = prefix
+            )
+                
+        elif tool is None:
+            print(f'* please provide at least one postprocessing option, such as -G or -U')
+            return None
         else:
             print(f'* postprocessing tool {tool} is not yet supported')
             return None
@@ -595,7 +583,6 @@ class Generate:
             width,
             height,
             fit=False,
-            out_direction=None,
     ):
         init_image      = None
         init_mask       = None
@@ -606,60 +593,61 @@ class Generate:
             img,
             width,
             height,
-            fit=fit
-        ) # this returns an Image
-        if out_direction:
-            image    = self._create_outpaint_image(image, out_direction)
-        init_image   = self._create_init_image(image)                   # this returns a torch tensor
+        )
 
         # if image has a transparent area and no mask was provided, then try to generate mask
-        if self._has_transparency(image) and not mask:
-            print(
-                '>> Initial image has transparent areas. Will inpaint in these regions.')
-            if self._check_for_erasure(image):
-                print(
-                    '>> WARNING: Colors underneath the transparent region seem to have been erased.\n',
-                    '>>          Inpainting will be suboptimal. Please preserve the colors when making\n',
-                    '>>          a transparency mask, or provide mask explicitly using --init_mask (-M).'
-                )
+        if self._has_transparency(image):
+            self._transparency_check_and_warning(image, mask)
             # this returns a torch tensor
-            init_mask = self._create_init_mask(image)
+            init_mask = self._create_init_mask(image, width, height, fit=fit)
+            
+        if (image.width * image.height) > (self.width * self.height):
+            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
+
+        init_image   = self._create_init_image(image,width,height,fit=fit)                   # this returns a torch tensor
 
         if mask:
             mask_image = self._load_img(
-                mask, width, height, fit=fit)  # this returns an Image
-            init_mask = self._create_init_mask(mask_image)
+                mask, width, height)  # this returns an Image
+            init_mask = self._create_init_mask(mask_image,width,height,fit=fit)
 
         return init_image, init_mask
 
     def _make_base(self):
         if not self.generators.get('base'):
-            from ldm.dream.generator import Generator
+            from ldm.invoke.generator import Generator
             self.generators['base'] = Generator(self.model, self.precision)
         return self.generators['base']
 
     def _make_img2img(self):
         if not self.generators.get('img2img'):
-            from ldm.dream.generator.img2img import Img2Img
+            from ldm.invoke.generator.img2img import Img2Img
             self.generators['img2img'] = Img2Img(self.model, self.precision)
         return self.generators['img2img']
 
     def _make_embiggen(self):
         if not self.generators.get('embiggen'):
-            from ldm.dream.generator.embiggen import Embiggen
+            from ldm.invoke.generator.embiggen import Embiggen
             self.generators['embiggen'] = Embiggen(self.model, self.precision)
         return self.generators['embiggen']
 
     def _make_txt2img(self):
         if not self.generators.get('txt2img'):
-            from ldm.dream.generator.txt2img import Txt2Img
+            from ldm.invoke.generator.txt2img import Txt2Img
             self.generators['txt2img'] = Txt2Img(self.model, self.precision)
             self.generators['txt2img'].free_gpu_mem = self.free_gpu_mem
         return self.generators['txt2img']
 
+    def _make_txt2img2img(self):
+        if not self.generators.get('txt2img2'):
+            from ldm.invoke.generator.txt2img2img import Txt2Img2Img
+            self.generators['txt2img2'] = Txt2Img2Img(self.model, self.precision)
+            self.generators['txt2img2'].free_gpu_mem = self.free_gpu_mem
+        return self.generators['txt2img2']
+
     def _make_inpaint(self):
         if not self.generators.get('inpaint'):
-            from ldm.dream.generator.inpaint import Inpaint
+            from ldm.invoke.generator.inpaint import Inpaint
             self.generators['inpaint'] = Inpaint(self.model, self.precision)
         return self.generators['inpaint']
 
@@ -718,7 +706,9 @@ class Generate:
                                 strength      =  0.0,
                                 codeformer_fidelity = 0.75,
                                 save_original = False,
-                                image_callback = None):
+                                image_callback = None,
+                                prefix = None,
+    ):
             
         for r in image_list:
             image, seed = r
@@ -752,7 +742,7 @@ class Generate:
                 )
 
             if image_callback is not None:
-                image_callback(image, seed, upscaled=True)
+                image_callback(image, seed, upscaled=True, use_prefix=prefix)
             else:
                 r[0] = image
 
@@ -788,7 +778,7 @@ class Generate:
 
         print(msg)
 
-    # Be warned: config is the path to the model config file, not the dream conf file!
+    # Be warned: config is the path to the model config file, not the invoke conf file!
     # Also note that we can get config and weights from self, so why do we need to
     # pass them as args?
     def _load_model_from_config(self, config, weights):
@@ -835,7 +825,7 @@ class Generate:
 
         return model
 
-    def _load_img(self, img, width, height, fit=False):
+    def _load_img(self, img, width, height)->Image:
         if isinstance(img, Image.Image):
             image = img
             print(
@@ -853,96 +843,33 @@ class Generate:
             print(
                 f'>> loaded input image of size {image.width}x{image.height}'
             )
+        image = ImageOps.exif_transpose(image)
+        return image
+
+    def _create_init_image(self, image, width, height, fit=True):
+        image = image.convert('RGB')
         if fit:
             image = self._fit_image(image, (width, height))
         else:
             image = self._squeeze_image(image)
-        return image
-
-    def _create_init_image(self, image):
-        image = image.convert('RGB')
-        # print(
-        #     f'>> DEBUG: writing the image to img.png'
-        # )
-        # image.save('img.png')
         image = np.array(image).astype(np.float32) / 255.0
         image = image[None].transpose(0, 3, 1, 2)
         image = torch.from_numpy(image)
         image = 2.0 * image - 1.0
         return image.to(self.device)
 
-    #  TODO: outpainting is a post-processing application and should be made to behave
-    # like the other ones.
-    def _create_outpaint_image(self, image, direction_args):
-        assert len(direction_args) in [1, 2], 'Direction (-D) must have exactly one or two arguments.'
-
-        if len(direction_args) == 1:
-            direction = direction_args[0]
-            pixels = None
-        elif len(direction_args) == 2:
-            direction = direction_args[0]
-            pixels = int(direction_args[1])
-
-        assert direction in ['top', 'left', 'bottom', 'right'], 'Direction (-D) must be one of "top", "left", "bottom", "right"'
-
-        image = image.convert("RGBA")
-        # we always extend top, but rotate to extend along the requested side
-        if direction == 'left':
-            image = image.transpose(Image.Transpose.ROTATE_270)
-        elif direction == 'bottom':
-            image = image.transpose(Image.Transpose.ROTATE_180)
-        elif direction == 'right':
-            image = image.transpose(Image.Transpose.ROTATE_90)
-
-        pixels = image.height//2 if pixels is None else int(pixels)
-        assert 0 < pixels < image.height, 'Direction (-D) pixels length must be in the range 0 - image.size'
-
-        # the top part of the image is taken from the source image mirrored
-        # coordinates (0,0) are the upper left corner of an image
-        top = image.transpose(Image.Transpose.FLIP_TOP_BOTTOM).convert("RGBA")
-        top = top.crop((0, top.height - pixels, top.width, top.height))
-
-        # setting all alpha of the top part to 0
-        alpha = top.getchannel("A")
-        alpha.paste(0, (0, 0, top.width, top.height))
-        top.putalpha(alpha)
-
-        # taking the bottom from the original image
-        bottom = image.crop((0, 0, image.width, image.height - pixels))
-
-        new_img = image.copy()
-        new_img.paste(top, (0, 0))
-        new_img.paste(bottom, (0, pixels))
-
-        # create a 10% dither in the middle
-        dither = min(image.height//10, pixels)
-        for x in range(0, image.width, 2):
-            for y in range(pixels - dither, pixels + dither):
-                (r, g, b, a) = new_img.getpixel((x, y))
-                new_img.putpixel((x, y), (r, g, b, 0))
-
-        # let's rotate back again
-        if direction == 'left':
-            new_img = new_img.transpose(Image.Transpose.ROTATE_90)
-        elif direction == 'bottom':
-            new_img = new_img.transpose(Image.Transpose.ROTATE_180)
-        elif direction == 'right':
-            new_img = new_img.transpose(Image.Transpose.ROTATE_270)
-
-        return new_img
-
-    def _create_init_mask(self, image):
+    def _create_init_mask(self, image, width, height, fit=True):
         # convert into a black/white mask
         image = self._image_to_mask(image)
         image = image.convert('RGB')
-        # BUG: We need to use the model's downsample factor rather than hardcoding "8"
-        from ldm.dream.generator.base import downsampling
+
+        # now we adjust the size
+        if fit:
+            image = self._fit_image(image, (width, height))
+        else:
+            image = self._squeeze_image(image)
         image = image.resize((image.width//downsampling, image.height //
                               downsampling), resample=Image.Resampling.NEAREST)
-        # print(
-        #     f'>> DEBUG: writing the mask to mask.png'
-        #     )
-        # image.save('mask.png')
         image = np.array(image)
         image = image.astype(np.float32) / 255.0
         image = image[None].transpose(0, 3, 1, 2)
@@ -987,6 +914,17 @@ class Generate:
                         colored += 1
         return colored == 0
 
+    def _transparency_check_and_warning(self,image, mask):
+        if not mask:
+            print(
+                '>> Initial image has transparent areas. Will inpaint in these regions.')
+            if self._check_for_erasure(image):
+                print(
+                    '>> WARNING: Colors underneath the transparent region seem to have been erased.\n',
+                    '>>          Inpainting will be suboptimal. Please preserve the colors when making\n',
+                    '>>          a transparency mask, or provide mask explicitly using --init_mask (-M).'
+                )
+
     def _squeeze_image(self, image):
         x, y, resize_needed = self._resolution_check(image.width, image.height)
         if resize_needed:
@@ -1024,6 +962,14 @@ class Generate:
             height = h
             width = w
             resize_needed = True
+        if (width * height) > (self.width * self.height):
+            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
+
+        if (width * height) > (self.width * self.height):
+            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
+
+        if (width * height) > (self.width * self.height):
+            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
 
         return width, height, resize_needed
 
@@ -1051,3 +997,20 @@ class Generate:
             f.write(hash)
         return hash
 
+    def write_intermediate_images(self,modulus,path):
+        counter = -1
+        if not os.path.exists(path):
+            os.makedirs(path)
+        def callback(img):
+            nonlocal counter
+            counter += 1
+            if counter % modulus != 0:
+                return;
+            image = self.sample_to_image(img)
+            image.save(os.path.join(path,f'{counter:03}.png'),'PNG')
+        return callback
+
+def _pairwise(iterable):
+    "s -> (s0, s1), (s2, s3), (s4, s5), ..."
+    a = iter(iterable)
+    return zip(a, a)
