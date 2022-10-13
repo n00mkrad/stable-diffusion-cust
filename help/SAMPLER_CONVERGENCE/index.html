@@ -10,14 +10,14 @@
         <meta name="author" content="mauwii">
       
       
-        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/help/SAMPLER_CONVERGENCE/">
+        <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/help/SAMPLER_CONVERGENCE/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
     
     
       
-        <title>SAMPLER CONVERGENCE - Dream Script Docs</title>
+        <title>Sampler Convergence - Stable Diffusion Toolkit Docs</title>
       
     
     
@@ -81,7 +81,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Dream Script Docs" class="md-header__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-header__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -94,13 +94,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Dream Script Docs
+            Stable Diffusion Toolkit Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SAMPLER CONVERGENCE
+              Sampler Convergence
             
           </span>
         </div>
@@ -120,7 +120,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -166,13 +166,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
       </div>
@@ -201,23 +201,23 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Dream Script Docs" class="md-nav__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-nav__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    Dream Script Docs
+    Stable Diffusion Toolkit Docs
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
     </div>
@@ -248,7 +248,7 @@
   
     <li class="md-nav__item">
       <a href="../../CHANGELOG/" class="md-nav__link">
-        **Changelog**
+        Changelog
       </a>
     </li>
   
@@ -386,8 +386,22 @@
   
   
     <li class="md-nav__item">
+      <a href="../../features/POSTPROCESS/" class="md-nav__link">
+        Postprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../features/PROMPTS/" class="md-nav__link">
-        Prompting Features
+        Prompting-Features
       </a>
     </li>
   
@@ -401,21 +415,7 @@
   
     <li class="md-nav__item">
       <a href="../../features/TEXTUAL_INVERSION/" class="md-nav__link">
-        TEXTUAL_INVERSION
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../features/UPSCALE/" class="md-nav__link">
-        Upscale
+        Textual-Inversion
       </a>
     </li>
   
@@ -443,7 +443,7 @@
   
     <li class="md-nav__item">
       <a href="../../features/WEB/" class="md-nav__link">
-        Barebones Web Server
+        InvokeAI Web Server
       </a>
     </li>
   
@@ -498,14 +498,16 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          SAMPLER CONVERGENCE
+          Sampler Convergence
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        SAMPLER CONVERGENCE
+        Sampler Convergence
       </a>
       
         
@@ -513,6 +515,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -522,57 +526,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sampler-convergence" class="md-nav__link">
-    Sampler Convergence
-  </a>
-  
-    <nav class="md-nav" aria-label="Sampler Convergence">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#sampler-results" class="md-nav__link">
     Sampler results
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#sampler-convergence_1" class="md-nav__link">
     Sampler convergence
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#batch-generation-speedup" class="md-nav__link">
     Batch generation speedup
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#topic-convergance" class="md-nav__link">
     Topic convergance
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#sampler-generation-times" class="md-nav__link">
     Sampler generation times
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#three-key-points" class="md-nav__link">
     Three key points
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -640,7 +631,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_DOCKER/" class="md-nav__link">
-        Before you begin
+        Docker
       </a>
     </li>
   
@@ -774,6 +765,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -782,57 +775,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sampler-convergence" class="md-nav__link">
-    Sampler Convergence
-  </a>
-  
-    <nav class="md-nav" aria-label="Sampler Convergence">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#sampler-results" class="md-nav__link">
     Sampler results
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#sampler-convergence_1" class="md-nav__link">
     Sampler convergence
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#batch-generation-speedup" class="md-nav__link">
     Batch generation speedup
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#topic-convergance" class="md-nav__link">
     Topic convergance
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#sampler-generation-times" class="md-nav__link">
     Sampler generation times
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#three-key-points" class="md-nav__link">
     Three key points
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -848,41 +828,28 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/help/SAMPLER_CONVERGENCE.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/help/SAMPLER_CONVERGENCE.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>SAMPLER CONVERGENCE</h1>
-
-<h2 id="sampler-convergence"><em>Sampler Convergence</em><a class="headerlink" href="#sampler-convergence" title="Permanent link">#</a></h2>
+<h1 id="sampler-convergence"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 22H10v-2h12v2M2 22v-2h7v2H2m16-4v-8h4v8h-4m0-15h4v6h-4V3M2 18V3h14v15H2m7-3.44a3 3 0 0 0 3-3c0-2-3-5.37-3-5.37s-3 3.37-3 5.37a3 3 0 0 0 3 3Z"/></svg></span> <em>Sampler Convergence</em><a class="headerlink" href="#sampler-convergence" title="Permanent link">#</a></h1>
 <p>As features keep increasing, making the right choices for your needs can become increasingly difficult. What sampler to use? And for how many steps? Do you change the CFG value? Do you use prompt weighting? Do you allow variations?</p>
 <p>Even once you have a result, do you blend it with other images? Pass it through <code>img2img</code>? With what strength? Do you use inpainting to correct small details? Outpainting to extend cropped sections?</p>
 <p>The purpose of this series of documents is to help you better understand these tools, so you can make the best out of them. Feel free to contribute with your own findings!</p>
 <p>In this document, we will talk about sampler convergence.</p>
 <p>Looking for a short version? Here's a TL;DR in 3 tables.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Remember</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Results converge as steps (<code>-s</code>) are increased (except for <code>K_DPM_2_A</code> and <code>K_EULER_A</code>). Often at ≥ <code>-s100</code>, but may require ≥ <code>-s700</code>).</td>
-</tr>
-<tr>
-<td align="left">Producing a batch of candidate images at low (<code>-s8</code> to <code>-s30</code>) step counts can save you hours of computation.</td>
-</tr>
-<tr>
-<td align="left"><code>K_HEUN</code> and <code>K_DPM_2</code>  converge in less steps (but are slower).</td>
-</tr>
-<tr>
-<td align="left"><code>K_DPM_2_A</code> and <code>K_EULER_A</code> incorporate a lot of creativity/variability.</td>
-</tr>
-</tbody>
-</table>
+<div class="admonition note">
+<p class="admonition-title">Remember</p>
+<ul>
+<li>Results converge as steps (<code>-s</code>) are increased (except for <code>K_DPM_2_A</code> and <code>K_EULER_A</code>). Often at ≥ <code>-s100</code>, but may require ≥ <code>-s700</code>).</li>
+<li>Producing a batch of candidate images at low (<code>-s8</code> to <code>-s30</code>) step counts can save you hours of computation.</li>
+<li><code>K_HEUN</code> and <code>K_DPM_2</code>  converge in less steps (but are slower).</li>
+<li><code>K_DPM_2_A</code> and <code>K_EULER_A</code> incorporate a lot of creativity/variability.</li>
+</ul>
+</div>
+<div align="center">
 <table>
 <thead>
 <tr>
@@ -925,21 +892,12 @@
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th align="left">Suggestions</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">For most use cases, <code>K_LMS</code>, <code>K_HEUN</code> and <code>K_DPM_2</code> are the best choices (the latter 2 run 0.5x as quick, but tend to converge 2x as quick as <code>K_LMS</code>). At very low steps (≤ <code>-s8</code>), <code>K_HEUN</code> and <code>K_DPM_2</code> are not recommended. Use <code>K_LMS</code> instead.</td>
-</tr>
-<tr>
-<td align="left">For variability, use <code>K_EULER_A</code> (runs 2x as quick as <code>K_DPM_2_A</code>).</td>
-</tr>
-</tbody>
-</table>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">suggestions</p>
+<p>For most use cases, <code>K_LMS</code>, <code>K_HEUN</code> and <code>K_DPM_2</code> are the best choices (the latter 2 run 0.5x as quick, but tend to converge 2x as quick as <code>K_LMS</code>). At very low steps (≤ <code>-s8</code>), <code>K_HEUN</code> and <code>K_DPM_2</code> are not recommended. Use <code>K_LMS</code> instead.</p>
+<p>For variability, use <code>K_EULER_A</code> (runs 2x as quick as <code>K_DPM_2_A</code>).</p>
+</div>
 <hr />
 <h3 id="sampler-results"><em>Sampler results</em><a class="headerlink" href="#sampler-results" title="Permanent link">#</a></h3>
 <p>Let's start by choosing a prompt and using it with each of our 8 samplers, running it for 10, 20, 30, 40, 50 and 100 steps.</p>
@@ -953,11 +911,13 @@ Among K-samplers, <code>K_HEUN</code> and <code>K_DPM_2</code> seem to require t
 <p>This realization is very useful because it means you don't need to create a batch of 100 images (<code>-n100</code>) at <code>-s100</code> to choose your favorite 2 or 3 images.
 You can produce the same 100 images at <code>-s10</code> to <code>-s30</code> using a K-sampler (since they converge faster), get a rough idea of the final result, choose your 2 or 3 favorite ones, and then run <code>-s100</code> on those images to polish some details.
 The latter technique is 3-8x as quick.</p>
-<p>Example:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
 <p>At 60s per 100 steps.</p>
-<p>(Option A) 60s * 100 images = 6000s (100 images at <code>-s100</code>, manually picking 3 favorites)</p>
-<p>(Option B) 6s * 100 images + 60s * 3 images = 780s (100 images at <code>-s10</code>, manually picking 3 favorites, and running those 3 at <code>-s100</code> to polish details)</p>
-<p>The result is 1 hour and 40 minutes (Option A) vs 13 minutes (Option B).</p>
+<p>A) 60s * 100 images = 6000s (100 images at <code>-s100</code>, manually picking 3 favorites)</p>
+<p>B) 6s <em>100 images + 60s</em> 3 images = 780s (100 images at <code>-s10</code>, manually picking 3 favorites, and running those 3 at <code>-s100</code> to polish details)</p>
+<p>The result is <strong>1 hour and 40 minutes</strong> for Variant A, vs <strong>13 minutes</strong> for Variant B.</p>
+</div>
 <h3 id="topic-convergance"><em>Topic convergance</em><a class="headerlink" href="#topic-convergance" title="Permanent link">#</a></h3>
 <p>Now, these results seem interesting, but do they hold for other topics? How about nature? Food? People? Animals? Let's try!</p>
 <p>Nature. <code>"valley landscape wallpaper, d&amp;d art, fantasy, painted, 4k, high detail, sharp focus, washed colors, elaborate excellent painted illustration" -W512 -H512 -C7.5 -S1458228930</code></p>
@@ -978,20 +938,54 @@ The latter technique is 3-8x as quick.</p>
 <p>Note also the point of convergence may not be the most desirable state (e.g. I prefer an earlier version of the face, more rounded), but it will probably be the most coherent arms/hands/face attributes-wise. You can always merge different images with a photo editing tool and pass it through <code>img2img</code> to smoothen the composition.</p>
 <h3 id="sampler-generation-times"><em>Sampler generation times</em><a class="headerlink" href="#sampler-generation-times" title="Permanent link">#</a></h3>
 <p>Once we understand the concept of sampler convergence, we must look into the performance of each sampler in terms of steps (iterations) per second, as not all samplers run at the same speed.</p>
-<p>On my M1 Max with 64GB of RAM, for a 512x512 image:
-| Sampler   | (3 sample average) it/s |
-|---|---|
-|  <code>DDIM</code> | 1.89  |
-|  <code>PLMS</code> | 1.86  |
-|  <code>K_EULER</code> | 1.86  |
-|  <code>K_LMS</code> | 1.91  |
-|  <code>K_HEUN</code> | 0.95 (slower)  |
-|  <code>K_DPM_2</code> | 0.95 (slower)  |
-|  <code>K_DPM_2_A</code> | 0.95 (slower)  |
-|  <code>K_EULER_A</code> | 1.86  |</p>
+<div align="center">
+<p>On my M1 Max with 64GB of RAM, for a 512x512 image</p>
+<table>
+<thead>
+<tr>
+<th align="left">Sampler</th>
+<th align="left">(3 sample average) it/s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>DDIM</code></td>
+<td align="left">1.89</td>
+</tr>
+<tr>
+<td align="left"><code>PLMS</code></td>
+<td align="left">1.86</td>
+</tr>
+<tr>
+<td align="left"><code>K_EULER</code></td>
+<td align="left">1.86</td>
+</tr>
+<tr>
+<td align="left"><code>K_LMS</code></td>
+<td align="left">1.91</td>
+</tr>
+<tr>
+<td align="left"><code>K_HEUN</code></td>
+<td align="left">0.95 (slower)</td>
+</tr>
+<tr>
+<td align="left"><code>K_DPM_2</code></td>
+<td align="left">0.95 (slower)</td>
+</tr>
+<tr>
+<td align="left"><code>K_DPM_2_A</code></td>
+<td align="left">0.95 (slower)</td>
+</tr>
+<tr>
+<td align="left"><code>K_EULER_A</code></td>
+<td align="left">1.86</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Combining our results with the steps per second of each sampler, three choices come out on top: <code>K_LMS</code>, <code>K_HEUN</code> and <code>K_DPM_2</code> (where the latter two run 0.5x as quick but tend to converge 2x as quick as <code>K_LMS</code>). For creativity and a lot of variation between iterations, <code>K_EULER_A</code> can be a good choice (which runs 2x as quick as <code>K_DPM_2_A</code>).</p>
 <p>Additionally, image generation at very low steps (≤ <code>-s8</code>) is not recommended for <code>K_HEUN</code> and <code>K_DPM_2</code>. Use <code>K_LMS</code> instead.</p>
-<p><img width="397" alt="192044949-67d5d441-a0d5-4d5a-be30-5dda4fc28a00-min" src="https://user-images.githubusercontent.com/50542132/192046823-2714cb29-bbf3-4eb1-9213-e27a0963905c.png"></p>
+<p><img alt="K-compare" src="https://user-images.githubusercontent.com/50542132/192046823-2714cb29-bbf3-4eb1-9213-e27a0963905c.png" width="600" /></p>
 <h3 id="three-key-points"><em>Three key points</em><a class="headerlink" href="#three-key-points" title="Permanent link">#</a></h3>
 <p>Finally, it is relevant to mention that, in general, there are 3 important moments in the process of image formation as steps increase:</p>
 <ul>
@@ -1012,7 +1006,7 @@ The latter technique is 3-8x as quick.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 24, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 11, 2022</span>
       
         <br>
         Created:
@@ -1034,7 +1028,7 @@ The latter technique is 3-8x as quick.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../../features/WEB/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Barebones Web Server" rel="prev">
+        <a href="../../features/WEB/" class="md-footer__link md-footer__link--prev" aria-label="Previous: InvokeAI Web Server" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1043,7 +1037,7 @@ The latter technique is 3-8x as quick.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Barebones Web Server
+              InvokeAI Web Server
             </div>
           </div>
         </a>

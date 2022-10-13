@@ -10,14 +10,14 @@
         <meta name="author" content="mauwii">
       
       
-        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/features/INPAINTING/">
+        <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/features/INPAINTING/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
     
     
       
-        <title>Inpainting - Dream Script Docs</title>
+        <title>Inpainting - Stable Diffusion Toolkit Docs</title>
       
     
     
@@ -81,7 +81,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Dream Script Docs" class="md-header__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-header__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -94,7 +94,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Dream Script Docs
+            Stable Diffusion Toolkit Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -120,7 +120,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -166,13 +166,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
       </div>
@@ -201,23 +201,23 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Dream Script Docs" class="md-nav__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-nav__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    Dream Script Docs
+    Stable Diffusion Toolkit Docs
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
     </div>
@@ -248,7 +248,7 @@
   
     <li class="md-nav__item">
       <a href="../../CHANGELOG/" class="md-nav__link">
-        **Changelog**
+        Changelog
       </a>
     </li>
   
@@ -443,8 +443,22 @@
   
   
     <li class="md-nav__item">
+      <a href="../POSTPROCESS/" class="md-nav__link">
+        Postprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../PROMPTS/" class="md-nav__link">
-        Prompting Features
+        Prompting-Features
       </a>
     </li>
   
@@ -458,21 +472,7 @@
   
     <li class="md-nav__item">
       <a href="../TEXTUAL_INVERSION/" class="md-nav__link">
-        TEXTUAL_INVERSION
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../UPSCALE/" class="md-nav__link">
-        Upscale
+        Textual-Inversion
       </a>
     </li>
   
@@ -500,7 +500,7 @@
   
     <li class="md-nav__item">
       <a href="../WEB/" class="md-nav__link">
-        Barebones Web Server
+        InvokeAI Web Server
       </a>
     </li>
   
@@ -548,7 +548,7 @@
   
     <li class="md-nav__item">
       <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
-        SAMPLER CONVERGENCE
+        Sampler Convergence
       </a>
     </li>
   
@@ -610,7 +610,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_DOCKER/" class="md-nav__link">
-        Before you begin
+        Docker
       </a>
     </li>
   
@@ -786,7 +786,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/features/INPAINTING.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/INPAINTING.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
@@ -796,18 +796,18 @@
 <h2 id="creating-transparent-regions-for-inpainting"><strong>Creating Transparent Regions for Inpainting</strong><a class="headerlink" href="#creating-transparent-regions-for-inpainting" title="Permanent link">#</a></h2>
 <p>Inpainting is really cool. To do it, you start with an initial image and use a photoeditor to make
 one or more regions transparent (i.e. they have a "hole" in them). You then provide the path to this
-image at the dream&gt; command line using the <code>-I</code> switch. Stable Diffusion will only paint within the
+image at the invoke&gt; command line using the <code>-I</code> switch. Stable Diffusion will only paint within the
 transparent region.</p>
 <p>There's a catch. In the current implementation, you have to prepare the initial image correctly so
 that the underlying colors are preserved under the transparent area. Many imaging editing
 applications will by default erase the color information under the transparent pixels and replace
 them with white or black, which will lead to suboptimal inpainting. You also must take care to
 export the PNG file in such a way that the color information is preserved.</p>
-<p>If your photoeditor is erasing the underlying color information, <code>dream.py</code> will give you a big fat
+<p>If your photoeditor is erasing the underlying color information, <code>invoke.py</code> will give you a big fat
 warning. If you can't find a way to coax your photoeditor to retain color values under transparent
 areas, then you can combine the <code>-I</code> and <code>-M</code> switches to provide both the original unedited image
 and the masked (partially transparent) image:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>dream&gt; <span class="s2">&quot;man with cat on shoulder&quot;</span> -I./images/man.png -M./images/man-transparent.png
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>invoke&gt; <span class="s2">&quot;man with cat on shoulder&quot;</span> -I./images/man.png -M./images/man-transparent.png
 </code></pre></div>
 <p>We are hoping to get rid of the need for this workaround in an upcoming release.</p>
 <hr />
@@ -815,47 +815,48 @@ and the masked (partially transparent) image:</p>
 <p><a href="https://www.gimp.org/">GIMP</a> is a popular Linux photoediting tool.</p>
 <ol>
 <li>Open image in GIMP.</li>
-<li>Layer-&gt;Transparency-&gt;Add Alpha Channel</li>
+<li>Layer &rarr; Transparency &rarr; Add Alpha Channel</li>
 <li>Use lasoo tool to select region to mask</li>
-<li>Choose Select -&gt; Float to create a floating selection</li>
+<li>Choose Select &rarr; Float to create a floating selection</li>
 <li>Open the Layers toolbar (<span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-l">L</kbd></span>) and select "Floating Selection"</li>
-<li>Set opacity to 0%</li>
+<li>Set opacity to a value between 0% and 99%</li>
 <li>Export as PNG</li>
 <li>In the export dialogue, Make sure the "Save colour values from
    transparent pixels" checkbox is selected.</li>
 </ol>
+<hr />
 <h2 id="recipe-for-adobe-photoshop">Recipe for Adobe Photoshop<a class="headerlink" href="#recipe-for-adobe-photoshop" title="Permanent link">#</a></h2>
 <ol>
-<li>Open image in Photoshop</li>
-</ol>
-<p><img alt="step1" src="../../assets/step1.png" /></p>
-<ol>
-<li>Use any of the selection tools (Marquee, Lasso, or Wand) to select the area you desire to inpaint.</li>
-</ol>
-<p><img alt="step2" src="../../assets/step2.png" /></p>
-<ol>
+<li>
+<p>Open image in Photoshop</p>
+<p><div align="center" markdown><img alt="step1" src="../../assets/step1.png" /></div></p>
+</li>
+<li>
+<p>Use any of the selection tools (Marquee, Lasso, or Wand) to select the area you desire to inpaint.</p>
+<p><div align="center" markdown><img alt="step2" src="../../assets/step2.png" /></div></p>
+</li>
 <li>
 <p>Because we'll be applying a mask over the area we want to preserve, you should now select the inverse by using the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-i">I</kbd></span> shortcut, or right clicking and using the "Select Inverse" option.</p>
 </li>
 <li>
 <p>You'll now create a mask by selecting the image layer, and Masking the selection. Make sure that you don't delete any of the undrlying image, or your inpainting results will be dramatically impacted.</p>
+<p><div align="center" markdown><img alt="step4" src="../../assets/step4.png" /></div></p>
 </li>
-</ol>
-<p><img alt="step4" src="../../assets/step4.png" /></p>
-<ol>
-<li>Make sure to hide any background layers that are present. You should see the mask applied to your image layer, and the image on your canvas should display the checkered background.</li>
-</ol>
-<p><img alt="step5" src="../../assets/step5.png" /></p>
-<ol>
-<li>Save the image as a transparent PNG by using the "Save a Copy" option in the File menu, or using the Alt + Ctrl + S keyboard shortcut</li>
-</ol>
-<p><img alt="step6" src="../../assets/step6.png" /></p>
-<ol>
-<li>After following the inpainting instructions above (either through the CLI or the Web UI), marvel at your newfound ability to selectively dream. Lookin' good!</li>
-</ol>
-<p><img alt="step7" src="../../assets/step7.png" /></p>
-<ol>
-<li>In the export dialogue, Make sure the "Save colour values from transparent pixels" checkbox is selected.  </li>
+<li>
+<p>Make sure to hide any background layers that are present. You should see the mask applied to your image layer, and the image on your canvas should display the checkered background.</p>
+<p><div align="center" markdown><img alt="step5" src="../../assets/step5.png" /></div></p>
+</li>
+<li>
+<p>Save the image as a transparent PNG by using <code>File</code>&rarr;<code>Save a Copy</code> from the menu bar, or by using the keyboard shortcut <span class="keys"><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-s">S</kbd></span></p>
+<p><div align="center" markdown><img alt="step6" src="../../assets/step6.png" /></div></p>
+</li>
+<li>
+<p>After following the inpainting instructions above (either through the CLI or the Web UI), marvel at your newfound ability to selectively invoke. Lookin' good!</p>
+<p><div align="center" markdown><img alt="step7" src="../../assets/step7.png" /></div></p>
+</li>
+<li>
+<p>In the export dialogue, Make sure the "Save colour values from transparent pixels" checkbox is selected.  </p>
+</li>
 </ol>
 
   <hr>
@@ -863,7 +864,7 @@ and the masked (partially transparent) image:</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 21, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 11, 2022</span>
       
         <br>
         Created:

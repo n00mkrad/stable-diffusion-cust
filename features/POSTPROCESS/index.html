@@ -10,14 +10,14 @@
         <meta name="author" content="mauwii">
       
       
-        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/features/UPSCALE/">
+        <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/features/POSTPROCESS/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
     
     
       
-        <title>Upscale - Dream Script Docs</title>
+        <title>Postprocessing - Stable Diffusion Toolkit Docs</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#intro" class="md-skip">
+        <a href="#postprocessing" class="md-skip">
           Skip to content
         </a>
       
@@ -81,7 +81,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Dream Script Docs" class="md-header__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-header__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -94,13 +94,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Dream Script Docs
+            Stable Diffusion Toolkit Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Upscale
+              Postprocessing
             
           </span>
         </div>
@@ -120,7 +120,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -166,13 +166,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
       </div>
@@ -201,23 +201,23 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Dream Script Docs" class="md-nav__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-nav__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    Dream Script Docs
+    Stable Diffusion Toolkit Docs
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
     </div>
@@ -248,7 +248,7 @@
   
     <li class="md-nav__item">
       <a href="../../CHANGELOG/" class="md-nav__link">
-        **Changelog**
+        Changelog
       </a>
     </li>
   
@@ -386,34 +386,6 @@
               
   
   
-  
-    <li class="md-nav__item">
-      <a href="../PROMPTS/" class="md-nav__link">
-        Prompting Features
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../TEXTUAL_INVERSION/" class="md-nav__link">
-        TEXTUAL_INVERSION
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
     
   
   
@@ -422,14 +394,16 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Upscale
+          Postprocessing
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Upscale
+        Postprocessing
       </a>
       
         
@@ -437,6 +411,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -503,14 +479,14 @@
         
           <li class="md-nav__item">
   <a href="#usage_1" class="md-nav__link">
-    Usage:
+    Usage
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#other-options" class="md-nav__link">
-    Other Options:
+    Other Options
   </a>
   
 </li>
@@ -530,7 +506,7 @@
         
           <li class="md-nav__item">
   <a href="#disabling" class="md-nav__link">
-    Disabling:
+    Disabling
   </a>
   
 </li>
@@ -544,6 +520,34 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PROMPTS/" class="md-nav__link">
+        Prompting-Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TEXTUAL_INVERSION/" class="md-nav__link">
+        Textual-Inversion
+      </a>
     </li>
   
 
@@ -570,7 +574,7 @@
   
     <li class="md-nav__item">
       <a href="../WEB/" class="md-nav__link">
-        Barebones Web Server
+        InvokeAI Web Server
       </a>
     </li>
   
@@ -618,7 +622,7 @@
   
     <li class="md-nav__item">
       <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
-        SAMPLER CONVERGENCE
+        Sampler Convergence
       </a>
     </li>
   
@@ -680,7 +684,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_DOCKER/" class="md-nav__link">
-        Before you begin
+        Docker
       </a>
     </li>
   
@@ -814,6 +818,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -879,14 +885,14 @@
         
           <li class="md-nav__item">
   <a href="#usage_1" class="md-nav__link">
-    Usage:
+    Usage
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#other-options" class="md-nav__link">
-    Other Options:
+    Other Options
   </a>
   
 </li>
@@ -906,7 +912,7 @@
         
           <li class="md-nav__item">
   <a href="#disabling" class="md-nav__link">
-    Disabling:
+    Disabling
   </a>
   
 </li>
@@ -928,51 +934,47 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/features/UPSCALE.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/POSTPROCESS.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>Upscale</h1>
-
+<h1 id="postprocessing"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 14.3-1 1-2-2 1-1c.1-.1.2-.2.4-.2.1 0 .3.1.4.2l1.3 1.3c.1.2.1.5-.1.7M13 19.9V22h2.1l6.1-6.1-2-2-6.2 6M21 5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h6v-1.9l1.1-1.1H5l3.5-4.5 2.5 3 3.5-4.5 1.6 2.1 4.9-5V5Z"/></svg></span> Postprocessing<a class="headerlink" href="#postprocessing" title="Permanent link">#</a></h1>
 <h2 id="intro">Intro<a class="headerlink" href="#intro" title="Permanent link">#</a></h2>
-<p>The script provides the ability to restore faces and upscale. You can apply
-these operations at the time you generate the images, or at any time to a
-previously-generated PNG file, using the
-<a href="#fixing-previously-generated-images">!fix</a> command.</p>
+<p>This extension provides the ability to restore faces and upscale
+images.</p>
+<p>Face restoration and upscaling can be applied at the time you generate
+the images, or at any later time against a previously-generated PNG
+file, using the <a href="#fixing-previously-generated-images">!fix</a>
+command. <a href="../OUTPAINTING/">Outpainting and outcropping</a> can only be
+applied after the fact.</p>
 <h2 id="face-fixing">Face Fixing<a class="headerlink" href="#face-fixing" title="Permanent link">#</a></h2>
 <p>The default face restoration module is GFPGAN. The default upscale is
 Real-ESRGAN. For an alternative face restoration module, see [CodeFormer
 Support] below.</p>
-<p>As of version 1.14, environment.yaml will install the Real-ESRGAN package into
-the standard install location for python packages, and will put GFPGAN into a
-subdirectory of "src" in the InvokeAI directory. (The reason for this is
-that the standard GFPGAN distribution has a minor bug that adversely affects
-image color.) Upscaling with Real-ESRGAN should "just work" without further
-intervention. Simply pass the --upscale (-U) option on the dream&gt; command line,
-or indicate the desired scale on the popup in the Web GUI.</p>
-<p>For <strong>GFPGAN</strong> to work, there is one additional step needed. You will need to
-download and copy the GFPGAN
-<a href="https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth">models file</a>
-into <strong>src/gfpgan/experiments/pretrained_models</strong>. On Mac and Linux systems,
-here's how you'd do it using <strong>wget</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>&gt; wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth src/gfpgan/experiments/pretrained_models/
+<p>As of version 1.14, environment.yaml will install the Real-ESRGAN
+package into the standard install location for python packages, and
+will put GFPGAN into a subdirectory of "src" in the InvokeAI
+directory. Upscaling with Real-ESRGAN should "just work" without
+further intervention. Simply pass the --upscale (-U) option on the
+invoke&gt; command line, or indicate the desired scale on the popup in
+the Web GUI.</p>
+<p><strong>GFPGAN</strong> requires a series of downloadable model files to
+work. These are loaded when you run <code>scripts/preload_models.py</code>. If
+GFPAN is failing with an error, please run the following from the
+InvokeAI directory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>python scripts/preload_models.py
 </code></pre></div>
-<p>Make sure that you're in the InvokeAI directory when you do this.</p>
-<p>Alternatively, if you have GFPGAN installed elsewhere, or if you are using an
-earlier version of this package which asked you to install GFPGAN in a sibling
-directory, you may use the <code>--gfpgan_dir</code> argument with <code>dream.py</code> to set a
-custom path to your GFPGAN directory. <em>There are other GFPGAN related boot
-arguments if you wish to customize further.</em></p>
-<div class="admonition warning">
-<p class="admonition-title">Internet connection needed</p>
-<p>Users whose GPU machines are isolated from the Internet (e.g.
-on a University cluster) should be aware that the first time you run dream.py with GFPGAN and
-Real-ESRGAN turned on, it will try to download model files from the Internet. To rectify this, you
-may run <code>python3 scripts/preload_models.py</code> after you have installed GFPGAN and all its
-dependencies.</p>
-</div>
+<p>If you do not run this script in advance, the GFPGAN module will attempt
+to download the models files the first time you try to perform facial
+reconstruction.</p>
+<p>Alternatively, if you have GFPGAN installed elsewhere, or if you are
+using an earlier version of this package which asked you to install
+GFPGAN in a sibling directory, you may use the <code>--gfpgan_dir</code> argument
+with <code>invoke.py</code> to set a custom path to your GFPGAN directory. <em>There
+are other GFPGAN related boot arguments if you wish to customize
+further.</em></p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <p>You will now have access to two new prompt arguments.</p>
 <h3 id="upscaling">Upscaling<a class="headerlink" href="#upscaling" title="Permanent link">#</a></h3>
@@ -998,10 +1000,10 @@ modified. If you want to save the original Stable Diffusion generation, you can
 use the <code>-save_orig</code> prompt argument to save the original unaffected version
 too.</p>
 <h3 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>dream&gt; superman dancing with a panda bear -U <span class="m">2</span> <span class="m">0</span>.6 -G <span class="m">0</span>.4
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>invoke&gt; <span class="s2">&quot;superman dancing with a panda bear&quot;</span> -U <span class="m">2</span> <span class="m">0</span>.6 -G <span class="m">0</span>.4
 </code></pre></div>
 <p>This also works with img2img:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>dream&gt; a man wearing a pineapple hat -I path/to/your/file.png -U <span class="m">2</span> <span class="m">0</span>.5 -G <span class="m">0</span>.6
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;a man wearing a pineapple hat&quot;</span> -I path/to/your/file.png -U <span class="m">2</span> <span class="m">0</span>.5 -G <span class="m">0</span>.6
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1020,19 +1022,19 @@ actions.</p>
 <h2 id="codeformer-support">CodeFormer Support<a class="headerlink" href="#codeformer-support" title="Permanent link">#</a></h2>
 <p>This repo also allows you to perform face restoration using
 <a href="https://github.com/sczhou/CodeFormer">CodeFormer</a>.</p>
-<p>In order to setup CodeFormer to work, you need to download the models like with
-GFPGAN. You can do this either by running <code>preload_models.py</code> or by manually
-downloading the
-<a href="https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth">model file</a>
-and saving it to <code>ldm/restoration/codeformer/weights</code> folder.</p>
-<p>You can use <code>-ft</code> prompt argument to swap between CodeFormer and the default
-GFPGAN. The above mentioned <code>-G</code> prompt argument will allow you to control the
-strength of the restoration effect.</p>
-<h3 id="usage_1">Usage:<a class="headerlink" href="#usage_1" title="Permanent link">#</a></h3>
+<p>In order to setup CodeFormer to work, you need to download the models
+like with GFPGAN. You can do this either by running
+<code>preload_models.py</code> or by manually downloading the <a href="https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth">model
+file</a>
+and saving it to <code>ldm/invoke/restoration/codeformer/weights</code> folder.</p>
+<p>You can use <code>-ft</code> prompt argument to swap between CodeFormer and the
+default GFPGAN. The above mentioned <code>-G</code> prompt argument will allow
+you to control the strength of the restoration effect.</p>
+<h3 id="usage_1">Usage<a class="headerlink" href="#usage_1" title="Permanent link">#</a></h3>
 <p>The following command will perform face restoration with CodeFormer instead of
 the default gfpgan.</p>
 <p><code>&lt;prompt&gt; -G 0.8 -ft codeformer</code></p>
-<h3 id="other-options">Other Options:<a class="headerlink" href="#other-options" title="Permanent link">#</a></h3>
+<h3 id="other-options">Other Options<a class="headerlink" href="#other-options" title="Permanent link">#</a></h3>
 <ul>
 <li><code>-cf</code> - cf or CodeFormer Fidelity takes values between <code>0</code> and <code>1</code>. 0 produces
   high quality results but low accuracy and 1 produces lower quality results but
@@ -1048,18 +1050,18 @@ situations when there is very little facial data to work with.</p>
 <p><code>&lt;prompt&gt; -G 1.0 -ft codeformer -cf 0.1</code></p>
 <h2 id="fixing-previously-generated-images">Fixing Previously-Generated Images<a class="headerlink" href="#fixing-previously-generated-images" title="Permanent link">#</a></h2>
 <p>It is easy to apply face restoration and/or upscaling to any
-previously-generated file. Just use the syntax
-<code>!fix path/to/file.png &lt;options&gt;</code>. For example, to apply GFPGAN at strength 0.8
-and upscale 2X for a file named <code>./outputs/img-samples/000044.2945021133.png</code>,
+previously-generated file. Just use the syntax <code>!fix path/to/file.png
+&lt;options&gt;</code>. For example, to apply GFPGAN at strength 0.8 and upscale
+2X for a file named <code>./outputs/img-samples/000044.2945021133.png</code>,
 just run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>dream&gt; !fix ./outputs/img-samples/000044.2945021133.png -G 0.8 -U 2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>invoke&gt; !fix ./outputs/img-samples/000044.2945021133.png -G <span class="m">0</span>.8 -U <span class="m">2</span>
 </code></pre></div>
 <p>A new file named <code>000044.2945021133.fixed.png</code> will be created in the output
 directory. Note that the <code>!fix</code> command does not replace the original file,
 unlike the behavior at generate time.</p>
-<h3 id="disabling">Disabling:<a class="headerlink" href="#disabling" title="Permanent link">#</a></h3>
+<h3 id="disabling">Disabling<a class="headerlink" href="#disabling" title="Permanent link">#</a></h3>
 <p>If, for some reason, you do not wish to load the GFPGAN and/or ESRGAN libraries,
-you can disable them on the dream.py command line with the <code>--no_restore</code> and
+you can disable them on the invoke.py command line with the <code>--no_restore</code> and
 <code>--no_upscale</code> options, respectively.</p>
 
   <hr>
@@ -1067,7 +1069,7 @@ you can disable them on the dream.py command line with the <code>--no_restore</c
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 11, 2022</span>
       
         <br>
         Created:
@@ -1089,7 +1091,7 @@ you can disable them on the dream.py command line with the <code>--no_restore</c
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../TEXTUAL_INVERSION/" class="md-footer__link md-footer__link--prev" aria-label="Previous: TEXTUAL_INVERSION" rel="prev">
+        <a href="../OUTPAINTING/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Outpainting" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1098,20 +1100,20 @@ you can disable them on the dream.py command line with the <code>--no_restore</c
               <span class="md-footer__direction">
                 Previous
               </span>
-              TEXTUAL_INVERSION
+              Outpainting
             </div>
           </div>
         </a>
       
       
         
-        <a href="../VARIATIONS/" class="md-footer__link md-footer__link--next" aria-label="Next: Variations" rel="next">
+        <a href="../PROMPTS/" class="md-footer__link md-footer__link--next" aria-label="Next: Prompting-Features" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Variations
+              Prompting-Features
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -10,14 +10,14 @@
         <meta name="author" content="mauwii">
       
       
-        <link rel="canonical" href="https://lstein.github.io/stable-diffusion/features/IMG2IMG/">
+        <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/features/IMG2IMG/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
     
     
       
-        <title>Image-to-Image - Dream Script Docs</title>
+        <title>Image-to-Image - Stable Diffusion Toolkit Docs</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#img2img" class="md-skip">
+        <a href="#image-to-image" class="md-skip">
           Skip to content
         </a>
       
@@ -81,7 +81,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Dream Script Docs" class="md-header__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-header__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -94,7 +94,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Dream Script Docs
+            Stable Diffusion Toolkit Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -120,7 +120,7 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -166,13 +166,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
       </div>
@@ -201,23 +201,23 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Dream Script Docs" class="md-nav__button md-logo" aria-label="Dream Script Docs" data-md-component="logo">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-nav__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    Dream Script Docs
+    Stable Diffusion Toolkit Docs
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/lstein/stable-diffusion" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    lstein/stable-diffusion
+    invoke-ai/InvokeAI
   </div>
 </a>
     </div>
@@ -248,7 +248,7 @@
   
     <li class="md-nav__item">
       <a href="../../CHANGELOG/" class="md-nav__link">
-        **Changelog**
+        Changelog
       </a>
     </li>
   
@@ -341,9 +341,67 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Image-to-Image
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Image-to-Image
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#img2img" class="md-nav__link">
+    img2img
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-it-actually-work-though" class="md-nav__link">
+    How does it actually work, though?
+  </a>
+  
+    <nav class="md-nav" aria-label="How does it actually work, though?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-concrete-example" class="md-nav__link">
+    A concrete example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compensating-for-the-reduced-step-count" class="md-nav__link">
+    Compensating for the reduced step count
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -398,8 +456,22 @@
   
   
     <li class="md-nav__item">
+      <a href="../POSTPROCESS/" class="md-nav__link">
+        Postprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../PROMPTS/" class="md-nav__link">
-        Prompting Features
+        Prompting-Features
       </a>
     </li>
   
@@ -413,21 +485,7 @@
   
     <li class="md-nav__item">
       <a href="../TEXTUAL_INVERSION/" class="md-nav__link">
-        TEXTUAL_INVERSION
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../UPSCALE/" class="md-nav__link">
-        Upscale
+        Textual-Inversion
       </a>
     </li>
   
@@ -455,7 +513,7 @@
   
     <li class="md-nav__item">
       <a href="../WEB/" class="md-nav__link">
-        Barebones Web Server
+        InvokeAI Web Server
       </a>
     </li>
   
@@ -503,7 +561,7 @@
   
     <li class="md-nav__item">
       <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
-        SAMPLER CONVERGENCE
+        Sampler Convergence
       </a>
     </li>
   
@@ -565,7 +623,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_DOCKER/" class="md-nav__link">
-        Before you begin
+        Docker
       </a>
     </li>
   
@@ -702,6 +760,48 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#img2img" class="md-nav__link">
+    img2img
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-it-actually-work-though" class="md-nav__link">
+    How does it actually work, though?
+  </a>
+  
+    <nav class="md-nav" aria-label="How does it actually work, though?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-concrete-example" class="md-nav__link">
+    A concrete example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compensating-for-the-reduced-step-count" class="md-nav__link">
+    Compensating for the reduced step count
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -712,38 +812,163 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/lstein/stable-diffusion/edit/main/docs/features/IMG2IMG.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/IMG2IMG.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-<h1 id="img2img"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-11-4 2.03 2.71L16 11l4 5H8M2 6v14a2 2 0 0 0 2 2h14v-2H4V6"/></svg></span> <strong>IMG2IMG</strong><a class="headerlink" href="#img2img" title="Permanent link">#</a></h1>
+<h1 id="image-to-image"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-11-4 2.03 2.71L16 11l4 5H8M2 6v14a2 2 0 0 0 2 2h14v-2H4V6"/></svg></span> Image-to-Image<a class="headerlink" href="#image-to-image" title="Permanent link">#</a></h1>
+<h2 id="img2img"><code>img2img</code><a class="headerlink" href="#img2img" title="Permanent link">#</a></h2>
 <p>This script also provides an <code>img2img</code> feature that lets you seed your creations with an initial
 drawing or photo. This is a really cool feature that tells stable diffusion to build the prompt on
 top of the image you provide, preserving the original's basic shape and layout. To use it, provide
 the <code>--init_img</code> option as shown here:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>dream&gt; <span class="s2">&quot;waterfall and rainbow&quot;</span> --init_img<span class="o">=</span>./init-images/crude_drawing.png --strength<span class="o">=</span><span class="m">0</span>.5 -s100 -n4
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>tree on a hill with a river, nature photograph, national geographic -I./test-pictures/tree-and-river-sketch.png -f 0.85
 </code></pre></div>
-<p>The <code>--init_img (-I)</code> option gives the path to the seed picture. <code>--strength (-f)</code> controls how much
+<p>This will take the original image shown here:</p>
+<div align="center">
+<p><img src="https://user-images.githubusercontent.com/50542132/193946000-c42a96d8-5a74-4f8a-b4c3-5213e6cadcce.png" width=350></p>
+</div>
+<p>and generate a new image based on it as shown here:</p>
+<div align="center">
+<p><img src="https://user-images.githubusercontent.com/111189/194135515-53d4c060-e994-4016-8121-7c685e281ac9.png" width=350></p>
+</div>
+<p>The <code>--init_img</code> (<code>-I</code>) option gives the path to the seed picture. <code>--strength</code> (<code>-f</code>) controls how much
 the original will be modified, ranging from <code>0.0</code> (keep the original intact), to <code>1.0</code> (ignore the
-original completely). The default is <code>0.75</code>, and ranges from <code>0.25-0.75</code> give interesting results.</p>
+original completely). The default is <code>0.75</code>, and ranges from <code>0.25-0.90</code> give interesting results. 
+Other relevant options include <code>-C</code> (classification free guidance scale), and <code>-s</code> (steps). Unlike <code>txt2img</code>, 
+adding steps will continuously change the resulting image and it will not converge.</p>
 <p>You may also pass a <code>-v&lt;variation_amount&gt;</code> option to generate <code>-n&lt;iterations&gt;</code> count variants on
 the original image. This is done by passing the first generated image
 back into img2img the requested number of times. It generates
 interesting variants.</p>
+<p>Note that the prompt makes a big difference. For example, this slight variation on the prompt produces
+a very different image:</p>
+<p><code>photograph of a tree on a hill with a river</code></p>
+<div align="center">
+<p><img src="https://user-images.githubusercontent.com/111189/194135220-16b62181-b60c-4248-8989-4834a8fd7fbd.png" width=350></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When designing prompts, think about how the images scraped from the internet were captioned. Very few photographs will
+be labeled "photograph" or "photorealistic." They will, however, be captioned with the publication, photographer, camera
+model, or film settings.</p>
+</div>
 <p>If the initial image contains transparent regions, then Stable Diffusion will only draw within the
-transparent regions, a process called "inpainting". However, for this to work correctly, the color
+transparent regions, a process called <a href="../INPAINTING/#creating-transparent-regions-for-inpainting"><code>inpainting</code></a>. However, for this to work correctly, the color
 information underneath the transparent needs to be preserved, not erased.</p>
-<p>More Details can be found here:
-<a href="../INPAINTING/#creating-transparent-regions-for-inpainting">Creating Transparent Images For Inpainting</a></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>img2img</code> does not work properly on initial images smaller than 512x512. Please scale your
+image to at least 512x512 before using it. Larger images are not a problem, but may run out of VRAM on your
+GPU card.</p>
+<p>To fix this, use the <code>--fit</code> option, which downscales the initial image to fit within the box specified
+by width x height:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>invoke&gt; <span class="s2">&quot;tree on a hill with a river, national geographic&quot;</span> -I./test-pictures/big-sketch.png -H512 -W512 --fit
+</code></pre></div>
+</div>
+<h2 id="how-does-it-actually-work-though">How does it actually work, though?<a class="headerlink" href="#how-does-it-actually-work-though" title="Permanent link">#</a></h2>
+<p>The main difference between <code>img2img</code> and <code>prompt2img</code> is the starting point. While <code>prompt2img</code> always starts with pure
+gaussian noise and progressively refines it over the requested number of steps, <code>img2img</code> skips some of these earlier steps
+(how many it skips is indirectly controlled by the <code>--strength</code> parameter), and uses instead your initial image mixed with gaussian noise as the starting image.</p>
+<p><strong>Let's start</strong> by thinking about vanilla <code>prompt2img</code>, just generating an image from a prompt. If the step count is 10, then the "latent space" (Stable Diffusion's internal representation of the image) for the prompt "fire" with seed <code>1592514025</code> develops something like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;fire&quot;</span> -s10 -W384 -H384 -S1592514025
+</code></pre></div>
+<div align="center">
+<p><img alt="latent steps" src="../../assets/img2img/000019.steps.png" /></p>
+</div>
+<p>Put simply: starting from a frame of fuzz/static, SD finds details in each frame that it thinks look like "fire" and brings them a little bit more into focus, gradually scrubbing out the fuzz until a clear image remains.</p>
+<p><strong>When you use <code>img2img</code></strong> some of the earlier steps are cut, and instead an initial image of your choice is used. But because of how the maths behind Stable Diffusion works, this image needs to be mixed with just the right amount of noise (fuzz/static) for where it is being inserted. This is where the strength parameter comes in. Depending on the set strength, your image will be inserted into the sequence at the appropriate point, with just the right amount of noise.</p>
+<h3 id="a-concrete-example">A concrete example<a class="headerlink" href="#a-concrete-example" title="Permanent link">#</a></h3>
+<p>I want SD to draw a fire based on this hand-drawn image:</p>
+<div align="center">
+<p><img alt="drawing of a fireplace" src="../../assets/img2img/fire-drawing.png" /></p>
+</div>
+<p>Let's only do 10 steps, to make it easier to see what's happening. If strength is <code>0.7</code>, this is what the internal steps the algorithm has to take will look like:</p>
+<div align="center">
+<p><img alt="gravity32" src="../../assets/img2img/000032.steps.gravity.png" /></p>
+</div>
+<p>With strength <code>0.4</code>, the steps look more like this:</p>
+<div align="center">
+<p><img alt="gravity30" src="../../assets/img2img/000030.steps.gravity.png" /></p>
+</div>
+<p>Notice how much more fuzzy the starting image is for strength <code>0.7</code> compared to <code>0.4</code>, and notice also how much longer the sequence is with <code>0.7</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">strength = 0.7</th>
+<th align="center">strength = 0.4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>initial image that SD sees</td>
+<td align="center"><img alt="step-0-32" src="../../assets/img2img/000032.step-0.png" /></td>
+<td align="center"><img alt="step-0-30" src="../../assets/img2img/000030.step-0.png" /></td>
+</tr>
+<tr>
+<td>steps argument to <code>dream&gt;</code></td>
+<td align="center"><code>-S10</code></td>
+<td align="center"><code>-S10</code></td>
+</tr>
+<tr>
+<td>steps actually taken</td>
+<td align="center">7</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td>latent space at each step</td>
+<td align="center"><img alt="gravity32" src="../../assets/img2img/000032.steps.gravity.png" /></td>
+<td align="center"><img alt="gravity30" src="../../assets/img2img/000030.steps.gravity.png" /></td>
+</tr>
+<tr>
+<td>output</td>
+<td align="center"><img alt="000032.1592514025" src="../../assets/img2img/000032.1592514025.png" /></td>
+<td align="center"><img alt="000030.1592514025" src="../../assets/img2img/000030.1592514025.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>Both of the outputs look kind of like what I was thinking of. With the strength higher, my input becomes more vague, <em>and</em> Stable Diffusion has more steps to refine its output. But it's not really making what I want, which is a picture of cheery open fire. With the strength lower, my input is more clear, <em>but</em> Stable Diffusion has less chance to refine itself, so the result ends up inheriting all the problems of my bad drawing.</p>
+<p>If you want to try this out yourself, all of these are using a seed of <code>1592514025</code> with a width/height of <code>384</code>, step count <code>10</code>, the default sampler (<code>k_lms</code>), and the single-word prompt <code>"fire"</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>invoke&gt; <span class="s2">&quot;fire&quot;</span> -s10 -W384 -H384 -S1592514025 -I /tmp/fire-drawing.png --strength <span class="m">0</span>.7
+</code></pre></div>
+<p>The code for rendering intermediates is on my (damian0815's) branch <a href="https://github.com/damian0815/InvokeAI/tree/document-img2img">document-img2img</a> - run <code>invoke.py</code> and check your <code>outputs/img-samples/intermediates</code> folder while generating an image.</p>
+<h3 id="compensating-for-the-reduced-step-count">Compensating for the reduced step count<a class="headerlink" href="#compensating-for-the-reduced-step-count" title="Permanent link">#</a></h3>
+<p>After putting this guide together I was curious to see how the difference would be if I increased the step count to compensate, so that SD could have the same amount of steps to develop the image regardless of the strength. So I ran the generation again using the same seed, but this time adapting the step count to give each generation 20 steps.</p>
+<p>Here's strength <code>0.4</code> (note step count <code>50</code>, which is <code>20 ÷ 0.4</code> to make sure SD does <code>20</code> steps from my image):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>invoke&gt; <span class="s2">&quot;fire&quot;</span> -s50 -W384 -H384 -S1592514025 -I /tmp/fire-drawing.png -f <span class="m">0</span>.4
+</code></pre></div>
+<div align="center">
+<p><img alt="000035.1592514025" src="../../assets/img2img/000035.1592514025.png" /></p>
+</div>
+<p>and here is strength <code>0.7</code> (note step count <code>30</code>, which is roughly <code>20 ÷ 0.7</code> to make sure SD does <code>20</code> steps from my image):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>invoke&gt; <span class="s2">&quot;fire&quot;</span> -s30 -W384 -H384 -S1592514025 -I /tmp/fire-drawing.png -f <span class="m">0</span>.7
+</code></pre></div>
+<div align="center">
+<p><img alt="000046.1592514025" src="../../assets/img2img/000046.1592514025.png" /></p>
+</div>
+<p>In both cases the image is nice and clean and "finished", but because at strength <code>0.7</code> Stable Diffusion has been give so much more freedom to improve on my badly-drawn flames, they've come out looking much better. You can really see the difference when looking at the latent steps. There's more noise on the first image with strength <code>0.7</code>:</p>
+<p><img alt="gravity46" src="../../assets/img2img/000046.steps.gravity.png" /></p>
+<p>than there is for strength <code>0.4</code>:</p>
+<p><img alt="gravity35" src="../../assets/img2img/000035.steps.gravity.png" /></p>
+<p>and that extra noise gives the algorithm more choices when it is evaluating how to denoise any particular pixel in the image.</p>
+<p>Unfortunately, it seems that <code>img2img</code> is very sensitive to the step count. Here's strength <code>0.7</code> with a step count of <code>29</code> (SD did 19 steps from my image):</p>
+<div align="center">
+<p><img alt="gravity45" src="../../assets/img2img/000045.1592514025.png" /></p>
+</div>
+<p>By comparing the latents we can sort of see that something got interpreted differently enough on the third or fourth step to lead to a rather different interpretation of the flames.</p>
+<p><img alt="gravity46" src="../../assets/img2img/000046.steps.gravity.png" />
+<img alt="gravity45" src="../../assets/img2img/000045.steps.gravity.png" /></p>
+<p>This is the result of a difference in the de-noising "schedule" - basically the noise has to be cleaned by a certain degree each step or the model won't "converge" on the image properly (see <a href="https://huggingface.co/blog/stable_diffusion">stable diffusion blog</a> for more about that). A different step count means a different schedule, which means things get interpreted slightly differently at every step.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 18, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 11, 2022</span>
       
         <br>
         Created:
