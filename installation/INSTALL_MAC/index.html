@@ -1181,7 +1181,7 @@ issue</a>.</p>
 <a id="__codelineno-11-2" name="__codelineno-11-2"></a>  pytorch <span class="se">\</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3"></a>  torchvision <span class="se">\</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4"></a>  -c pytorch-nightly <span class="se">\</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5"></a>  -n ldm
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a>  -n invokeai
 </code></pre></div>
 <p>If it takes forever to run <code>conda env create -f environment-mac.yml</code>, try this:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a>git clean -f
@@ -1201,7 +1201,7 @@ issue</a>.</p>
 <p>There are several causes of these errors:</p>
 <ol>
 <li>
-<p>Did you remember to <code>conda activate ldm</code>? If your terminal prompt begins with
+<p>Did you remember to <code>conda activate invokeai</code>? If your terminal prompt begins with
    "(invokeai)" then you activated it. If it begins with "(base)" or something else
    you haven't.</p>
 </li>
@@ -1215,16 +1215,16 @@ issue</a>.</p>
 <p>if it says you're missing taming you need to rebuild your virtual
    environment.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a>conda deactivate
-<a id="__codelineno-14-2" name="__codelineno-14-2"></a>conda env remove -n ldm
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a>conda env remove -n invokeai
 <a id="__codelineno-14-3" name="__codelineno-14-3"></a>conda env create -f environment-mac.yml
 </code></pre></div>
 </li>
 <li>
-<p>If you have activated the ldm virtual environment and tried rebuilding it,
+<p>If you have activated the invokeai virtual environment and tried rebuilding it,
    maybe the problem could be that I have something installed that you don't and
    you'll just need to manually install it. Make sure you activate the virtual
    environment so it installs there instead of globally.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a>conda activate ldm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a>conda activate invokeai
 <a id="__codelineno-15-2" name="__codelineno-15-2"></a>pip install &lt;package name&gt;
 </code></pre></div>
 </li>
@@ -1267,10 +1267,10 @@ for Homebrew binaries before system ones, you'll see the above path.</p>
 should actually be the <em>same python</em>, which you can verify by comparing the
 output of <code>python3 -V</code> and <code>python -V</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="o">(</span>invokeai<span class="o">)</span> % which python
-<a id="__codelineno-19-2" name="__codelineno-19-2"></a>/Users/name/miniforge3/envs/ldm/bin/python
+<a id="__codelineno-19-2" name="__codelineno-19-2"></a>/Users/name/miniforge3/envs/invokeai/bin/python
 </code></pre></div>
 <p>The above is what you'll see if you have miniforge and correctly activated the
-ldm environment, while usingd the standalone setup instructions above.</p>
+invokeai environment, while usingd the standalone setup instructions above.</p>
 <p>If you otherwise installed via pyenv, you will get this result:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="o">(</span>anaconda3-2022.05<span class="o">)</span> % which python
 <a id="__codelineno-20-2" name="__codelineno-20-2"></a>/Users/name/.pyenv/shims/python
@@ -1396,7 +1396,7 @@ disables that flag. I don't know why, someone else provided that code and I
 don't know what it does. Maybe the <code>model.half()</code> suggestion above would fix
 this issue too. I should probably test it.</p>
 <h3 id="view-size-is-not-compatible-with-input-tensors-size-and-stride">"view size is not compatible with input tensor's size and stride"<a class="headerlink" href="#view-size-is-not-compatible-with-input-tensors-size-and-stride" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1"></a>File <span class="s2">&quot;/opt/anaconda3/envs/ldm/lib/python3.10/site-packages/torch/nn/functional.py&quot;</span>, line <span class="m">2511</span>, <span class="k">in</span> layer_norm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1"></a>File <span class="s2">&quot;/opt/anaconda3/envs/invokeai/lib/python3.10/site-packages/torch/nn/functional.py&quot;</span>, line <span class="m">2511</span>, <span class="k">in</span> layer_norm
 <a id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="k">return</span> torch.layer_norm<span class="o">(</span>input, normalized_shape, weight, bias, eps, torch.backends.cudnn.enabled<span class="o">)</span>
 <a id="__codelineno-27-3" name="__codelineno-27-3"></a>RuntimeError: view size is not compatible with input tensor<span class="err">&#39;</span>s size and stride <span class="o">(</span>at least one dimension spans across two contiguous subspaces<span class="o">)</span>. Use .reshape<span class="o">(</span>...<span class="o">)</span> instead.
 </code></pre></div>
@@ -1421,7 +1421,7 @@ use ARM packages, and use <code>nomkl</code> as described above.</p>
 <a id="__codelineno-29-4" name="__codelineno-29-4"></a>                                                                                                    loc<span class="o">(</span><span class="s2">&quot;mps_add&quot;</span><span class="o">(</span><span class="s2">&quot;(mpsFileLoc): /AppleInternal/Library/BuildRoots/20d6c351-ee94-11ec-bcaf-7247572f23b4/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/MPSGraphUtilities.mm&quot;</span>:219:0<span class="o">))</span>: error: input types <span class="s1">&#39;tensor&lt;2x1280xf32&gt;&#39;</span> and <span class="s1">&#39;tensor&lt;*xf16&gt;&#39;</span> are not broadcast compatible
 <a id="__codelineno-29-5" name="__codelineno-29-5"></a>LLVM ERROR: Failed to infer result type<span class="o">(</span>s<span class="o">)</span>.
 <a id="__codelineno-29-6" name="__codelineno-29-6"></a>Abort trap: <span class="m">6</span>
-<a id="__codelineno-29-7" name="__codelineno-29-7"></a>/Users/<span class="o">[</span>...<span class="o">]</span>/opt/anaconda3/envs/ldm/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be <span class="m">1</span> leaked semaphore objects to clean up at shutdown
+<a id="__codelineno-29-7" name="__codelineno-29-7"></a>/Users/<span class="o">[</span>...<span class="o">]</span>/opt/anaconda3/envs/invokeai/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be <span class="m">1</span> leaked semaphore objects to clean up at shutdown
 <a id="__codelineno-29-8" name="__codelineno-29-8"></a>  warnings.warn<span class="o">(</span><span class="s1">&#39;resource_tracker: There appear to be %d &#39;</span>
 </code></pre></div>
 
@@ -1430,7 +1430,7 @@ use ARM packages, and use <code>nomkl</code> as described above.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 11, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 16, 2022</span>
       
         <br>
         Created:
