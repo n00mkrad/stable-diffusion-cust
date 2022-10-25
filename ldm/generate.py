@@ -601,8 +601,6 @@ class Generate:
             # this returns a torch tensor
             init_mask = self._create_init_mask(image, width, height, fit=fit)
             
-        if (image.width * image.height) > (self.width * self.height):
-            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
 
         init_image   = self._create_init_image(image,width,height,fit=fit)                   # this returns a torch tensor
 
@@ -962,14 +960,6 @@ class Generate:
             height = h
             width = w
             resize_needed = True
-        if (width * height) > (self.width * self.height):
-            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
-
-        if (width * height) > (self.width * self.height):
-            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
-
-        if (width * height) > (self.width * self.height):
-            print(">> This input is larger than your defaults. If you run out of memory, please use a smaller image.")
 
         return width, height, resize_needed
 
