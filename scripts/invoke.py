@@ -135,249 +135,270 @@ def main_loop(gen, opt):
     cancel = False
 
     while not done:
-
-        operation = 'generate'
-
         try:
-            command = get_next_command(infile)
-        except EOFError:
-            done = infile is None or doneAfterInFile
-            infile = None
-            continue
-
-        # skip empty lines
-        if not command.strip():
-            continue
-
-        if command.startswith(('#', '//')):
-            continue
-
-        if len(command.strip()) == 1 and command.startswith('q'):
-            done = True
-            break
-
-        if command.startswith('!'):
-            command, operation = do_command(command, gen, opt, completer)
-
-        if operation is None:
-            continue
-
-        if opt.parse_cmd(command) is None:
-            continue
-
-        if opt.init_img:
+            operation = 'generate'
+        
             try:
-                if not opt.prompt:
-                    oldargs    = metadata_from_png(opt.init_img)
-                    opt.prompt = oldargs.prompt
-                    print(f'>> Retrieved old prompt "{opt.prompt}" from {opt.init_img}')
-            except (OSError, AttributeError, KeyError):
-                pass
-
-        if len(opt.prompt) == 0:
-            print('\nTry again with a prompt!')
-            continue
-
-        # width and height are set by model if not specified
-        if not opt.width:
-            opt.width = gen.width
-        if not opt.height:
-            opt.height = gen.height
-
-        # retrieve previous value of init image if requested
-        if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
-            try:
-                opt.init_img = last_results[int(opt.init_img)][0]
-                print(f'>> Reusing previous image {opt.init_img}')
-            except IndexError:
-                print(
-                    f'>> No previous initial image at position {opt.init_img} found')
-                opt.init_img = None
+                command = get_next_command(infile)
+            except EOFError:
+                done = True
                 continue
-
-        # try to relativize pathnames
-        for attr in ('init_img','init_mask','init_color','embedding_path'):
-            if getattr(opt,attr) and not os.path.exists(getattr(opt,attr)):
-                basename = getattr(opt,attr)
-                path     = os.path.join(opt.outdir,basename)
-                setattr(opt,attr,path)
-
-        # retrieve previous value of seed if requested
-        if opt.seed is not None and opt.seed < 0:   
-            try:
-                opt.seed = last_results[opt.seed][1]
-                print(f'>> Reusing previous seed {opt.seed}')
-            except IndexError:
-                print(f'>> No previous seed at position {opt.seed} found')
-                opt.seed = None
+        
+            if command == "!reset":
+                    cancel = False
+                    print("reset.", flush=True)
+                    continue
+        
+            if cancel:
+                print("skipped.", flush=True)
                 continue
-
-        if opt.strength is None:
-            opt.strength = 0.75 if opt.out_direction is None else 0.83
-
-        if opt.with_variations is not None:
-            opt.with_variations = split_variations(opt.with_variations)
-
-        if opt.prompt_as_dir and operation == 'generate':
-            # sanitize the prompt to a valid folder name
-            subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
-
-            # truncate path to maximum allowed length
-            # 39 is the length of '######.##########.##########-##.png', plus two separators and a NUL
-            subdir = subdir[:(path_max - 39 - len(os.path.abspath(opt.outdir)))]
-            current_outdir = os.path.join(opt.outdir, subdir)
-
-            print('Writing files to directory: "' + current_outdir + '"')
-
-            # make sure the output directory exists
-            if not os.path.exists(current_outdir):
-                os.makedirs(current_outdir)
-        else:
-            if not os.path.exists(opt.outdir):
-                os.makedirs(opt.outdir)
-            current_outdir = opt.outdir
-
-        # Write out the history at this point.
-        # TODO: Fix the parsing of command-line parameters
-        # so that !operations don't need to be stripped and readded
-        if operation == 'postprocess':
-            completer.add_history(f'!fix {command}')
-        elif operation == 'mask':
-            completer.add_history(f'!mask {command}')
-        else:
-            completer.add_history(command)
-
-        # Here is where the images are actually generated!
-        last_results = []
-        try:
-            file_writer      = PngWriter(current_outdir)
-            results          = []  # list of filename, prompt pairs
-            grid_images      = dict()  # seed -> Image, only used if `opt.grid`
-            prior_variations = opt.with_variations or []
-            prefix = file_writer.unique_prefix()
-            step_callback = make_step_callback(gen, opt, prefix) if opt.save_intermediates > 0 else None
-
-            def image_writer(image, seed, upscaled=False, first_seed=None, use_prefix=None):
-                # note the seed is the seed of the current image
-                # the first_seed is the original seed that noise is added to
-                # when the -v switch is used to generate variations
-                nonlocal prior_variations
-                nonlocal prefix
-
-                path = None
-                if opt.grid:
-                    grid_images[seed] = image
-
-                elif operation == 'mask':
-                    filename = f'{prefix}.{use_prefix}.{seed}.png'
-                    tm = opt.text_mask[0]
-                    th = opt.text_mask[1] if len(opt.text_mask)>1 else 0.5
-                    formatted_dream_prompt = f'!mask {opt.prompt} -tm {tm} {th}'
-                    path = file_writer.save_image_and_prompt_to_png(
-                        image           = image,
-                        dream_prompt    = formatted_dream_prompt,
-                        metadata        = {},
-                        name      = filename,
-                        compress_level = opt.png_compression,
-                    )
-                    results.append([path, formatted_dream_prompt])
-
-                else:
-                    if use_prefix is not None:
-                        prefix = use_prefix
-                    postprocessed = upscaled if upscaled else operation=='postprocess'
-                    filename, formatted_dream_prompt = prepare_image_metadata(
-                        opt,
-                        prefix,
-                        seed,
-                        operation,
-                        prior_variations,
-                        postprocessed,
-                        first_seed
-                    )
-                    path = file_writer.save_image_and_prompt_to_png(
-                        image           = image,
-                        dream_prompt    = formatted_dream_prompt,
-                        metadata        = metadata_dumps(
-                            opt,
-                            seeds      = [seed if opt.variation_amount==0 and len(prior_variations)==0 else first_seed],
-                            model_hash = gen.model_hash,
-                        ),
-                        name      = filename,
-                        compress_level = opt.png_compression,
-                    )
-
-                    # update rfc metadata
-                    if operation == 'postprocess':
-                        tool = re.match('postprocess:(\w+)',opt.last_operation).groups()[0]
-                        add_postprocessing_to_metadata(
-                            opt,
-                            opt.prompt,
-                            filename,
-                            tool,
-                            formatted_dream_prompt,
-                        )                           
-                        
-                    if (not postprocessed) or opt.save_original:
-                        # only append to results if we didn't overwrite an earlier output
-                        results.append([path, formatted_dream_prompt])
-
-                # so that the seed autocompletes (on linux|mac when -S or --seed specified
-                if completer and operation == 'generate':
-                    completer.add_seed(seed)
-                    completer.add_seed(first_seed)
-                last_results.append([path, seed])
-
-            if operation == 'generate':
-                catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
-                opt.last_operation='generate'
-                gen.prompt2image(
-                    image_callback=image_writer,
-                    step_callback=step_callback,
-                    catch_interrupts=catch_ctrl_c,
-                    **vars(opt)
-                )
-            elif operation == 'postprocess':
-                print(f'>> fixing {opt.prompt}')
-                opt.last_operation = do_postprocess(gen,opt,image_writer)
-
+        
+            # skip empty lines
+            if not command.strip():
+                continue
+        
+            if command.startswith(('#', '//')):
+                continue
+        
+            if len(command.strip()) == 1 and command.startswith('q'):
+                done = True
+                break
+        
+            if command.startswith('!'):
+                command, operation = do_command(command, gen, opt, completer)
+        
+            if operation is None:
+                continue
+        
+            if opt.parse_cmd(command) is None:
+                continue
+        
+            if opt.init_img:
+                try:
+                    if not opt.prompt:
+                        oldargs    = metadata_from_png(opt.init_img)
+                        opt.prompt = oldargs.prompt
+                        print(f'>> Retrieved old prompt "{opt.prompt}" from {opt.init_img}')
+                except (OSError, AttributeError, KeyError):
+                    pass
+        
+            if len(opt.prompt) == 0:
+                print('\nTry again with a prompt!')
+                continue
+        
+            # width and height are set by model if not specified
+            if not opt.width:
+                opt.width = gen.width
+            if not opt.height:
+                opt.height = gen.height
+        
+            # retrieve previous value of init image if requested
+            if opt.init_img is not None and re.match('^-\\d+$', opt.init_img):
+                try:
+                    opt.init_img = last_results[int(opt.init_img)][0]
+                    print(f'>> Reusing previous image {opt.init_img}')
+                except IndexError:
+                    print(
+                        f'>> No previous initial image at position {opt.init_img} found')
+                    opt.init_img = None
+                    continue
+        
+            # try to relativize pathnames
+            for attr in ('init_img','init_mask','init_color','embedding_path'):
+                if getattr(opt,attr) and not os.path.exists(getattr(opt,attr)):
+                    basename = getattr(opt,attr)
+                    path     = os.path.join(opt.outdir,basename)
+                    setattr(opt,attr,path)
+        
+            # retrieve previous value of seed if requested
+            if opt.seed is not None and opt.seed < 0:   
+                try:
+                    opt.seed = last_results[opt.seed][1]
+                    print(f'>> Reusing previous seed {opt.seed}')
+                except IndexError:
+                    print(f'>> No previous seed at position {opt.seed} found')
+                    opt.seed = None
+                    continue
+        
+            if opt.strength is None:
+                opt.strength = 0.75 if opt.out_direction is None else 0.83
+        
+            if opt.with_variations is not None:
+                opt.with_variations = split_variations(opt.with_variations)
+        
+            if opt.prompt_as_dir and operation == 'generate':
+                # sanitize the prompt to a valid folder name
+                subdir = path_filter.sub('_', opt.prompt)[:name_max].rstrip(' .')
+        
+                # truncate path to maximum allowed length
+                # 39 is the length of '######.##########.##########-##.png', plus two separators and a NUL
+                subdir = subdir[:(path_max - 39 - len(os.path.abspath(opt.outdir)))]
+                current_outdir = os.path.join(opt.outdir, subdir)
+        
+                print('Writing files to directory: "' + current_outdir + '"')
+        
+                # make sure the output directory exists
+                if not os.path.exists(current_outdir):
+                    os.makedirs(current_outdir)
+            else:
+                if not os.path.exists(opt.outdir):
+                    os.makedirs(opt.outdir)
+                current_outdir = opt.outdir
+        
+            # Write out the history at this point.
+            # TODO: Fix the parsing of command-line parameters
+            # so that !operations don't need to be stripped and readded
+            if operation == 'postprocess':
+                completer.add_history(f'!fix {command}')
             elif operation == 'mask':
-                print(f'>> generating masks from {opt.prompt}')
-                do_textmask(gen, opt, image_writer)
-
-            if opt.grid and len(grid_images) > 0:
-                grid_img   = make_grid(list(grid_images.values()))
-                grid_seeds = list(grid_images.keys())
-                first_seed = last_results[0][1]
-                filename   = f'{prefix}.{first_seed}.png'
-                formatted_dream_prompt  = opt.dream_prompt_str(seed=first_seed,grid=True,iterations=len(grid_images))
-                formatted_dream_prompt += f' # {grid_seeds}'
-                metadata = metadata_dumps(
-                    opt,
-                    seeds      = grid_seeds,
-                    model_hash = gen.model_hash
+                completer.add_history(f'!mask {command}')
+            else:
+                completer.add_history(command)
+        
+            # Here is where the images are actually generated!
+            last_results = []
+            try:
+                def image_progress(sample, step):
+                        global step_index
+                        step_index += 1
+                        # global prsteps
+                        if True:
+                            print(f"step {step_index}/{opt.steps}", flush=True)
+            
+                file_writer      = PngWriter(current_outdir)
+                results          = []  # list of filename, prompt pairs
+                grid_images      = dict()  # seed -> Image, only used if `opt.grid`
+                prior_variations = opt.with_variations or []
+                prefix = file_writer.unique_prefix()
+                step_callback = make_step_callback(gen, opt, prefix) if opt.save_intermediates > 0 else image_progress
+                
+                def image_writer(image, seed, upscaled=False, first_seed=None, use_prefix=None):
+                    # note the seed is the seed of the current image
+                    # the first_seed is the original seed that noise is added to
+                    # when the -v switch is used to generate variations
+                    nonlocal prior_variations
+                    nonlocal prefix
+        
+                    path = None
+                    if opt.grid:
+                        grid_images[seed] = image
+        
+                    elif operation == 'mask':
+                        filename = f'{prefix}.{use_prefix}.{seed}.png'
+                        tm = opt.text_mask[0]
+                        th = opt.text_mask[1] if len(opt.text_mask)>1 else 0.5
+                        formatted_dream_prompt = f'!mask {opt.prompt} -tm {tm} {th}'
+                        path = file_writer.save_image_and_prompt_to_png(
+                            image           = image,
+                            dream_prompt    = formatted_dream_prompt,
+                            metadata        = {},
+                            name      = filename,
+                            compress_level = opt.png_compression,
+                        )
+                        results.append([path, formatted_dream_prompt])
+        
+                    else:
+                        if use_prefix is not None:
+                            prefix = use_prefix
+                        postprocessed = upscaled if upscaled else operation=='postprocess'
+                        filename, formatted_dream_prompt = prepare_image_metadata(
+                            opt,
+                            prefix,
+                            seed,
+                            operation,
+                            prior_variations,
+                            postprocessed,
+                            first_seed
+                        )
+                        path = file_writer.save_image_and_prompt_to_png(
+                            image           = image,
+                            dream_prompt    = formatted_dream_prompt,
+                            metadata        = metadata_dumps(
+                                opt,
+                                seeds      = [seed if opt.variation_amount==0 and len(prior_variations)==0 else first_seed],
+                                model_hash = gen.model_hash,
+                            ),
+                            name      = filename,
+                            compress_level = opt.png_compression,
+                        )
+        
+                        # update rfc metadata
+                        if operation == 'postprocess':
+                            tool = re.match('postprocess:(\w+)',opt.last_operation).groups()[0]
+                            add_postprocessing_to_metadata(
+                                opt,
+                                opt.prompt,
+                                filename,
+                                tool,
+                                formatted_dream_prompt,
+                            )                           
+                            
+                        if (not postprocessed) or opt.save_original:
+                            # only append to results if we didn't overwrite an earlier output
+                            results.append([path, formatted_dream_prompt])
+        
+                    # so that the seed autocompletes (on linux|mac when -S or --seed specified
+                    if completer and operation == 'generate':
+                        completer.add_seed(seed)
+                        completer.add_seed(first_seed)
+                    last_results.append([path, seed])
+        
+                if operation == 'generate':
+                    catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
+                    opt.last_operation='generate'
+                    gen.prompt2image(
+                        image_callback=image_writer,
+                        step_callback=step_callback,
+                        catch_interrupts=catch_ctrl_c,
+                        **vars(opt)
                     )
-                path = file_writer.save_image_and_prompt_to_png(
-                    image        = grid_img,
-                    dream_prompt = formatted_dream_prompt,
-                    metadata     = metadata,
-                    name         = filename
-                )
-                results = [[path, formatted_dream_prompt]]
-
-        except AssertionError as e:
-            print(e)
-            continue
-
-        except OSError as e:
-            print(e)
-            continue
-
-        print('Outputs:')
-        log_path = os.path.join(current_outdir, 'invoke_log')
-        output_cntr = write_log(results, log_path ,('txt', 'md'), output_cntr)
-        print()
-
+                    global step_index
+                    step_index = 0
+                elif operation == 'postprocess':
+                    print(f'>> fixing {opt.prompt}')
+                    opt.last_operation = do_postprocess(gen,opt,image_writer)
+        
+                elif operation == 'mask':
+                    print(f'>> generating masks from {opt.prompt}')
+                    do_textmask(gen, opt, image_writer)
+        
+                if opt.grid and len(grid_images) > 0:
+                    grid_img   = make_grid(list(grid_images.values()))
+                    grid_seeds = list(grid_images.keys())
+                    first_seed = last_results[0][1]
+                    filename   = f'{prefix}.{first_seed}.png'
+                    formatted_dream_prompt  = opt.dream_prompt_str(seed=first_seed,grid=True,iterations=len(grid_images))
+                    formatted_dream_prompt += f' # {grid_seeds}'
+                    metadata = metadata_dumps(
+                        opt,
+                        seeds      = grid_seeds,
+                        model_hash = gen.model_hash
+                        )
+                    path = file_writer.save_image_and_prompt_to_png(
+                        image        = grid_img,
+                        dream_prompt = formatted_dream_prompt,
+                        metadata     = metadata,
+                        name         = filename
+                    )
+                    results = [[path, formatted_dream_prompt]]
+        
+            except AssertionError as e:
+                print(e)
+                continue
+        
+            except OSError as e:
+                print(e)
+                continue
+        
+            print('Outputs:')
+            log_path = os.path.join(current_outdir, 'invoke_log')
+            output_cntr = write_log(results, log_path ,('txt', 'md'), output_cntr)
+            print()
+        except KeyboardInterrupt:
+            print('Detected CTRL+C, canceling.')
+            step_index = int(0)
+            cancel = True
+    
     print('goodbye!')
 
 # TO DO: remove repetitive code and the awkward command.replace() trope
@@ -684,10 +705,10 @@ def prepare_image_metadata(
             filename = opt.fnformat.format(**wildcards)
         except KeyError as e:
             print(f'** The filename format contains an unknown key \'{e.args[0]}\'. Will use \'{{prefix}}.{{seed}}.png\' instead')
-            filename = f'{prefix}.{seed}.png'
+            filename = f'{prefix}.png'
         except IndexError as e:
             print(f'** The filename format is broken or complete. Will use \'{{prefix}}.{{seed}}.png\' instead')
-            filename = f'{prefix}.{seed}.png'
+            filename = f'{prefix}.png'
 
     if opt.variation_amount > 0:
         first_seed             = first_seed or seed
@@ -714,9 +735,9 @@ def choose_postprocess_name(opt,prefix,seed) -> str:
     available = False
     while not available:
         if counter == 0:
-            filename = f'{prefix}.{seed}.{modifier}.png'
+            filename = f'{prefix}.{modifier}.png'
         else:
-            filename = f'{prefix}.{seed}.{modifier}-{counter:02d}.png'
+            filename = f'{prefix}.{modifier}-{counter:02d}.png'
         available = not os.path.exists(os.path.join(opt.outdir,filename))
         counter += 1
     return filename
