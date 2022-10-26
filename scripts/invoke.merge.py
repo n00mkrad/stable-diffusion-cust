@@ -491,7 +491,7 @@ def prepare_image_metadata(
     if postprocessed and opt.save_original:
         filename = choose_postprocess_name(opt,prefix,seed)
     else:
-        filename = f'{prefix}.{seed}.png'
+        filename = f'{prefix}.png'
 
     if opt.variation_amount > 0:
         first_seed             = first_seed or seed
@@ -518,9 +518,9 @@ def choose_postprocess_name(opt,prefix,seed) -> str:
     available = False
     while not available:
         if counter == 0:
-            filename = f'{prefix}.{seed}.{modifier}.png'
+            filename = f'{prefix}.{modifier}.png'
         else:
-            filename = f'{prefix}.{seed}.{modifier}-{counter:02d}.png'
+            filename = f'{prefix}.{modifier}-{counter:02d}.png'
         available = not os.path.exists(os.path.join(opt.outdir,filename))
         counter += 1
     return filename

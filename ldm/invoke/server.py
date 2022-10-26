@@ -165,7 +165,7 @@ class DreamServer(BaseHTTPRequestHandler):
         # entry should not be inserted into the image list.
         # LS: This repeats code in dream.py
         def image_done(image, seed, upscaled=False, first_seed=None):
-            name = f'{prefix}.{seed}.png'
+            name = f'{prefix}.png'
             iter_opt  = copy.copy(opt)
             if opt.variation_amount > 0:
                 this_variation = [[seed, opt.variation_amount]]

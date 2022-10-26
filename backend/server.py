@@ -587,7 +587,7 @@ def save_image(
         if "seed" in metadata["image"]:
             seed = metadata["image"]["seed"]
 
-    filename = f"{prefix}.{seed}"
+    filename = f"{prefix}"
 
     if step_index:
         filename += f".{step_index}"

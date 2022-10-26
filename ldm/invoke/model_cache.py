@@ -335,6 +335,7 @@ class ModelCache(object):
         return self.device.type == 'cuda'
 
     def _cached_sha256(self,path,data):
+        return 0
         dirname    = os.path.dirname(path)
         basename   = os.path.basename(path)
         base, _    = os.path.splitext(basename)

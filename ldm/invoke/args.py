@@ -446,9 +446,9 @@ class Args(object):
         )
         render_group.add_argument(
             '--fnformat',
-            default='{prefix}.{seed}.png',
+            default='{prefix}.png',
             type=str,
-            help='Overwrite the filename format. You can use any argument as wildcard enclosed in curly braces. Default is {prefix}.{seed}.png',
+            help='Overwrite the filename format. You can use any argument as wildcard enclosed in curly braces. Default is {prefix}.png',
         )
         render_group.add_argument(
             '--grid',
@@ -625,9 +625,9 @@ class Args(object):
         )
         render_group.add_argument(
             '--fnformat',
-            default='{prefix}.{seed}.png',
+            default='{prefix}.png',
             type=str,
-            help='Overwrite the filename format. You can use any argument as wildcard enclosed in curly braces. Default is {prefix}.{seed}.png',
+            help='Overwrite the filename format. You can use any argument as wildcard enclosed in curly braces. Default is {prefix}.png',
         )
         render_group.add_argument(
             '--grid',
@@ -979,6 +979,7 @@ def repack_prompt(prompt_list:list)->str:
 # image can either be a file path on disk or a base64-encoded
 # representation of the file's contents
 def calculate_init_img_hash(image_string):
+    return 0
     prefix = 'data:image/png;base64,'
     hash   = None
     if image_string.startswith(prefix):
@@ -995,6 +996,7 @@ def calculate_init_img_hash(image_string):
 
 # Bah. This should be moved somewhere else...
 def sha256(path):
+    return 0
     sha = hashlib.sha256()
     with open(path,'rb') as f:
         while True:

@@ -152,7 +152,7 @@ class DreamServer(BaseHTTPRequestHandler):
         # entry should not be inserted into the image list.
         def image_done(image, seed, upscaled=False, first_seed=-1, use_prefix=None):
             print(f'First seed: {first_seed}')
-            name = f'{prefix}.{seed}.png'
+            name = f'{prefix}.png'
             iter_opt = argparse.Namespace(**vars(opt)) # copy
             if opt.variation_amount > 0:
                 this_variation = [[seed, opt.variation_amount]]

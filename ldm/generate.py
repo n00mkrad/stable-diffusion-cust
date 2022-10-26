@@ -230,7 +230,7 @@ class Generate:
         prefix    = pngwriter.unique_prefix()
         outputs   = []
         for image, seed in results:
-            name = f'{prefix}.{seed}.png'
+            name = f'{prefix}.png'
             path = pngwriter.save_image_and_prompt_to_png(
                 image, dream_prompt=f'{prompt} -S{seed}', name=name)
             outputs.append([path, seed])
