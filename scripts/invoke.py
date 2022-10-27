@@ -183,9 +183,9 @@ def main_loop(gen, opt):
                 except (OSError, AttributeError, KeyError):
                     pass
         
-            if len(opt.prompt) == 0:
-                print('\nTry again with a prompt!')
-                continue
+#           if len(opt.prompt) == 0:
+#               print('\nTry again with a prompt!')
+#               continue
         
             # width and height are set by model if not specified
             if not opt.width:
@@ -347,14 +347,16 @@ def main_loop(gen, opt):
                 if operation == 'generate':
                     catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
                     opt.last_operation='generate'
-                    gen.prompt2image(
-                        image_callback=image_writer,
-                        step_callback=step_callback,
-                        catch_interrupts=catch_ctrl_c,
-                        **vars(opt)
-                    )
-                    global step_index
-                    step_index = 0
+                    try:
+                        gen.prompt2image(
+                            image_callback=image_writer,
+                            step_callback=step_callback,
+                            catch_interrupts=catch_ctrl_c,
+                            **vars(opt)
+                        )
+                    except ParseException as e:
+                        print('** An error occurred while processing your prompt **')
+                        print(f'** {str(e)} **')
                 elif operation == 'postprocess':
                     print(f'>> fixing {opt.prompt}')
                     opt.last_operation = do_postprocess(gen,opt,image_writer)
@@ -617,7 +619,9 @@ def write_config_file(conf_path, gen, model_name, new_config, clobber=False, mak
 
 def do_textmask(gen, opt, callback):
     image_path = opt.prompt
-    assert os.path.exists(image_path), '** "{image_path}" not found. Please enter the name of an existing image file to mask **'
+    if not os.path.exists(image_path):
+        image_path = os.path.join(opt.outdir,image_path)
+    assert os.path.exists(image_path), '** "{opt.prompt}" not found. Please enter the name of an existing image file to mask **'
     assert opt.text_mask is not None and len(opt.text_mask) >= 1, '** Please provide a text mask with -tm **'
     tm = opt.text_mask[0]
     threshold = float(opt.text_mask[1]) if len(opt.text_mask) > 1  else 0.5
