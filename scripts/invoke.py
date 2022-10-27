@@ -18,6 +18,7 @@ from ldm.invoke.image_util import make_grid
 from ldm.invoke.log import write_log
 from omegaconf import OmegaConf
 from pathlib import Path
+from pyparsing import ParseException
 
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
