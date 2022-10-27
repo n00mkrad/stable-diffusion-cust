@@ -5,7 +5,7 @@ import clip
 from einops import rearrange, repeat
 from transformers import CLIPTokenizer, CLIPTextModel
 import kornia
-from ldm.dream.devices import choose_torch_device
+from ldm.invoke.devices import choose_torch_device
 
 from ldm.modules.x_transformer import (
     Encoder,
@@ -251,6 +251,24 @@ class FrozenCLIPEmbedder(AbstractEncoder):
         self.device = device
         self.max_length = max_length
         self.freeze()
+        
+        self.emphasis_factor = 1.2599210499 # 3√2 # strength of () and []
+        self.token_mults = {}
+        tokens_with_parens = [(k, v) for k, v in self.tokenizer.get_vocab().items() if '(' in k or ')' in k or '{' in k or '}' in k]
+        fac = self.emphasis_factor
+        for text, ident in tokens_with_parens:
+            mult = 1.0
+            for c in text:
+                if c == '{':
+                    mult /= fac
+                if c == '}':
+                    mult *= fac
+                if c == '(':
+                    mult *= fac
+                if c == ')':
+                    mult /= fac
+            if mult != 1.0:
+                self.token_mults[ident] = mult
 
         def embedding_forward(
             self,
@@ -439,15 +457,49 @@ class FrozenCLIPEmbedder(AbstractEncoder):
     def forward(self, text, **kwargs):
         batch_encoding = self.tokenizer(
             text,
-            truncation=True,
-            max_length=self.max_length,
+            # truncation=True,
+            # max_length=225,
+            truncation=False, 
+            add_special_tokens=False,
             return_length=True,
-            return_overflowing_tokens=False,
-            padding='max_length',
+            # return_overflowing_tokens=False,
+            # padding='max_length',
             return_tensors='pt',
         )
-        tokens = batch_encoding['input_ids'].to(self.device)
+        
+        batch_multipliers = []
+        remade_batch_tokens = []
+        
+        for tokens in batch_encoding["input_ids"]:
+            remade_tokens = [self.tokenizer.bos_token_id]
+            multipliers = [1.0]
+            mult = 1.0
+            
+            for token in tokens:
+                mult_change = self.token_mults.get(token.item())
+                if mult_change is not None:
+                    mult *= mult_change
+                else:
+                    remade_tokens.append(token)
+                    multipliers.append(mult)
+            remade_tokens = remade_tokens[:76] + [self.tokenizer.eos_token_id]
+            multipliers = multipliers[:76] + [1.0]
+            need = (77-len(remade_tokens))
+            if need >= 1:
+                remade_tokens.extend([self.tokenizer.eos_token_id] * need)
+                multipliers.extend([1.0] * need)
+            remade_batch_tokens.append(remade_tokens)
+            batch_multipliers.append(multipliers)
+            
+            tokens = torch.tensor(remade_batch_tokens).to(self.device)
+            
         z = self.transformer(input_ids=tokens, **kwargs)
+        
+        original_mean = z.mean()
+        batch_multipliers = torch.tensor(batch_multipliers).to(z.device).to(z.dtype)
+        z *= batch_multipliers.reshape(batch_multipliers.shape + (1,)).expand(z.shape)
+        new_mean = z.mean()
+        z *= original_mean / new_mean
 
         return z
 
