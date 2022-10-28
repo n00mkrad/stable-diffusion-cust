@@ -15,7 +15,7 @@ dependencies:
     - opencv-python==4.5.5.64
     - pudb==2019.2
     - imageio==2.9.0
-    - pytorch-lightning==1.7.7
+    - pytorch-lightning==1.6.5
     - omegaconf==2.1.1
     - realesrgan==0.2.5.0
     - test-tube>=0.7.5
