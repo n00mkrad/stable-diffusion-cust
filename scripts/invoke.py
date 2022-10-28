@@ -354,6 +354,8 @@ def main_loop(gen, opt):
                             catch_interrupts=catch_ctrl_c,
                             **vars(opt)
                         )
+                        global step_index
+                        step_index = 0
                     except ParseException as e:
                         print('** An error occurred while processing your prompt **')
                         print(f'** {str(e)} **')
