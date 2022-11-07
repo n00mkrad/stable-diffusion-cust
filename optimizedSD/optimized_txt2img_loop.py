@@ -260,7 +260,7 @@ parser.add_argument(
 opt = parser.parse_args()
 
 config = "./v1-inference.yaml"
-ckpt = f"../../models/{opt.model}.ckpt"
+ckpt = opt.model
 
 tic = time.time()
 os.makedirs(opt.outdir, exist_ok=True)
