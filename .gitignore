@@ -6,6 +6,10 @@ ldm/invoke/restoration/codeformer/weights
 
 # Model files
 *.ckpt
+# ignore user models config
+configs/models.user.yaml
+config/models.user.yml
+
 # ignore the Anaconda/Miniconda installer used while building Docker image
 anaconda.sh
 
@@ -365,7 +369,7 @@ src
 **/__pycache__/
 outputs
 
-# Logs and associated folders 
+# Logs and associated folders
 # created from generated embeddings.
 logs
 testtube
@@ -380,7 +384,13 @@ checkpoints
 .scratch/
 .vscode/
 gfpgan/
-models/ldm/stable-diffusion-v1/model.sha256
+models/ldm/stable-diffusion-v1/*.sha256
 
 # GFPGAN model files
 gfpgan/
+
+# config file (will be created by installer)
+configs/models.yaml
+
+# weights (will be created by installer)
+models/ldm/stable-diffusion-v1/*.ckpt

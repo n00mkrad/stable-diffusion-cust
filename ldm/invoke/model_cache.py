@@ -13,18 +13,17 @@ import gc
 import hashlib
 import psutil
 import transformers
+import traceback
 import os
 from sys import getrefcount
 from omegaconf import OmegaConf
 from omegaconf.errors import ConfigAttributeError
 from ldm.util import instantiate_from_config
 
-GIGS=2**30
-AVG_MODEL_SIZE=2.1*GIGS
-DEFAULT_MIN_AVAIL=2*GIGS
+DEFAULT_MAX_MODELS=2
 
 class ModelCache(object):
-    def __init__(self, config:OmegaConf, device_type:str, precision:str, min_avail_mem=DEFAULT_MIN_AVAIL):
+    def __init__(self, config:OmegaConf, device_type:str, precision:str, max_loaded_models=DEFAULT_MAX_MODELS):
         '''
         Initialize with the path to the models.yaml config file,
         the torch device type, and precision. The optional
@@ -37,7 +36,7 @@ class ModelCache(object):
         self.config = config
         self.precision = precision
         self.device = torch.device(device_type)
-        self.min_avail_mem = min_avail_mem
+        self.max_loaded_models = max_loaded_models
         self.models = {}
         self.stack = []  # this is an LRU FIFO
         self.current_model = None
@@ -53,7 +52,9 @@ class ModelCache(object):
             return None
 
         if self.current_model != model_name:
-            self.unload_model(self.current_model)
+            if model_name not in self.models: # make room for a new one
+                self._make_cache_room()
+            self.offload_model(self.current_model)
         
         if model_name in self.models:
             requested_model = self.models[model_name]['model']
@@ -62,8 +63,7 @@ class ModelCache(object):
             width = self.models[model_name]['width']
             height = self.models[model_name]['height']
             hash = self.models[model_name]['hash']
-        else:
-            self._check_memory()
+        else: # we're about to load a new model, so potentially offload the least recently used one
             try:
                 requested_model, width, height, hash = self._load_model(model_name)
                 self.models[model_name] = {}
@@ -73,6 +73,7 @@ class ModelCache(object):
                 self.models[model_name]['hash'] = hash
             except Exception as e:
                 print(f'** model {model_name} could not be loaded: {str(e)}')
+                print(traceback.format_exc())
                 print(f'** restoring {self.current_model}')
                 self.get_model(self.current_model)
                 return None
@@ -176,15 +177,6 @@ class ModelCache(object):
             self._invalidate_cached_model(model_name)
         return True
     
-    def _check_memory(self):
-        avail_memory = psutil.virtual_memory()[1]
-        if AVG_MODEL_SIZE + self.min_avail_mem > avail_memory:
-            least_recent_model = self._pop_oldest_model()
-            if least_recent_model is not None:
-                del self.models[least_recent_model]
-                gc.collect()
-
-        
     def _load_model(self, model_name:str):
         """Load and initialize the model from configuration variables passed at object creation time"""
         if model_name not in self.config:
@@ -225,11 +217,14 @@ class ModelCache(object):
             print('   | Using more accurate float32 precision')
 
         # look and load a matching vae file. Code borrowed from AUTOMATIC1111 modules/sd_models.py
-        if vae and os.path.exists(vae):
-            print(f'   | Loading VAE weights from: {vae}')
-            vae_ckpt = torch.load(vae, map_location="cpu")
-            vae_dict = {k: v for k, v in vae_ckpt["state_dict"].items() if k[0:4] != "loss"}
-            model.first_stage_model.load_state_dict(vae_dict, strict=False)
+        if vae:
+            if os.path.exists(vae):
+                print(f'   | Loading VAE weights from: {vae}')
+                vae_ckpt = torch.load(vae, map_location="cpu")
+                vae_dict = {k: v for k, v in vae_ckpt["state_dict"].items() if k[0:4] != "loss"}
+                model.first_stage_model.load_state_dict(vae_dict, strict=False)
+            else:
+                print(f'   | VAE file {vae} not found. Skipping.')
 
         model.to(self.device)
         # model.to doesn't change the cond_stage_model.device used to move the tokenizer output, so set it here
@@ -253,15 +248,36 @@ class ModelCache(object):
             )
         return model, width, height, model_hash
         
-    def unload_model(self, model_name:str):
+    def offload_model(self, model_name:str):
+        '''
+        Offload the indicated model to CPU. Will call
+        _make_cache_room() to free space if needed.
+        '''
+        
         if model_name not in self.models:
             return
-        print(f'>> Caching model {model_name} in system RAM')
+
+        message = f'>> Offloading {model_name} to CPU'
+        print(message)
         model = self.models[model_name]['model']
         self.models[model_name]['model'] = self._model_to_cpu(model)
+
         gc.collect()
         if self._has_cuda():
             torch.cuda.empty_cache()
+
+    def _make_cache_room(self):
+        num_loaded_models = len(self.models)
+        if num_loaded_models >= self.max_loaded_models:
+            least_recent_model = self._pop_oldest_model()
+            print(f'>> Cache limit (max={self.max_loaded_models}) reached. Purging {least_recent_model}')
+            if least_recent_model is not None:
+                del self.models[least_recent_model]
+                gc.collect()
+        
+    def print_vram_usage(self):
+        if self._has_cuda:
+            print ('>> Current VRAM usage: ','%4.2fG' % (torch.cuda.memory_allocated() / 1e9))
 
     def commit(self,config_file_path:str):
         '''
@@ -279,7 +295,7 @@ class ModelCache(object):
         Returns the preamble for the config file.
         '''
         return '''# This file describes the alternative machine learning models
-# available to the dream script.
+# available to InvokeAI script.
 #
 # To add a new model, follow the examples below. Each
 # model requires a model config file, a weights file,
@@ -288,7 +304,7 @@ class ModelCache(object):
 '''
 
     def _invalidate_cached_model(self,model_name:str):
-        self.unload_model(model_name)
+        self.offload_model(model_name)
         if model_name in self.stack:
             self.stack.remove(model_name)
         self.models.pop(model_name,None)
@@ -317,8 +333,7 @@ class ModelCache(object):
         to be the least recently accessed model. Do not
         pop the last one, because it is in active use!
         '''
-        if len(self.stack) > 1:
-            return self.stack.pop(0)
+        return self.stack.pop(0)
 
     def _push_newest_model(self,model_name:str):
         '''

@@ -1,22 +1,22 @@
-import { IconButton, Image, useToast } from '@chakra-ui/react';
-import React, { SyntheticEvent } from 'react';
-import { MdClear } from 'react-icons/md';
+import { Image, useToast } from '@chakra-ui/react';
+import { SyntheticEvent } from 'react';
 import { RootState, useAppDispatch, useAppSelector } from '../../../app/store';
-import { setInitialImagePath } from '../../options/optionsSlice';
+import ImageUploaderIconButton from '../../../common/components/ImageUploaderIconButton';
+import { clearInitialImage } from '../../options/optionsSlice';
 
 export default function InitImagePreview() {
-  const initialImagePath = useAppSelector(
-    (state: RootState) => state.options.initialImagePath
+  const initialImage = useAppSelector(
+    (state: RootState) => state.options.initialImage
   );
 
   const dispatch = useAppDispatch();
 
   const toast = useToast();
 
-  const handleClickResetInitialImage = (e: SyntheticEvent) => {
-    e.stopPropagation();
-    dispatch(setInitialImagePath(null));
-  };
+  // const handleClickResetInitialImage = (e: SyntheticEvent) => {
+  //   e.stopPropagation();
+  //   dispatch(clearInitialImage());
+  // };
 
   const alertMissingInitImage = () => {
     toast({
@@ -25,31 +25,35 @@ export default function InitImagePreview() {
       status: 'error',
       isClosable: true,
     });
-    dispatch(setInitialImagePath(null));
+    dispatch(clearInitialImage());
   };
 
   return (
-    <div className="init-image-preview">
+    <>
       <div className="init-image-preview-header">
-        <h1>Initial Image</h1>
-        <IconButton
-          isDisabled={!initialImagePath}
-          size={'sm'}
+      {/* <div className="init-image-preview-header"> */}
+        <h2>Initial Image</h2>
+        {/* <IconButton
+          isDisabled={!initialImage}
           aria-label={'Reset Initial Image'}
           onClick={handleClickResetInitialImage}
           icon={<MdClear />}
-        />
+        /> */}
+        <ImageUploaderIconButton />
       </div>
-      {initialImagePath && (
-        <div className="init-image-image">
+      {initialImage && (
+        <div className="init-image-preview">
           <Image
             fit={'contain'}
-            src={initialImagePath}
-            rounded={'md'}
+            maxWidth={'100%'}
+            maxHeight={'100%'}
+            src={
+              typeof initialImage === 'string' ? initialImage : initialImage.url
+            }
             onError={alertMissingInitImage}
           />
         </div>
       )}
-    </div>
+    </>
   );
 }

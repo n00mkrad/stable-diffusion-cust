@@ -1,36 +1,28 @@
 ---
-title: macOS
+title: Manual Installation, macOS
 ---
 
 # :fontawesome-brands-apple: macOS
 
-Invoke AI runs quite well on M1 Macs and we have a number of M1 users
-in the community.
+Invoke AI runs quite well on M1 Macs and we have a number of M1 users in the
+community.
 
-While the repo does run on Intel Macs, we only have a couple
-reports. If you have an Intel Mac and run into issues, please create
-an issue on Github and we will do our best to help.
+While the repo does run on Intel Macs, we only have a couple reports. If you
+have an Intel Mac and run into issues, please create an issue on Github and we
+will do our best to help.
 
 ## Requirements
 
 - macOS 12.3 Monterey or later
-- About 10GB of storage (and 10GB of data if your internet connection has data caps)
+- About 10GB of storage (and 10GB of data if your internet connection has data
+  caps)
 - Any M1 Macs or an Intel Macs with 4GB+ of VRAM (ideally more)
 
 ## Installation
 
-First you need to download a large checkpoint file.
-
-1. Sign up at https://huggingface.co
-2. Go to the [Stable diffusion diffusion model page](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original)
-3. Accept the terms and click Access Repository
-4. Download [sd-v1-4.ckpt (4.27 GB)](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/blob/main/sd-v1-4.ckpt) and note where you have saved it (probably the Downloads folder). You may want to move it somewhere else for longer term storage - SD needs this file to run.
-
-While that is downloading, open Terminal and run the following commands one at a time, reading the comments and taking care to run the appropriate command for your Mac's architecture (Intel or M1).
-
 !!! todo "Homebrew"
 
-    If you have no brew installation yet (otherwise skip):
+    First you will install the "brew" package manager. Skip this if brew is already installed.
 
     ```bash title="install brew (and Xcode command line tools)"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -51,15 +43,13 @@ While that is downloading, open Terminal and run the following commands one at a
         brew install cmake protobuf rust
         ```
 
-        Then clone the InvokeAI repository:
-        
-        ```bash title="Clone the InvokeAI repository:
-         # Clone the Invoke AI repo
-         git clone https://github.com/invoke-ai/InvokeAI.git
-         cd InvokeAI
-         ```
-  
-      Choose the appropriate architecture for your system and install miniconda:
+        ```bash title="Clone the InvokeAI repository"
+        # Clone the Invoke AI repo
+        git clone https://github.com/invoke-ai/InvokeAI.git
+        cd InvokeAI
+        ```
+
+        Choose the appropriate architecture for your system and install miniconda:
 
         === "M1 arm64"
 
@@ -89,29 +79,10 @@ While that is downloading, open Terminal and run the following commands one at a
 
 !!! todo "Clone the Invoke AI repo"
 
-```bash 
+    ```bash
     git clone https://github.com/invoke-ai/InvokeAI.git
     cd InvokeAI
     ```
-
-!!! todo "Wait until the checkpoint-file download finished, then proceed"
-
-    We will leave the big checkpoint wherever you stashed it for long-term storage,
-    and make a link to it from the repo's folder. This allows you to use it for
-    other repos, or if you need to delete Invoke AI, you won't have to download it again.
-
-    ```{.bash .annotate}
-    # Make the directory in the repo for the symlink
-    mkdir -p models/ldm/stable-diffusion-v1/
-
-    # This is the folder where you put the checkpoint file `sd-v1-4.ckpt`
-    PATH_TO_CKPT="$HOME/Downloads" # (1)!
-
-    # Create a link to the checkpoint
-    ln -s "$PATH_TO_CKPT/sd-v1-4.ckpt" models/ldm/stable-diffusion-v1/model.ckpt
-    ```
-
-    1. replace `$HOME/Downloads` with the Location where you actually stored the Checkppoint (`sd-v1-4.ckpt`)
 
 !!! todo "Create the environment & install packages"
 
@@ -130,32 +101,64 @@ While that is downloading, open Terminal and run the following commands one at a
     ```bash
     # Activate the environment (you need to do this every time you want to run SD)
     conda activate invokeai
-
-    # This will download some bits and pieces and make take a while
-    (invokeai) python scripts/preload_models.py
-
-    # Run SD!
-    (invokeai) python scripts/dream.py
-
-    # or run the web interface!
-    (invokeai) python scripts/invoke.py --web
-
-    # The original scripts should work as well.
-    (invokeai) python scripts/orig_scripts/txt2img.py \
-        --prompt "a photograph of an astronaut riding a horse" \
-        --plms
     ```
+
     !!! info
 
         `export PIP_EXISTS_ACTION=w` is a precaution to fix `conda env
         create -f environment-mac.yml` never finishing in some situations. So
-        it isn't required but wont hurt.
+        it isn't required but won't hurt.
+
+!!! todo "Download the model weight files"
+
+    The `preload_models.py` script downloads and installs the model weight
+    files for you. It will lead you through the process of getting a Hugging Face
+    account, accepting the Stable Diffusion model weight license agreement, and
+    creating a download token:
+
+    ```bash
+    # This will take some time, depending on the speed of your internet connection
+    # and will consume about 10GB of space
+    python scripts/preload_models.py
+    ```
+
+!!! todo "Run InvokeAI!"
+
+    !!! warning "IMPORTANT"
+
+        Make sure that the conda environment is activated, which should create
+        `(invokeai)` in front of your prompt!
+
+    === "CLI"
+
+        ```bash
+        python scripts/invoke.py
+        ```
+
+    === "local Webserver"
+
+        ```bash
+        python scripts/invoke.py --web
+        ```
+
+    === "Public Webserver"
+
+        ```bash
+        python scripts/invoke.py --web --host 0.0.0.0
+        ```
+
+    To use an alternative model you may invoke the `!switch` command in
+    the CLI, or pass `--model <model_name>` during `invoke.py` launch for
+    either the CLI or the Web UI. See [Command Line
+    Client](../features/CLI.md#model-selection-and-importation). The
+    model names are defined in `configs/models.yaml`.
+
 ---
 
 ## Common problems
 
-After you followed all the instructions and try to run invoke.py, you might
-get several errors. Here's the errors I've seen and found solutions for.
+After you followed all the instructions and try to run invoke.py, you might get
+several errors. Here's the errors I've seen and found solutions for.
 
 ### Is it slow?
 
@@ -171,13 +174,12 @@ python ./scripts/orig_scripts/txt2img.py \
 
 ### Doesn't work anymore?
 
-PyTorch nightly includes support for MPS. Because of this, this setup
-is inherently unstable. One morning I woke up and it no longer worked
-no matter what I did until I switched to miniforge. However, I have
-another Mac that works just fine with Anaconda. If you can't get it to
-work, please search a little first because many of the errors will get
-posted and solved. If you can't find a solution please [create an
-issue](https://github.com/invoke-ai/InvokeAI/issues).
+PyTorch nightly includes support for MPS. Because of this, this setup is
+inherently unstable. One morning I woke up and it no longer worked no matter
+what I did until I switched to miniforge. However, I have another Mac that works
+just fine with Anaconda. If you can't get it to work, please search a little
+first because many of the errors will get posted and solved. If you can't find a
+solution please [create an issue](https://github.com/invoke-ai/InvokeAI/issues).
 
 One debugging step is to update to the latest version of PyTorch nightly.
 
@@ -214,9 +216,9 @@ conda update \
 
 There are several causes of these errors:
 
-1. Did you remember to `conda activate invokeai`? If your terminal prompt begins with
-   "(invokeai)" then you activated it. If it begins with "(base)" or something else
-   you haven't.
+1. Did you remember to `conda activate invokeai`? If your terminal prompt begins
+   with "(invokeai)" then you activated it. If it begins with "(base)" or
+   something else you haven't.
 
 2. You might've run `./scripts/preload_models.py` or `./scripts/invoke.py`
    instead of `python ./scripts/preload_models.py` or
@@ -227,21 +229,21 @@ There are several causes of these errors:
 3. if it says you're missing taming you need to rebuild your virtual
    environment.
 
-    ```bash
-    conda deactivate
-    conda env remove -n invokeai
-    conda env create -f environment-mac.yml
-    ```
-    
-4. If you have activated the invokeai virtual environment and tried rebuilding it,
-   maybe the problem could be that I have something installed that you don't and
-   you'll just need to manually install it. Make sure you activate the virtual
-   environment so it installs there instead of globally.
+   ```bash
+   conda deactivate
+   conda env remove -n invokeai
+   conda env create -f environment-mac.yml
+   ```
 
-    ```bash
-    conda activate invokeai
-    pip install <package name>
-    ```
+4. If you have activated the invokeai virtual environment and tried rebuilding
+   it, maybe the problem could be that I have something installed that you don't
+   and you'll just need to manually install it. Make sure you activate the
+   virtual environment so it installs there instead of globally.
+
+   ```bash
+   conda activate invokeai
+   pip install <package name>
+   ```
 
 You might also need to install Rust (I mention this again below).
 
@@ -395,11 +397,11 @@ curl \
 
 ### How come `--seed` doesn't work?
 
-First this:
+!!! Information
 
-> Completely reproducible results are not guaranteed across PyTorch releases,
-> individual commits, or different platforms. Furthermore, results may not be
-> reproducible between CPU and GPU executions, even when using identical seeds.
+    Completely reproducible results are not guaranteed across PyTorch releases,
+    individual commits, or different platforms. Furthermore, results may not be
+    reproducible between CPU and GPU executions, even when using identical seeds.
 
 [PyTorch docs](https://pytorch.org/docs/stable/notes/randomness.html)
 
@@ -460,11 +462,11 @@ C.
 ### I just got Rickrolled! Do I have a virus?
 
 You don't have a virus. It's part of the project. Here's
-[Rick](https://github.com/invoke-ai/InvokeAI/blob/main/assets/rick.jpeg)
-and here's [the
-code](https://github.com/invoke-ai/InvokeAI/blob/69ae4b35e0a0f6ee1af8bb9a5d0016ccb27e36dc/scripts/txt2img.py#L79)
-that swaps him in. It's a NSFW filter, which IMO, doesn't work very
-good (and we call this "computer vision", sheesh).
+[Rick](https://github.com/invoke-ai/InvokeAI/blob/main/assets/rick.jpeg) and
+here's
+[the code](https://github.com/invoke-ai/InvokeAI/blob/69ae4b35e0a0f6ee1af8bb9a5d0016ccb27e36dc/scripts/txt2img.py#L79)
+that swaps him in. It's a NSFW filter, which IMO, doesn't work very good (and we
+call this "computer vision", sheesh).
 
 ---
 
@@ -487,9 +489,9 @@ return torch.layer_norm(input, normalized_shape, weight, bias, eps, torch.backen
 RuntimeError: view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.
 ```
 
-Update to the latest version of invoke-ai/InvokeAI. We were
-patching pytorch but we found a file in stable-diffusion that we could
-change instead. This is a 32-bit vs 16-bit problem.
+Update to the latest version of invoke-ai/InvokeAI. We were patching pytorch but
+we found a file in stable-diffusion that we could change instead. This is a
+32-bit vs 16-bit problem.
 
 ### The processor must support the Intel bla bla bla
 
@@ -521,4 +523,3 @@ Abort trap: 6
 /Users/[...]/opt/anaconda3/envs/invokeai/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
   warnings.warn('resource_tracker: There appear to be %d '
 ```
-

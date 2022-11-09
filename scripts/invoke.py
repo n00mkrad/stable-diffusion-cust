@@ -10,6 +10,9 @@ import warnings
 import time
 import traceback
 import yaml
+
+from ldm.invoke.prompt_parser import PromptParser
+
 sys.path.append('.')    # corrects a weird problem on Macs
 from ldm.invoke.readline import get_completer
 from ldm.invoke.args import Args, metadata_dumps, metadata_from_png, dream_cmd_from_png
@@ -18,6 +21,7 @@ from ldm.invoke.image_util import make_grid
 from ldm.invoke.log import write_log
 from omegaconf import OmegaConf
 from pathlib import Path
+import pyparsing
 
 os.chdir(sys.path[0])
 os.chdir('..') # get out of Scripts dir, into main repo dir
@@ -41,6 +45,10 @@ def main():
     if args.weights:
         print('--weights argument has been deprecated. Please edit ./configs/models.yaml, and select the weights using --model instead.')
         sys.exit(-1)
+    if args.max_loaded_models is not None:
+        if args.max_loaded_models <= 0:
+            print('--max_loaded_models must be >= 1; using 1')
+            args.max_loaded_models = 1
 
     print('* Initializing, be patient...')
     from ldm.generate import Generate
@@ -84,6 +92,7 @@ def main():
             esrgan=esrgan,
             free_gpu_mem=opt.free_gpu_mem,
             safety_checker=opt.safety_checker,
+            max_loaded_models=opt.max_loaded_models,
             )
     except (FileNotFoundError, IOError, KeyError) as e:
         print(f'{e}. Aborting.')
@@ -183,8 +192,7 @@ def main_loop(gen, opt):
                     pass
         
             if len(opt.prompt) == 0:
-                print('\nTry again with a prompt!')
-                continue
+                opt.prompt = ''
         
             # width and height are set by model if not specified
             if not opt.width:
@@ -346,12 +354,16 @@ def main_loop(gen, opt):
                 if operation == 'generate':
                     catch_ctrl_c = infile is None # if running interactively, we catch keyboard interrupts
                     opt.last_operation='generate'
-                    gen.prompt2image(
-                        image_callback=image_writer,
-                        step_callback=step_callback,
-                        catch_interrupts=catch_ctrl_c,
-                        **vars(opt)
-                    )
+                    try:
+                        gen.prompt2image(
+                            image_callback=image_writer,
+                            step_callback=step_callback,
+                            catch_interrupts=catch_ctrl_c,
+                            **vars(opt)
+                        )
+                    except (PromptParser.ParsingException, pyparsing.ParseException) as e:
+                        print('** An error occurred while processing your prompt **')
+                        print(f'** {str(e)} **')
                     global step_index
                     step_index = 0
                 elif operation == 'postprocess':
@@ -552,12 +564,8 @@ def del_config(model_name:str, gen, opt, completer):
     if model_name == current_model:
         print("** Can't delete active model. !switch to another model first. **")
         return
-    yaml_str = gen.model_cache.del_model(model_name)
-    
-    tmpfile = os.path.join(os.path.dirname(opt.conf),'new_config.tmp')
-    with open(tmpfile, 'w') as outfile:
-        outfile.write(yaml_str)
-    os.rename(tmpfile,opt.conf)
+    if gen.model_cache.del_model(model_name):
+        gen.model_cache.commit(opt.conf)
     print(f'** {model_name} deleted')
     completer.del_model(model_name)
     
@@ -616,7 +624,9 @@ def write_config_file(conf_path, gen, model_name, new_config, clobber=False, mak
 
 def do_textmask(gen, opt, callback):
     image_path = opt.prompt
-    assert os.path.exists(image_path), '** "{image_path}" not found. Please enter the name of an existing image file to mask **'
+    if not os.path.exists(image_path):
+        image_path = os.path.join(opt.outdir,image_path)
+    assert os.path.exists(image_path), '** "{opt.prompt}" not found. Please enter the name of an existing image file to mask **'
     assert opt.text_mask is not None and len(opt.text_mask) >= 1, '** Please provide a text mask with -tm **'
     tm = opt.text_mask[0]
     threshold = float(opt.text_mask[1]) if len(opt.text_mask) > 1  else 0.5
@@ -866,7 +876,7 @@ def retrieve_dream_command(opt,command,completer):
 def write_commands(opt, file_path:str, outfilepath:str):
     dir,basename = os.path.split(file_path)
     try:
-        paths = list(Path(dir).glob(basename))
+        paths = sorted(list(Path(dir).glob(basename)))
     except ValueError:
         print(f'## "{basename}": unacceptable pattern')
         return
