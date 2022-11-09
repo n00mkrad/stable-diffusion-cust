@@ -1,0 +1,1381 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="mauwii">
+      
+      
+        <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/installation/INSTALLING_MODELS/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.9">
+    
+    
+      
+        <title>Installing Models - Stable Diffusion Toolkit Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.08040f6c.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installing-models" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-header__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stable Diffusion Toolkit Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Installing Models
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    invoke-ai/InvokeAI
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Stable Diffusion Toolkit Docs" class="md-nav__button md-logo" aria-label="Stable Diffusion Toolkit Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Stable Diffusion Toolkit Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    invoke-ai/InvokeAI
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Assets
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Assets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Assets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1">
+          Preflight checks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Preflight checks" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Preflight checks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_1" type="checkbox" id="__nav_3_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1">
+          Outputs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Outputs" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Outputs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assets/preflight-checks/outputs/invoke_log/" class="md-nav__link">
+        Invoke log
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/CLI/" class="md-nav__link">
+        CLI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/EMBIGGEN/" class="md-nav__link">
+        Embiggen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/IMG2IMG/" class="md-nav__link">
+        Image-to-Image
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/INPAINTING/" class="md-nav__link">
+        Inpainting
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/OTHER/" class="md-nav__link">
+        Others
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/OUTPAINTING/" class="md-nav__link">
+        Outpainting
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/POSTPROCESS/" class="md-nav__link">
+        Postprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/PROMPTS/" class="md-nav__link">
+        Prompting-Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/TEXTUAL_INVERSION/" class="md-nav__link">
+        Textual-Inversion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/VARIATIONS/" class="md-nav__link">
+        Variations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/WEB/" class="md-nav__link">
+        InvokeAI Web Server
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/WEBUIHOTKEYS/" class="md-nav__link">
+        **WebUI Hotkey List**
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Help
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Help" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Help
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../help/SAMPLER_CONVERGENCE/" class="md-nav__link">
+        Sampler Convergence
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../help/TROUBLESHOOT/" class="md-nav__link">
+        F.A.Q.
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Installation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Installing Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Installing Models
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-weight-files" class="md-nav__link">
+    Model Weight Files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-models" class="md-nav__link">
+    Base Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-contributed-models" class="md-nav__link">
+    Community-Contributed Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-preload_modelspy" class="md-nav__link">
+    Installation via preload_models.py
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-the-cli" class="md-nav__link">
+    Installation via the CLI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manually-editing-of-configsmodelsyaml" class="md-nav__link">
+    Manually editing of configs/models.yaml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL_DOCKER/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL_LINUX/" class="md-nav__link">
+        Manual Installation, Linux
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL_MAC/" class="md-nav__link">
+        Manual Installation, macOS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL_WINDOWS/" class="md-nav__link">
+        Manual Installation, Windows
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Other
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/CONTRIBUTORS/" class="md-nav__link">
+        Contributors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/README-CompViz/" class="md-nav__link">
+        CompViz-Readme
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-weight-files" class="md-nav__link">
+    Model Weight Files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-models" class="md-nav__link">
+    Base Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-contributed-models" class="md-nav__link">
+    Community-Contributed Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-preload_modelspy" class="md-nav__link">
+    Installation via preload_models.py
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-the-cli" class="md-nav__link">
+    Installation via the CLI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manually-editing-of-configsmodelsyaml" class="md-nav__link">
+    Manually editing of configs/models.yaml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/installation/INSTALLING_MODELS.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 12h8v2H8v-2m2 8H6V4h7v5h5v3.1l2-2V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4v-2m-2-2h4.1l.9-.9V16H8v2m12.2-5c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+
+<h1 id="installing-models"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.134 1.535C9.722 2.562 8.16 4.057 6.889 5.312 5.8 6.387 5.041 7.401 4.575 8.294a3.745 3.745 0 0 0-3.227 1.054c-.43.431-.69 1.066-.86 1.657a11.982 11.982 0 0 0-.358 1.914A21.263 21.263 0 0 0 0 15.203v.054l.75-.007-.007.75h.054a14.404 14.404 0 0 0 .654-.012 21.243 21.243 0 0 0 1.63-.118c.62-.07 1.3-.18 1.914-.357.592-.17 1.226-.43 1.657-.861a3.745 3.745 0 0 0 1.055-3.217c.908-.461 1.942-1.216 3.04-2.3 1.279-1.262 2.764-2.825 3.775-4.249.501-.706.923-1.428 1.125-2.096.2-.659.235-1.469-.368-2.07-.606-.607-1.42-.55-2.069-.34-.66.213-1.376.646-2.076 1.155zm-3.95 8.48a3.76 3.76 0 0 0-1.19-1.192 9.758 9.758 0 0 1 1.161-1.607l1.658 1.658a9.853 9.853 0 0 1-1.63 1.142zM.742 16l.007-.75-.75.008A.75.75 0 0 0 .743 16zM12.016 2.749c-1.224.89-2.605 2.189-3.822 3.384l1.718 1.718c1.21-1.205 2.51-2.597 3.387-3.833.47-.662.78-1.227.912-1.662.134-.444.032-.551.009-.575h-.001V1.78c-.014-.014-.112-.113-.548.027-.432.14-.995.462-1.655.942zM1.62 13.089a19.56 19.56 0 0 0-.104 1.395 19.55 19.55 0 0 0 1.396-.104 10.528 10.528 0 0 0 1.668-.309c.526-.151.856-.325 1.011-.48a2.25 2.25 0 0 0-3.182-3.182c-.155.155-.329.485-.48 1.01a10.515 10.515 0 0 0-.309 1.67z"/></svg></span> Installing Models<a class="headerlink" href="#installing-models" title="Permanent link">#</a></h1>
+<h2 id="model-weight-files">Model Weight Files<a class="headerlink" href="#model-weight-files" title="Permanent link">#</a></h2>
+<p>The model weight files ('*.ckpt') are the Stable Diffusion "secret
+sauce". They are the product of training the AI on millions of
+captioned images gathered from multiple sources.</p>
+<p>Originally there was only a single Stable Diffusion weights file,
+which many people named <code>model.ckpt</code>. Now there are dozens or more
+that have been "fine tuned" to provide particulary styles, genres, or
+other features. InvokeAI allows you to install and run multiple model
+weight files and switch between them quickly in the command-line and
+web interfaces.</p>
+<p>This manual will guide you through installing and configuring model
+weight files.</p>
+<h2 id="base-models">Base Models<a class="headerlink" href="#base-models" title="Permanent link">#</a></h2>
+<p>InvokeAI comes with support for a good initial set of models listed in
+the model configuration file <code>configs/models.yaml</code>. They are:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Weight File</th>
+<th>Description</th>
+<th>DOWNLOAD FROM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stable-diffusion-1.5</td>
+<td>v1-5-pruned-emaonly.ckpt</td>
+<td>Most recent version of base Stable Diffusion model</td>
+<td><a href="https://huggingface.co/runwayml/stable-diffusion-v1-5">https://huggingface.co/runwayml/stable-diffusion-v1-5</a></td>
+</tr>
+<tr>
+<td>stable-diffusion-1.4</td>
+<td>sd-v1-4.ckpt</td>
+<td>Previous version of base Stable Diffusion model</td>
+<td><a href="https://huggingface.co/CompVis/stable-diffusion-v-1-4-original">https://huggingface.co/CompVis/stable-diffusion-v-1-4-original</a></td>
+</tr>
+<tr>
+<td>inpainting-1.5</td>
+<td>sd-v1-5-inpainting.ckpt</td>
+<td>Stable Diffusion 1.5 model specialized for inpainting</td>
+<td><a href="https://huggingface.co/runwayml/stable-diffusion-inpainting">https://huggingface.co/runwayml/stable-diffusion-inpainting</a></td>
+</tr>
+<tr>
+<td>waifu-diffusion-1.3</td>
+<td>model-epoch09-float32.ckpt</td>
+<td>Stable Diffusion 1.4 trained to produce anime images</td>
+<td><a href="https://huggingface.co/hakurei/waifu-diffusion-v1-3">https://huggingface.co/hakurei/waifu-diffusion-v1-3</a></td>
+</tr>
+<tr>
+<td><all models></td>
+<td>vae-ft-mse-840000-ema-pruned.ckpt</td>
+<td>A fine-tune file add-on file that improves face generation</td>
+<td><a href="https://huggingface.co/stabilityai/sd-vae-ft-mse-original/">https://huggingface.co/stabilityai/sd-vae-ft-mse-original/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Note that these files are covered by an "Ethical AI" license which
+forbids certain uses. You will need to create an account on the
+Hugging Face website and accept the license terms before you can
+access the files.</p>
+<p>The predefined configuration file for InvokeAI (located at
+<code>configs/models.yaml</code>) provides entries for each of these weights
+files. <code>stable-diffusion-1.5</code> is the default model used, and we
+strongly recommend that you install this weights file if nothing else.</p>
+<h2 id="community-contributed-models">Community-Contributed Models<a class="headerlink" href="#community-contributed-models" title="Permanent link">#</a></h2>
+<p>There are too many to list here and more are being contributed every
+day. Hugging Face maintains a <a href="https://huggingface.co/sd-concepts-library">fast-growing
+repository</a> of fine-tune
+(".bin") models that can be imported into InvokeAI by passing the
+<code>--embedding_path</code> option to the <code>invoke.py</code> command.</p>
+<p><a href="https://rentry.org/sdmodels">This page</a> hosts a large list of
+official and unofficial Stable Diffusion models and where they can be
+obtained.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
+<p>There are three ways to install weights files:</p>
+<ol>
+<li>
+<p>During InvokeAI installation, the <code>preload_models.py</code> script can
+download them for you.</p>
+</li>
+<li>
+<p>You can use the command-line interface (CLI) to import, configure
+and modify new models files.</p>
+</li>
+<li>
+<p>You can download the files manually and add the appropriate entries
+to <code>models.yaml</code>.</p>
+</li>
+</ol>
+<h3 id="installation-via-preload_modelspy">Installation via <code>preload_models.py</code><a class="headerlink" href="#installation-via-preload_modelspy" title="Permanent link">#</a></h3>
+<p>This is the most automatic way. Run <code>scripts/preload_models.py</code> from
+the console.  It will ask you to select which models to download and
+lead you through the steps of setting up a Hugging Face account if you
+haven't done so already.</p>
+<p>To start, from within the InvokeAI directory run the command <code>python
+scripts/preload_models.py</code> (Linux/MacOS) or <code>python
+scripts\preload_models.py</code> (Windows):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Loading Python libraries...
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>** INTRODUCTION **
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Welcome to InvokeAI. This script will help download the Stable Diffusion weight files
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>and other large models that are needed for text to image generation. At any point you may interrupt
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>this program and resume later.
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>** WEIGHT SELECTION **
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Would you like to download the Stable Diffusion model weights now? [y] 
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Choose the weight file(s) you wish to download. Before downloading you 
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>will be given the option to view and change your selections.
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>[1] stable-diffusion-1.5:
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    The newest Stable Diffusion version 1.5 weight file (4.27 GB) (recommended)
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    Download? [y] 
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>[2] inpainting-1.5:
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    RunwayML SD 1.5 model optimized for inpainting (4.27 GB) (recommended)
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    Download? [y] 
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>[3] stable-diffusion-1.4:
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    The original Stable Diffusion version 1.4 weight file (4.27 GB) 
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    Download? [n] n
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>[4] waifu-diffusion-1.3:
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    Stable Diffusion 1.4 fine tuned on anime-styled images (4.27) 
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    Download? [n] y
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>[5] ft-mse-improved-autoencoder-840000:
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    StabilityAI improved autoencoder fine-tuned for human faces (recommended; 335 MB) (recommended)
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    Download? [y] y
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>The following weight files will be downloaded:
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>   [1] stable-diffusion-1.5*
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>   [2] inpainting-1.5
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>   [4] waifu-diffusion-1.3
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>   [5] ft-mse-improved-autoencoder-840000
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>*default
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>Ok to download? [y] 
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>** LICENSE AGREEMENT FOR WEIGHT FILES **
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>1. To download the Stable Diffusion weight files you need to read and accept the
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>   CreativeML Responsible AI license. If you have not already done so, please 
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>   create an account using the &quot;Sign Up&quot; button:
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>   https://huggingface.co 
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>   You will need to verify your email address as part of the HuggingFace
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>   registration process.
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>2. After creating the account, login under your account and accept
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>   the license terms located here:
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>   https://huggingface.co/CompVis/stable-diffusion-v-1-4-original
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>Press &lt;enter&gt; when you are ready to continue:
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>...
+</code></pre></div>
+<p>When the script is complete, you will find the downloaded weights
+files in <code>models/ldm/stable-diffusion-v1</code> and a matching configuration
+file in <code>configs/models.yaml</code>.</p>
+<p>You can run the script again to add any models you didn't select the
+first time. Note that as a safety measure the script will <em>never</em>
+remove a previously-installed weights file. You will have to do this
+manually.</p>
+<h3 id="installation-via-the-cli">Installation via the CLI<a class="headerlink" href="#installation-via-the-cli" title="Permanent link">#</a></h3>
+<p>You can install a new model, including any of the community-supported
+ones, via the command-line client's <code>!import_model</code> command.</p>
+<ol>
+<li>
+<p>First download the desired model weights file and place it under <code>models/ldm/stable-diffusion-v1/</code>.
+   You may rename the weights file to something more memorable if you wish. Record the path of the
+   weights file (e.g. <code>models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt</code>)</p>
+</li>
+<li>
+<p>Launch the <code>invoke.py</code> CLI with <code>python scripts/invoke.py</code>.</p>
+</li>
+<li>
+<p>At the <code>invoke&gt;</code> command-line, enter the command <code>!import_model &lt;path to model&gt;</code>.
+   For example:</p>
+</li>
+</ol>
+<p><code>invoke&gt; !import_model models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt</code></p>
+<p>(Hint - the CLI supports file path autocompletion. Type a bit of the path
+   name and hit <tab> in order to get a choice of possible completions.)</p>
+<ol>
+<li>Follow the wizard's instructions to complete installation as shown in the example
+   here:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; &lt;b&gt;!import_model models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt&lt;/b&gt;
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&gt;&gt; Model import in process. Please enter the values needed to configure this model:
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Name for this model: &lt;b&gt;arabian-nights&lt;/b&gt;
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Description of this model: &lt;b&gt;Arabian Nights Fine Tune v1.0&lt;/b&gt;
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Configuration file for this model: &lt;b&gt;configs/stable-diffusion/v1-inference.yaml&lt;/b&gt;
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Default image width: &lt;b&gt;512&lt;/b&gt;
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Default image height: &lt;b&gt;512&lt;/b&gt;
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>&gt;&gt; New configuration:
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>arabian-nights:
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  config: configs/stable-diffusion/v1-inference.yaml
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  description: Arabian Nights Fine Tune v1.0
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  height: 512
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  weights: models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  width: 512
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>OK to import [n]? &lt;b&gt;y&lt;/b&gt;
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>&gt;&gt; Caching model stable-diffusion-1.4 in system RAM
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>&gt;&gt; Loading waifu-diffusion from models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>   | LatentDiffusion: Running in eps-prediction mode
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>   | DiffusionWrapper has 859.52 M params.
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>   | Making attention of type &#39;vanilla&#39; with 512 in_channels
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>   | Working with z of shape (1, 4, 32, 32) = 4096 dimensions.
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>   | Making attention of type &#39;vanilla&#39; with 512 in_channels
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>   | Using faster float16 precision
+</code></pre></div>
+<p>If you've previously installed the fine-tune VAE file <code>vae-ft-mse-840000-ema-pruned.ckpt</code>,
+the wizard will also ask you if you want to add this VAE to the model.</p>
+<p>The appropriate entry for this model will be added to <code>configs/models.yaml</code> and it will
+be available to use in the CLI immediately.</p>
+<p>The CLI has additional commands for switching among, viewing, editing,
+deleting the available models. These are described in <a href="../../features/CLI/#model-selection-and-importation">Command Line
+Client</a>, but the two most
+frequently-used are <code>!models</code> and <code>!switch &lt;name of model&gt;</code>. The first
+prints a table of models that InvokeAI knows about and their load
+status. The second will load the requested model and lets you switch
+back and forth quickly among loaded models.</p>
+<h3 id="manually-editing-of-configsmodelsyaml">Manually editing of <code>configs/models.yaml</code><a class="headerlink" href="#manually-editing-of-configsmodelsyaml" title="Permanent link">#</a></h3>
+<p>If you are comfortable with a text editor then you may simply edit
+<code>models.yaml</code> directly.</p>
+<p>First you need to download the desired .ckpt file and place it in
+<code>models/ldm/stable-diffusion-v1</code> as descirbed in step <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/invoke-ai/InvokeAI/issues/1" title="GitHub Issue: invoke-ai/InvokeAI #1">#1</a> in the
+previous section. Record the path to the weights file,
+e.g. <code>models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt</code></p>
+<p>Then using a <strong>text</strong> editor (e.g. the Windows Notepad application),
+open the file <code>configs/models.yaml</code>, and add a new stanza that follows
+this model:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>arabian-nights-1.0:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  description: A great fine-tune in Arabian Nights style
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  weights: ./models/ldm/stable-diffusion-v1/arabian-nights-1.0.ckpt
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  config: ./configs/stable-diffusion/v1-inference.yaml
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  width: 512
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  height: 512
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  vae: ./models/ldm/stable-diffusion-v1/vae-ft-mse-840000-ema-pruned.ckpt
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  default: false
+</code></pre></div>
+<ul>
+<li>arabian-nights-1.0</li>
+<li>
+<p>This is the name of the model that you will refer to from within the
+  CLI and the WebGUI when you need to load and use the model.</p>
+</li>
+<li>
+<p>description</p>
+</li>
+<li>
+<p>Any description that you want to add to the model to remind you what
+    it is.</p>
+</li>
+<li>
+<p>weights</p>
+</li>
+<li>
+<p>Relative path to the .ckpt weights file for this model.</p>
+</li>
+<li>
+<p>config</p>
+</li>
+<li>
+<p>This is the confusingly-named configuration file for the model itself.
+  Use <code>./configs/stable-diffusion/v1-inference.yaml</code> unless the model happens
+  to need a custom configuration, in which case the place you downloaded it
+  from will tell you what to use instead. For example, the runwayML custom
+  inpainting model requires the file <code>configs/stable-diffusion/v1-inpainting-inference.yaml</code>.
+  This is already inclued in the InvokeAI distribution and is configured automatically
+  for you by the <code>preload_models.py</code> script.</p>
+</li>
+<li>
+<p>vae</p>
+</li>
+<li>
+<p>If you want to add a VAE file to the model, then enter its path here.</p>
+</li>
+<li>
+<p>width, height</p>
+</li>
+<li>This is the width and height of the images used to train the model.
+  Currently they are always 512 and 512.</li>
+</ul>
+<p>Save the <code>models.yaml</code> and relaunch InvokeAI. The new model should now be
+available for your use.</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 30, 2022</span>
+      
+        <br>
+        Created:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 29, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../../help/TROUBLESHOOT/" class="md-footer__link md-footer__link--prev" aria-label="Previous: F.A.Q." rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              F.A.Q.
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../INSTALL_DOCKER/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Docker
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 Lincoln D. Stein <lincoln.stein@gmail.com>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      
+    
+  </body>
+</html>

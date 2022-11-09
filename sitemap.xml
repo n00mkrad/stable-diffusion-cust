@@ -11,7 +11,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://invoke-ai.github.io/InvokeAI/features/CHANGELOG/</loc>
+         <loc>https://invoke-ai.github.io/InvokeAI/assets/preflight-checks/outputs/invoke_log/</loc>
          <lastmod>2022-11-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -71,12 +71,22 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://invoke-ai.github.io/InvokeAI/features/WEBUIHOTKEYS/</loc>
+         <lastmod>2022-11-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://invoke-ai.github.io/InvokeAI/help/SAMPLER_CONVERGENCE/</loc>
          <lastmod>2022-11-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://invoke-ai.github.io/InvokeAI/help/TROUBLESHOOT/</loc>
+         <lastmod>2022-11-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://invoke-ai.github.io/InvokeAI/installation/INSTALLING_MODELS/</loc>
          <lastmod>2022-11-09</lastmod>
          <changefreq>daily</changefreq>
     </url>

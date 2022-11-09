@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/features/CLI/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.9">
     
     
       
@@ -21,12 +21,14 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8c5ef100.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.9647289d.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.08040f6c.min.css">
         
       
+      
+
     
     
     
@@ -39,10 +41,11 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
+    
     
     
   </head>
@@ -55,7 +58,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     
@@ -111,7 +114,8 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
@@ -120,7 +124,8 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -145,7 +150,7 @@
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -169,7 +174,7 @@
         <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     invoke-ai/InvokeAI
@@ -216,7 +221,7 @@
       <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     invoke-ai/InvokeAI
@@ -262,27 +267,77 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
       
         <label class="md-nav__link" for="__nav_3">
-          Features
+          Assets
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Features" data-md-level="1">
+      <nav class="md-nav" aria-label="Assets" data-md-level="1">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
-          Features
+          Assets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1">
+          Preflight checks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Preflight checks" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Preflight checks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_1" type="checkbox" id="__nav_3_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1">
+          Outputs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Outputs" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Outputs
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -292,13 +347,63 @@
   
   
     <li class="md-nav__item">
-      <a href="../CHANGELOG/" class="md-nav__link">
-        Changelog
+      <a href="../../assets/preflight-checks/outputs/invoke_log/" class="md-nav__link">
+        Invoke log
       </a>
     </li>
   
 
             
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
             
               
@@ -549,6 +654,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WEBUIHOTKEYS/" class="md-nav__link">
+        **WebUI Hotkey List**
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -566,18 +685,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_4">
+        <label class="md-nav__link" for="__nav_5">
           Help
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Help" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Help
         </label>
@@ -628,22 +747,36 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_5">
+        <label class="md-nav__link" for="__nav_6">
           Installation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Installation" data-md-level="1">
-        <label class="md-nav__title" for="__nav_5">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
           Installation
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/INSTALLING_MODELS/" class="md-nav__link">
+        Installing Models
+      </a>
+    </li>
+  
+
+            
           
             
               
@@ -666,7 +799,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_LINUX/" class="md-nav__link">
-        Linux
+        Manual Installation, Linux
       </a>
     </li>
   
@@ -680,7 +813,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_MAC/" class="md-nav__link">
-        macOS
+        Manual Installation, macOS
       </a>
     </li>
   
@@ -694,7 +827,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_WINDOWS/" class="md-nav__link">
-        Windows
+        Manual Installation, Windows
       </a>
     </li>
   
@@ -718,18 +851,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_6">
+        <label class="md-nav__link" for="__nav_7">
           Other
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Other" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
+        <label class="md-nav__title" for="__nav_7">
           <span class="md-nav__icon md-icon"></span>
           Other
         </label>
@@ -866,21 +999,23 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
-  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/CLI.md" title="Edit this page" class="md-content__button md-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+                  
 
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/CLI.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 12h8v2H8v-2m2 8H6V4h7v5h5v3.1l2-2V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4v-2m-2-2h4.1l.9-.9V16H8v2m12.2-5c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
 
 
 <h1 id="cli"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9h2.31l.32-3h2l-.32 3h2l.32-3h2l-.32 3H15v2h-1.9l-.2 2H15v2h-2.31l-.32 3h-2l.32-3h-2l-.32 3h-2l.32-3H5v-2h1.9l.2-2H5V9m4.1 2-.2 2h2l.2-2M19 6h-2v8h2m0 2h-2v2h2Z"/></svg></span> CLI<a class="headerlink" href="#cli" title="Permanent link">#</a></h1>
 <h2 id="interactive-command-line-interface"><strong>Interactive Command Line Interface</strong><a class="headerlink" href="#interactive-command-line-interface" title="Permanent link">#</a></h2>
-<p>The <code>invoke.py</code> script, located in <code>scripts/</code>, provides an interactive
-interface to image generation similar to the "invoke mothership" bot that Stable
-AI provided on its Discord server.</p>
+<p>The <code>invoke.py</code> script, located in <code>scripts/</code>, provides an interactive interface
+to image generation similar to the "invoke mothership" bot that Stable AI
+provided on its Discord server.</p>
 <p>Unlike the <code>txt2img.py</code> and <code>img2img.py</code> scripts provided in the original
 <a href="https://github.com/CompVis/stable-diffusion">CompVis/stable-diffusion</a> source
 code repository, the time-consuming initialization of the AI model
@@ -898,33 +1033,33 @@ metadata where it can be retrieved using <code>scripts/images2prompt.py</code></
 <p>This script runs from the command-line or can be used as a Web application. The Web GUI is
 currently rudimentary, but a much better replacement is on its way.</p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python3 ./scripts/invoke.py
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a>* Initializing, be patient...
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a>Loading model from models/ldm/text2img-large/model.ckpt
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="o">(</span>...more initialization messages...<span class="o">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a>* Initialization <span class="k">done</span>! Awaiting your command...
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a>invoke&gt; ashley judd riding a camel -n2 -s150
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a>Outputs:
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a>   outputs/img-samples/00009.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">416354203</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a>   outputs/img-samples/00010.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">1362479620</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a>invoke&gt; <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    outputs/img-samples/00011.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    seeds <span class="k">for</span> individual rows: <span class="o">[</span><span class="m">2685670268</span>, <span class="m">1216708065</span>, <span class="m">2335773498</span>, <span class="m">822223658</span>, <span class="m">714542046</span>, <span class="m">3395302430</span><span class="o">]</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>invoke&gt; q
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="c1"># this shows how to retrieve the prompt stored in the saved image&#39;s metadata</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python ./scripts/images2prompt.py outputs/img_samples/*.png
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="m">00009</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">416354203</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="m">00010</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">1362479620</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="m">00011</span>.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python3 ./scripts/invoke.py
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>* Initializing, be patient...
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Loading model from models/ldm/text2img-large/model.ckpt
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">(</span>...more initialization messages...<span class="o">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>* Initialization <span class="k">done</span>! Awaiting your command...
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>invoke&gt; ashley judd riding a camel -n2 -s150
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Outputs:
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   outputs/img-samples/00009.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">416354203</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   outputs/img-samples/00010.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">1362479620</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>invoke&gt; <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    outputs/img-samples/00011.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    seeds <span class="k">for</span> individual rows: <span class="o">[</span><span class="m">2685670268</span>, <span class="m">1216708065</span>, <span class="m">2335773498</span>, <span class="m">822223658</span>, <span class="m">714542046</span>, <span class="m">3395302430</span><span class="o">]</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>invoke&gt; q
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># this shows how to retrieve the prompt stored in the saved image&#39;s metadata</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python ./scripts/images2prompt.py outputs/img_samples/*.png
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="m">00009</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">416354203</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="m">00010</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">1362479620</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="m">00011</span>.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
 </code></pre></div>
 <p><img alt="invoke-py-demo" src="../../assets/dream-py-demo.png" /></p>
 <p>The <code>invoke&gt;</code> prompt's arguments are pretty much identical to those used in the
-Discord bot, except you don't need to type <code>!invoke</code> (it doesn't hurt if you do).
-A significant change is that creation of individual images is now the default
-unless <code>--grid</code> (<code>-g</code>) is given. A full list is given in
+Discord bot, except you don't need to type <code>!invoke</code> (it doesn't hurt if you
+do). A significant change is that creation of individual images is now the
+default unless <code>--grid</code> (<code>-g</code>) is given. A full list is given in
 <a href="#list-of-prompt-arguments">List of prompt arguments</a>.</p>
 <h2 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link">#</a></h2>
 <p>The script itself also recognizes a series of command-line switches that will
@@ -933,7 +1068,8 @@ the location of the model weight files.</p>
 <h3 id="list-of-arguments-recognized-at-the-command-line">List of arguments recognized at the command line<a class="headerlink" href="#list-of-arguments-recognized-at-the-command-line" title="Permanent link">#</a></h3>
 <p>These command-line arguments can be passed to <code>invoke.py</code> when you first run it
 from the Windows, Mac or Linux command line. Some set defaults that can be
-overridden on a per-prompt basis (see <a href="#list-of-prompt-arguments">List of prompt arguments</a>. Others</p>
+overridden on a per-prompt basis (see
+<a href="#list-of-prompt-arguments">List of prompt arguments</a>. Others</p>
 <table>
 <thead>
 <tr>
@@ -983,13 +1119,13 @@ overridden on a per-prompt basis (see <a href="#list-of-prompt-arguments">List o
 <tr>
 <td><code>--png_compression &lt;0-9&gt;</code></td>
 <td><code>-z&lt;0-9&gt;</code></td>
-<td>6</td>
+<td><code>6</code></td>
 <td>Select level of compression for output files, from 0 (no compression) to 9 (max compression)</td>
 </tr>
 <tr>
 <td><code>--safety-checker</code></td>
 <td></td>
-<td>False</td>
+<td><code>False</code></td>
 <td>Activate safety checker for NSFW and other potentially disturbing imagery</td>
 </tr>
 <tr>
@@ -1072,9 +1208,8 @@ overridden on a per-prompt basis (see <a href="#list-of-prompt-arguments">List o
 </tr>
 </tbody>
 </table>
-<div class="admonition warning deprecated">
-<p class="admonition-title">Warning</p>
-<p>These arguments are deprecated but still work:</p>
+<div class="admonition warning">
+<p class="admonition-title">These arguments are deprecated but still work</p>
 <div align="center" markdown>
 <table>
 <thead>
@@ -1111,15 +1246,14 @@ overridden on a per-prompt basis (see <a href="#list-of-prompt-arguments">List o
   use Linux/Mac style forward slashes (better): <code>C:/path/to/my/file</code>.</p>
 </div>
 <h2 id="list-of-prompt-arguments">List of prompt arguments<a class="headerlink" href="#list-of-prompt-arguments" title="Permanent link">#</a></h2>
-<p>After the invoke.py script initializes, it will present you with a
-<code>invoke&gt;</code> prompt. Here you can enter information to generate images
-from text (<a href="#txt2img">txt2img</a>), to embellish an existing image or sketch
+<p>After the invoke.py script initializes, it will present you with a <code>invoke&gt;</code>
+prompt. Here you can enter information to generate images from text
+(<a href="#txt2img">txt2img</a>), to embellish an existing image or sketch
 (<a href="#img2img">img2img</a>), or to selectively alter chosen regions of the image
 (<a href="#inpainting">inpainting</a>).</p>
 <h3 id="txt2img">txt2img<a class="headerlink" href="#txt2img" title="Permanent link">#</a></h3>
 <div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>invoke&gt; waterfall and rainbow -W640 -H480
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; waterfall and rainbow -W640 -H480
 </code></pre></div>
 <p>This will create the requested image with the dimensions 640 (width)
 and 480 (height).</p>
@@ -1142,164 +1276,170 @@ and 480 (height).</p>
 <td>Text prompt to use. The quotation marks are optional.</td>
 </tr>
 <tr>
-<td>--width <int></td>
-<td>-W<int></td>
-<td>512</td>
+<td><code>--width &lt;int&gt;</code></td>
+<td><code>-W&lt;int&gt;</code></td>
+<td><code>512</code></td>
 <td>Width of generated image</td>
 </tr>
 <tr>
-<td>--height <int></td>
-<td>-H<int></td>
-<td>512</td>
+<td><code>--height &lt;int&gt;</code></td>
+<td><code>-H&lt;int&gt;</code></td>
+<td><code>512</code></td>
 <td>Height of generated image</td>
 </tr>
 <tr>
-<td>--iterations <int></td>
-<td>-n<int></td>
-<td>1</td>
+<td><code>--iterations &lt;int&gt;</code></td>
+<td><code>-n&lt;int&gt;</code></td>
+<td><code>1</code></td>
 <td>How many images to generate from this prompt</td>
 </tr>
 <tr>
-<td>--steps <int></td>
-<td>-s<int></td>
-<td>50</td>
+<td><code>--steps &lt;int&gt;</code></td>
+<td><code>-s&lt;int&gt;</code></td>
+<td><code>50</code></td>
 <td>How many steps of refinement to apply</td>
 </tr>
 <tr>
-<td>--cfg_scale <float></td>
-<td>-C<float></td>
-<td>7.5</td>
+<td><code>--cfg_scale &lt;float&gt;</code></td>
+<td><code>-C&lt;float&gt;</code></td>
+<td><code>7.5</code></td>
 <td>How hard to try to match the prompt to the generated image; any number greater than 1.0 works, but the useful range is roughly 5.0 to 20.0</td>
 </tr>
 <tr>
-<td>--seed <int></td>
-<td>-S<int></td>
-<td>None</td>
+<td><code>--seed &lt;int&gt;</code></td>
+<td><code>-S&lt;int&gt;</code></td>
+<td><code>None</code></td>
 <td>Set the random seed for the next series of images. This can be used to recreate an image generated previously.</td>
 </tr>
 <tr>
-<td>--sampler <sampler></td>
-<td>-A<sampler></td>
-<td>k_lms</td>
+<td><code>--sampler &lt;sampler&gt;</code></td>
+<td><code>-A&lt;sampler&gt;</code></td>
+<td><code>k_lms</code></td>
 <td>Sampler to use. Use -h to get list of available samplers.</td>
 </tr>
 <tr>
-<td>--hires_fix</td>
+<td><code>--karras_max &lt;int&gt;</code></td>
+<td></td>
+<td><code>29</code></td>
+<td>When using k_* samplers, set the maximum number of steps before shifting from using the Karras noise schedule (good for low step counts) to the LatentDiffusion noise schedule (good for high step counts) This value is sticky. [29]</td>
+</tr>
+<tr>
+<td><code>--hires_fix</code></td>
 <td></td>
 <td></td>
 <td>Larger images often have duplication artefacts. This option suppresses duplicates by generating the image at low res, and then using img2img to increase the resolution</td>
 </tr>
 <tr>
-<td>--png_compression &lt;0-9&gt;</td>
-<td>-z&lt;0-9&gt;</td>
-<td>6</td>
+<td><code>--png_compression &lt;0-9&gt;</code></td>
+<td><code>-z&lt;0-9&gt;</code></td>
+<td><code>6</code></td>
 <td>Select level of compression for output files, from 0 (no compression) to 9 (max compression)</td>
 </tr>
 <tr>
-<td>--grid</td>
-<td>-g</td>
-<td>False</td>
+<td><code>--grid</code></td>
+<td><code>-g</code></td>
+<td><code>False</code></td>
 <td>Turn on grid mode to return a single image combining all the images generated by this prompt</td>
 </tr>
 <tr>
-<td>--individual</td>
-<td>-i</td>
-<td>True</td>
+<td><code>--individual</code></td>
+<td><code>-i</code></td>
+<td><code>True</code></td>
 <td>Turn off grid mode (deprecated; leave off --grid instead)</td>
 </tr>
 <tr>
-<td>--outdir <path></td>
-<td>-o<path></td>
-<td>outputs/img_samples</td>
+<td><code>--outdir &lt;path&gt;</code></td>
+<td><code>-o&lt;path&gt;</code></td>
+<td><code>outputs/img_samples</code></td>
 <td>Temporarily change the location of these images</td>
 </tr>
 <tr>
-<td>--seamless</td>
+<td><code>--seamless</code></td>
 <td></td>
-<td>False</td>
+<td><code>False</code></td>
 <td>Activate seamless tiling for interesting effects</td>
 </tr>
 <tr>
-<td>--seamless_axes</td>
+<td><code>--seamless_axes</code></td>
 <td></td>
-<td>x,y</td>
+<td><code>x,y</code></td>
 <td>Specify which axes to use circular convolution on.</td>
 </tr>
 <tr>
-<td>--log_tokenization</td>
-<td>-t</td>
-<td>False</td>
+<td><code>--log_tokenization</code></td>
+<td><code>-t</code></td>
+<td><code>False</code></td>
 <td>Display a color-coded list of the parsed tokens derived from the prompt</td>
 </tr>
 <tr>
-<td>--skip_normalization</td>
-<td>-x</td>
-<td>False</td>
+<td><code>--skip_normalization</code></td>
+<td><code>-x</code></td>
+<td><code>False</code></td>
 <td>Weighted subprompts will not be normalized. See <a href="../OTHER/#weighted-prompts">Weighted Prompts</a></td>
 </tr>
 <tr>
-<td>--upscale <int> <float></td>
-<td>-U <int> <float></td>
-<td>-U 1 0.75</td>
+<td><code>--upscale &lt;int&gt; &lt;float&gt;</code></td>
+<td><code>-U &lt;int&gt; &lt;float&gt;</code></td>
+<td><code>-U 1 0.75</code></td>
 <td>Upscale image by magnification factor (2, 4), and set strength of upscaling (0.0-1.0). If strength not set, will default to 0.75.</td>
 </tr>
 <tr>
-<td>--facetool_strength <float></td>
-<td>-G <float></td>
-<td>-G0</td>
+<td><code>--facetool_strength &lt;float&gt;</code></td>
+<td><code>-G &lt;float&gt;</code></td>
+<td><code>-G0</code></td>
 <td>Fix faces (defaults to using the GFPGAN algorithm); argument indicates how hard the algorithm should try (0.0-1.0)</td>
 </tr>
 <tr>
-<td>--facetool <name></td>
-<td>-ft <name></td>
-<td>-ft gfpgan</td>
+<td><code>--facetool &lt;name&gt;</code></td>
+<td><code>-ft &lt;name&gt;</code></td>
+<td><code>-ft gfpgan</code></td>
 <td>Select face restoration algorithm to use: gfpgan, codeformer</td>
 </tr>
 <tr>
-<td>--codeformer_fidelity</td>
-<td>-cf <float></td>
-<td>0.75</td>
+<td><code>--codeformer_fidelity</code></td>
+<td><code>-cf &lt;float&gt;</code></td>
+<td><code>0.75</code></td>
 <td>Used along with CodeFormer. Takes values between 0 and 1. 0 produces high quality but low accuracy. 1 produces high accuracy but low quality</td>
 </tr>
 <tr>
-<td>--save_original</td>
-<td>-save_orig</td>
-<td>False</td>
+<td><code>--save_original</code></td>
+<td><code>-save_orig</code></td>
+<td><code>False</code></td>
 <td>When upscaling or fixing faces, this will cause the original image to be saved rather than replaced.</td>
 </tr>
 <tr>
-<td>--variation <float></td>
-<td>-v<float></td>
-<td>0.0</td>
-<td>Add a bit of noise (0.0=none, 1.0=high) to the image in order to generate a series of variations. Usually used in combination with -S<seed> and -n<int> to generate a series a riffs on a starting image. See <a href="../VARIATIONS/">Variations</a>.</td>
+<td><code>--variation &lt;float&gt;</code></td>
+<td><code>-v&lt;float&gt;</code></td>
+<td><code>0.0</code></td>
+<td>Add a bit of noise (0.0=none, 1.0=high) to the image in order to generate a series of variations. Usually used in combination with <code>-S&lt;seed&gt;</code> and <code>-n&lt;int&gt;</code> to generate a series a riffs on a starting image. See <a href="../VARIATIONS/">Variations</a>.</td>
 </tr>
 <tr>
-<td>--with_variations <pattern></td>
+<td><code>--with_variations &lt;pattern&gt;</code></td>
 <td></td>
-<td>None</td>
+<td><code>None</code></td>
 <td>Combine two or more variations. See <a href="../VARIATIONS/">Variations</a> for now to use this.</td>
 </tr>
 <tr>
-<td>--save_intermediates <n></td>
+<td><code>--save_intermediates &lt;n&gt;</code></td>
 <td></td>
-<td>None</td>
+<td><code>None</code></td>
 <td>Save the image from every nth step into an "intermediates" folder inside the output directory</td>
 </tr>
 </tbody>
 </table>
-<p>Note that the width and height of the image must be multiples of
-64. You can provide different values, but they will be rounded down to
-the nearest multiple of 64.</p>
+<p>Note that the width and height of the image must be multiples of 64. You can
+provide different values, but they will be rounded down to the nearest multiple
+of 64.</p>
 <h3 id="this-is-an-example-of-img2img">This is an example of img2img:<a class="headerlink" href="#this-is-an-example-of-img2img" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>invoke&gt; waterfall and rainbow -I./vacation-photo.png -W640 -H480 --fit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt; waterfall and rainbow -I./vacation-photo.png -W640 -H480 --fit
 </code></pre></div>
-<p>This will modify the indicated vacation photograph by making it more
-like the prompt. Results will vary greatly depending on what is in the
-image. We also ask to --fit the image into a box no bigger than
-640x480. Otherwise the image size will be identical to the provided
-photo and you may run out of memory if it is large.</p>
-<p>In addition to the command-line options recognized by txt2img, img2img
-accepts additional options:</p>
+<p>This will modify the indicated vacation photograph by making it more like the
+prompt. Results will vary greatly depending on what is in the image. We also ask
+to --fit the image into a box no bigger than 640x480. Otherwise the image size
+will be identical to the provided photo and you may run out of memory if it is
+large.</p>
+<p>In addition to the command-line options recognized by txt2img, img2img accepts
+additional options:</p>
 <table>
 <thead>
 <tr>
@@ -1332,8 +1472,7 @@ accepts additional options:</p>
 </table>
 <h3 id="inpainting">inpainting<a class="headerlink" href="#inpainting" title="Permanent link">#</a></h3>
 <div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>invoke&gt; waterfall and rainbow -I./vacation-photo.png -M./vacation-mask.png -W640 -H480 --fit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; waterfall and rainbow -I./vacation-photo.png -M./vacation-mask.png -W640 -H480 --fit
 </code></pre></div>
 <p>This will do the same thing as img2img, but image alterations will
 only occur within transparent areas defined by the mask file specified
@@ -1342,8 +1481,8 @@ to overpaint made transparent, but you must be careful not to destroy
 the pixels underneath when you create the transparent areas. See
 <a href="../INPAINTING/">Inpainting</a> for details.</p>
 </div>
-<p>inpainting accepts all the arguments used for txt2img and img2img, as
-well as the --mask (-M) and --text_mask (-tm) arguments:</p>
+<p>inpainting accepts all the arguments used for txt2img and img2img, as well as
+the --mask (-M) and --text_mask (-tm) arguments:</p>
 <table>
 <thead>
 <tr>
@@ -1361,6 +1500,12 @@ well as the --mask (-M) and --text_mask (-tm) arguments:</p>
 <td>Path to an image the same size as the initial_image, with areas for inpainting made transparent.</td>
 </tr>
 <tr>
+<td><code>--invert_mask</code></td>
+<td></td>
+<td>False</td>
+<td>If true, invert the mask so that transparent areas are opaque and vice versa.</td>
+</tr>
+<tr>
 <td><code>--text_mask &lt;prompt&gt; [&lt;float&gt;]</code></td>
 <td><code>-tm &lt;prompt&gt; [&lt;float&gt;]</code></td>
 <td><none></td>
@@ -1368,67 +1513,62 @@ well as the --mask (-M) and --text_mask (-tm) arguments:</p>
 </tr>
 </tbody>
 </table>
-<p><code>--text_mask</code> (short form <code>-tm</code>) is a way to generate a mask using a
-text description of the part of the image to replace. For example, if
-you have an image of a breakfast plate with a bagel, toast and
-scrambled eggs, you can selectively mask the bagel and replace it with
-a piece of cake this way:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>invoke&gt; a piece of cake -I /path/to/breakfast.png -tm bagel
+<p>The mask may either be an image with transparent areas, in which case the
+inpainting will occur in the transparent areas only, or a black and white image,
+in which case all black areas will be painted into.</p>
+<p><code>--text_mask</code> (short form <code>-tm</code>) is a way to generate a mask using a text
+description of the part of the image to replace. For example, if you have an
+image of a breakfast plate with a bagel, toast and scrambled eggs, you can
+selectively mask the bagel and replace it with a piece of cake this way:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>invoke&gt; a piece of cake -I /path/to/breakfast.png -tm bagel
 </code></pre></div>
 <p>The algorithm uses <a
-href="https://github.com/timojl/clipseg">clipseg</a> to classify
-different regions of the image. The classifier puts out a confidence
-score for each region it identifies. Generally regions that score
-above 0.5 are reliable, but if you are getting too much or too little
-masking you can adjust the threshold down (to get more mask), or up
-(to get less). In this example, by passing <code>-tm</code> a higher value, we
-are insisting on a more stringent classification.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>invoke&gt; a piece of cake -I /path/to/breakfast.png -tm bagel 0.6
+href="https://github.com/timojl/clipseg">clipseg</a> to classify different
+regions of the image. The classifier puts out a confidence score for each region
+it identifies. Generally regions that score above 0.5 are reliable, but if you
+are getting too much or too little masking you can adjust the threshold down (to
+get more mask), or up (to get less). In this example, by passing <code>-tm</code> a higher
+value, we are insisting on a more stringent classification.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>invoke&gt; a piece of cake -I /path/to/breakfast.png -tm bagel 0.6
 </code></pre></div>
 <h1 id="other-commands">Other Commands<a class="headerlink" href="#other-commands" title="Permanent link">#</a></h1>
 <p>The CLI offers a number of commands that begin with "!".</p>
 <h2 id="postprocessing-images">Postprocessing images<a class="headerlink" href="#postprocessing-images" title="Permanent link">#</a></h2>
-<p>To postprocess a file using face restoration or upscaling, use the
-<code>!fix</code> command.</p>
+<p>To postprocess a file using face restoration or upscaling, use the <code>!fix</code>
+command.</p>
 <h3 id="fix"><code>!fix</code><a class="headerlink" href="#fix" title="Permanent link">#</a></h3>
-<p>This command runs a post-processor on a previously-generated image. It
-takes a PNG filename or path and applies your choice of the <code>-U</code>, <code>-G</code>, or
-<code>--embiggen</code> switches in order to fix faces or upscale. If you provide a
-filename, the script will look for it in the current output
-directory. Otherwise you can provide a full or partial path to the
-desired file.</p>
+<p>This command runs a post-processor on a previously-generated image. It takes a
+PNG filename or path and applies your choice of the <code>-U</code>, <code>-G</code>, or <code>--embiggen</code>
+switches in order to fix faces or upscale. If you provide a filename, the script
+will look for it in the current output directory. Otherwise you can provide a
+full or partial path to the desired file.</p>
 <p>Some examples:</p>
 <div class="admonition example">
-<p>Upscale to 4X its original size and fix faces using codeformer:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>invoke&gt; !fix <span class="m">0000045</span>.4829112.png -G1 -U4 -ft codeformer
+<p class="admonition-title">Upscale to 4X its original size and fix faces using codeformer</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>invoke&gt; !fix <span class="m">0000045</span>.4829112.png -G1 -U4 -ft codeformer
 </code></pre></div>
 </div>
 <div class="admonition example">
-<p>Use the GFPGAN algorithm to fix faces, then upscale to 3X using --embiggen:</p>
-<p>```bash
-invoke&gt; !fix 0000045.4829112.png -G0.8 -ft gfpgan</p>
-<blockquote>
-<blockquote>
-<p>fixing outputs/img-samples/0000045.4829112.png
-retrieved seed 4829112 and prompt "boy enjoying a banana split"
-GFPGAN - Restoring Faces for image seed:4829112
-Outputs:
-[1] outputs/img-samples/000017.4829112.gfpgan-00.png: !fix "outputs/img-samples/0000045.4829112.png" -s 50 -S  -W 512 -H 512 -C 7.5 -A k_lms -G 0.8</p>
-</blockquote>
-</blockquote>
+<p class="admonition-title">Use the GFPGAN algorithm to fix faces, then upscale to 3X using --embiggen</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>invoke&gt; !fix <span class="m">0000045</span>.4829112.png -G0.8 -ft gfpgan
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>&gt;&gt; fixing outputs/img-samples/0000045.4829112.png
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&gt;&gt; retrieved seed <span class="m">4829112</span> and prompt <span class="s2">&quot;boy enjoying a banana split&quot;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>&gt;&gt; GFPGAN - Restoring Faces <span class="k">for</span> image seed:4829112
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Outputs:
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">[</span><span class="m">1</span><span class="o">]</span> outputs/img-samples/000017.4829112.gfpgan-00.png: !fix <span class="s2">&quot;outputs/img-samples/0000045.4829112.png&quot;</span> -s <span class="m">50</span> -S  -W <span class="m">512</span> -H <span class="m">512</span> -C <span class="m">7</span>.5 -A k_lms -G <span class="m">0</span>.8
+</code></pre></div>
 </div>
 <h3 id="mask">!mask<a class="headerlink" href="#mask" title="Permanent link">#</a></h3>
-<p>This command takes an image, a text prompt, and uses the <code>clipseg</code>
-algorithm to automatically generate a mask of the area that matches
-the text prompt. It is useful for debugging the text masking process
-prior to inpainting with the <code>--text_mask</code> argument. See
-[INPAINTING.md] for details.</p>
+<p>This command takes an image, a text prompt, and uses the <code>clipseg</code> algorithm to
+automatically generate a mask of the area that matches the text prompt. It is
+useful for debugging the text masking process prior to inpainting with the
+<code>--text_mask</code> argument. See [INPAINTING.md] for details.</p>
 <h2 id="model-selection-and-importation">Model selection and importation<a class="headerlink" href="#model-selection-and-importation" title="Permanent link">#</a></h2>
-<p>The CLI allows you to add new models on the fly, as well as to switch
-among them rapidly without leaving the script.</p>
+<p>The CLI allows you to add new models on the fly, as well as to switch among them
+rapidly without leaving the script.</p>
 <h3 id="models">!models<a class="headerlink" href="#models" title="Permanent link">#</a></h3>
-<p>This prints out a list of the models defined in `config/models.yaml'.
-The active model is bold-faced</p>
+<p>This prints out a list of the models defined in `config/models.yaml'. The active
+model is bold-faced</p>
 <p>Example:</p>
 <pre>
 laion400m                 not loaded  <no description>
@@ -1437,13 +1577,12 @@ waifu-diffusion           not loaded  Waifu Diffusion v1.3
 </pre>
 
 <h3 id="switch">!switch <model><a class="headerlink" href="#switch" title="Permanent link">#</a></h3>
-<p>This quickly switches from one model to another without leaving the 
-CLI script. <code>invoke.py</code> uses a memory caching system; once a model
-has been loaded, switching back and forth is quick. The following
-example shows this in action. Note how the second column of the 
-<code>!models</code> table changes to <code>cached</code> after a model is first loaded,
-and that the long initialization step is not needed when loading
-a cached model.</p>
+<p>This quickly switches from one model to another without leaving the CLI script.
+<code>invoke.py</code> uses a memory caching system; once a model has been loaded,
+switching back and forth is quick. The following example shows this in action.
+Note how the second column of the <code>!models</code> table changes to <code>cached</code> after a
+model is first loaded, and that the long initialization step is not needed when
+loading a cached model.</p>
 <pre>
 invoke> !models
 laion400m                 not loaded  <no description>
@@ -1481,26 +1620,24 @@ waifu-diffusion               cached  Waifu Diffusion v1.3
 </pre>
 
 <h3 id="import_model">!import_model <path/to/model/weights><a class="headerlink" href="#import_model" title="Permanent link">#</a></h3>
-<p>This command imports a new model weights file into InvokeAI, makes it
-available for image generation within the script, and writes out the
-configuration for the model into <code>config/models.yaml</code> for use in 
-subsequent sessions.</p>
-<p>Provide <code>!import_model</code> with the path to a weights file ending in
-<code>.ckpt</code>.  If you type a partial path and press tab, the CLI will
-autocomplete. Although it will also autocomplete to <code>.vae</code> files,
-these are not currenty supported (but will be soon).</p>
-<p>When you hit return, the CLI will prompt you to fill in additional
-information about the model, including the short name you wish to use
-for it with the <code>!switch</code> command, a brief description of the model,
-the default image width and height to use with this model, and the
-model's configuration file. The latter three fields are automatically
-filled with reasonable defaults. In the example below, the bold-faced
-text shows what the user typed in with the exception of the width,
-height and configuration file paths, which were filled in
+<p>This command imports a new model weights file into InvokeAI, makes it available
+for image generation within the script, and writes out the configuration for the
+model into <code>config/models.yaml</code> for use in subsequent sessions.</p>
+<p>Provide <code>!import_model</code> with the path to a weights file ending in <code>.ckpt</code>. If
+you type a partial path and press tab, the CLI will autocomplete. Although it
+will also autocomplete to <code>.vae</code> files, these are not currenty supported (but
+will be soon).</p>
+<p>When you hit return, the CLI will prompt you to fill in additional information
+about the model, including the short name you wish to use for it with the
+<code>!switch</code> command, a brief description of the model, the default image width and
+height to use with this model, and the model's configuration file. The latter
+three fields are automatically filled with reasonable defaults. In the example
+below, the bold-faced text shows what the user typed in with the exception of
+the width, height and configuration file paths, which were filled in
 automatically.</p>
 <p>Example:</p>
 <pre>
-invoke> <b>!import_model models/ldm/stable-diffusion-v1/    model-epoch08-float16.ckpt</b>
+invoke> <b>!import_model models/ldm/stable-diffusion-v1/model-epoch08-float16.ckpt</b>
 >> Model import in process. Please enter the values needed to configure this model:
 
 Name for this model: <b>waifu-diffusion</b>
@@ -1528,10 +1665,10 @@ invoke>
 </pre>
 
 <h3 id="edit_model">!edit_model <name_of_model><a class="headerlink" href="#edit_model" title="Permanent link">#</a></h3>
-<p>The <code>!edit_model</code> command can be used to modify a model that is
-already defined in <code>config/models.yaml</code>. Call it with the short
-name of the model you wish to modify, and it will allow you to
-modify the model's <code>description</code>, <code>weights</code> and other fields.</p>
+<p>The <code>!edit_model</code> command can be used to modify a model that is already defined
+in <code>config/models.yaml</code>. Call it with the short name of the model you wish to
+modify, and it will allow you to modify the model's <code>description</code>, <code>weights</code> and
+other fields.</p>
 <p>Example:</p>
 <pre>
 invoke> <b>!edit_model waifu-diffusion</b>
@@ -1555,98 +1692,101 @@ OK to import [n]? y
 >> Loading waifu-diffusion from models/ldm/stable-diffusion-v1/model-epoch10-float16.ckpt
 ...
 </pre>
-<p>=======
-    invoke&gt; !fix 000017.4829112.gfpgan-00.png --embiggen 3
-    ...lots of text...
-    Outputs:
-    [2] outputs/img-samples/000018.2273800735.embiggen-00.png: !fix "outputs/img-samples/000017.243781548.gfpgan-00.png" -s 50 -S 2273800735 -W 512 -H 512 -C 7.5 -A k_lms --embiggen 3.0 0.75 0.25
-    ```</p>
+
+<p>======= invoke&gt; !fix 000017.4829112.gfpgan-00.png --embiggen 3 ...lots of
+text... Outputs: [2] outputs/img-samples/000018.2273800735.embiggen-00.png: !fix
+"outputs/img-samples/000017.243781548.gfpgan-00.png" -s 50 -S 2273800735 -W 512
+-H 512 -C 7.5 -A k_lms --embiggen 3.0 0.75 0.25 ```</p>
 <h2 id="history-processing">History processing<a class="headerlink" href="#history-processing" title="Permanent link">#</a></h2>
-<p>The CLI provides a series of convenient commands for reviewing previous
-actions, retrieving them, modifying them, and re-running them.</p>
+<p>The CLI provides a series of convenient commands for reviewing previous actions,
+retrieving them, modifying them, and re-running them.</p>
 <h3 id="history">!history<a class="headerlink" href="#history" title="Permanent link">#</a></h3>
-<p>The invoke script keeps track of all the commands you issue during a
-session, allowing you to re-run them. On Mac and Linux systems, it
-also writes the command-line history out to disk, giving you access to
-the most recent 1000 commands issued.</p>
-<p>The <code>!history</code> command will return a numbered list of all the commands
-issued during the session (Windows), or the most recent 1000 commands
-(Mac|Linux). You can then repeat a command by using the command <code>!NNN</code>,
-where "NNN" is the history line number. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>invoke&gt; !history
-<a id="__codelineno-7-2" name="__codelineno-7-2"></a>...
-<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="o">[</span><span class="m">14</span><span class="o">]</span> happy woman sitting under tree wearing broad hat and flowing garment
-<a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="o">[</span><span class="m">15</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment
-<a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="o">[</span><span class="m">18</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6
-<a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="o">[</span><span class="m">20</span><span class="o">]</span> watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
-<a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
-<a id="__codelineno-7-8" name="__codelineno-7-8"></a>...
-<a id="__codelineno-7-9" name="__codelineno-7-9"></a>invoke&gt; !20
-<a id="__codelineno-7-10" name="__codelineno-7-10"></a>invoke&gt; watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<p>The invoke script keeps track of all the commands you issue during a session,
+allowing you to re-run them. On Mac and Linux systems, it also writes the
+command-line history out to disk, giving you access to the most recent 1000
+commands issued.</p>
+<p>The <code>!history</code> command will return a numbered list of all the commands issued
+during the session (Windows), or the most recent 1000 commands (Mac|Linux). You
+can then repeat a command by using the command <code>!NNN</code>, where "NNN" is the
+history line number. For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>invoke&gt; !history
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>...
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">[</span><span class="m">14</span><span class="o">]</span> happy woman sitting under tree wearing broad hat and flowing garment
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="o">[</span><span class="m">15</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="o">[</span><span class="m">18</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="o">[</span><span class="m">20</span><span class="o">]</span> watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>...
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>invoke&gt; !20
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>invoke&gt; watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
 </code></pre></div>
 <h3 id="fetch">!fetch<a class="headerlink" href="#fetch" title="Permanent link">#</a></h3>
-<p>This command retrieves the generation parameters from a previously
-generated image and either loads them into the command line
-(Linux|Mac), or prints them out in a comment for copy-and-paste
-(Windows). You may provide either the name of a file in the current
-output directory, or a full file path.  Specify path to a folder with
-image png files, and wildcard *.png to retrieve the dream command used
-to generate the images, and save them to a file commands.txt for
-further processing.</p>
+<p>This command retrieves the generation parameters from a previously generated
+image and either loads them into the command line (Linux|Mac), or prints them
+out in a comment for copy-and-paste (Windows). You may provide either the name
+of a file in the current output directory, or a full file path. Specify path to
+a folder with image png files, and wildcard *.png to retrieve the dream command
+used to generate the images, and save them to a file commands.txt for further
+processing.</p>
 <p>This example loads the generation command for a single png file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>invoke&gt; !fetch <span class="m">0000015</span>.8929913.png
-<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="c1"># the script returns the next line, ready for editing and running:</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3"></a>invoke&gt; a fantastic alien landscape -W <span class="m">576</span> -H <span class="m">512</span> -s <span class="m">60</span> -A plms -C <span class="m">7</span>.5
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>invoke&gt; !fetch <span class="m">0000015</span>.8929913.png
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># the script returns the next line, ready for editing and running:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>invoke&gt; a fantastic alien landscape -W <span class="m">576</span> -H <span class="m">512</span> -s <span class="m">60</span> -A plms -C <span class="m">7</span>.5
 </code></pre></div>
-<p>This one fetches the generation commands from a batch of files and
-stores them into <code>selected.txt</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a>invoke&gt; !fetch outputs<span class="se">\s</span>elected-imgs<span class="se">\*</span>.png selected.txt
+<p>This one fetches the generation commands from a batch of files and stores them
+into <code>selected.txt</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>invoke&gt; !fetch outputs<span class="se">\s</span>elected-imgs<span class="se">\*</span>.png selected.txt
 </code></pre></div>
 <h3 id="replay">!replay<a class="headerlink" href="#replay" title="Permanent link">#</a></h3>
 <p>This command replays a text file generated by !fetch or created manually</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>invoke&gt; !replay outputs\selected-imgs\selected.txt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>invoke&gt; !replay outputs\selected-imgs\selected.txt
 </code></pre></div>
-<p>Note that these commands may behave unexpectedly if given a PNG file that
-was not generated by InvokeAI.</p>
+<p>Note that these commands may behave unexpectedly if given a PNG file that was
+not generated by InvokeAI.</p>
 <h3 id="search">!search <search string><a class="headerlink" href="#search" title="Permanent link">#</a></h3>
 <p>This is similar to !history but it only returns lines that contain
 <code>search string</code>. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a>invoke&gt; !search surreal
-<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>invoke&gt; !search surreal
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
 </code></pre></div>
 <h3 id="clear"><code>!clear</code><a class="headerlink" href="#clear" title="Permanent link">#</a></h3>
-<p>This clears the search history from memory and disk. Be advised that
-this operation is irreversible and does not issue any warnings!</p>
+<p>This clears the search history from memory and disk. Be advised that this
+operation is irreversible and does not issue any warnings!</p>
 <h2 id="command-line-editing-and-completion">Command-line editing and completion<a class="headerlink" href="#command-line-editing-and-completion" title="Permanent link">#</a></h2>
-<p>The command-line offers convenient history tracking, editing, and
-command completion.</p>
+<p>The command-line offers convenient history tracking, editing, and command
+completion.</p>
 <ul>
-<li>To scroll through previous commands and potentially edit/reuse them, use the <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and <span class="keys"><kbd class="key-arrow-down">Down</kbd></span> keys.</li>
-<li>To edit the current command, use the <span class="keys"><kbd class="key-arrow-left">Left</kbd></span> and <span class="keys"><kbd class="key-arrow-right">Right</kbd></span> keys to position the cursor, and then <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span> or insert characters.</li>
-<li>To move to the very beginning of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-a">A</kbd></span> (or <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-a">A</kbd></span> on the Mac)</li>
+<li>To scroll through previous commands and potentially edit/reuse them, use the
+  <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> and <span class="keys"><kbd class="key-arrow-down">Down</kbd></span> keys.</li>
+<li>To edit the current command, use the <span class="keys"><kbd class="key-arrow-left">Left</kbd></span> and <span class="keys"><kbd class="key-arrow-right">Right</kbd></span> keys to position
+  the cursor, and then <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span> or insert characters.</li>
+<li>To move to the very beginning of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-a">A</kbd></span> (or
+  <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-a">A</kbd></span> on the Mac)</li>
 <li>To move to the end of the command, type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-e">E</kbd></span>.</li>
-<li>To cut a section of the command, position the cursor where you want to start cutting and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-k">K</kbd></span></li>
-<li>To paste a cut section back in, position the cursor where you want to paste, and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-y">Y</kbd></span></li>
+<li>To cut a section of the command, position the cursor where you want to start
+  cutting and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-k">K</kbd></span></li>
+<li>To paste a cut section back in, position the cursor where you want to paste,
+  and type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-y">Y</kbd></span></li>
 </ul>
-<p>Windows users can get similar, but more limited, functionality if they
-launch <code>invoke.py</code> with the <code>winpty</code> program and have the <code>pyreadline3</code>
-library installed:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">&gt;</span> winpty python scripts\invoke.py
+<p>Windows users can get similar, but more limited, functionality if they launch
+<code>invoke.py</code> with the <code>winpty</code> program and have the <code>pyreadline3</code> library
+installed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">&gt;</span> winpty python scripts\invoke.py
 </code></pre></div>
-<p>On the Mac and Linux platforms, when you exit invoke.py, the last 1000
-lines of your command-line history will be saved. When you restart
-<code>invoke.py</code>, you can access the saved history using the <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> key.</p>
-<p>In addition, limited command-line completion is installed. In various
-contexts, you can start typing your command and press <span class="keys"><kbd class="key-tab">Tab</kbd></span>. A list of
-potential completions will be presented to you. You can then type a
-little more, hit <span class="keys"><kbd class="key-tab">Tab</kbd></span> again, and eventually autocomplete what you want.</p>
-<p>When specifying file paths using the one-letter shortcuts, the CLI
-will attempt to complete pathnames for you. This is most handy for the
-<code>-I</code> (init image) and <code>-M</code> (init mask) paths. To initiate completion, start
-the path with a slash (<code>/</code>) or <code>./</code>. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a>invoke&gt; zebra with a mustache -I./test-pictures&lt;TAB&gt;
-<a id="__codelineno-13-2" name="__codelineno-13-2"></a>-I./test-pictures/Lincoln-and-Parrot.png  -I./test-pictures/zebra.jpg        -I./test-pictures/madonna.png
-<a id="__codelineno-13-3" name="__codelineno-13-3"></a>-I./test-pictures/bad-sketch.png          -I./test-pictures/man_with_eagle/
+<p>On the Mac and Linux platforms, when you exit invoke.py, the last 1000 lines of
+your command-line history will be saved. When you restart <code>invoke.py</code>, you can
+access the saved history using the <span class="keys"><kbd class="key-arrow-up">Up</kbd></span> key.</p>
+<p>In addition, limited command-line completion is installed. In various contexts,
+you can start typing your command and press <span class="keys"><kbd class="key-tab">Tab</kbd></span>. A list of potential
+completions will be presented to you. You can then type a little more, hit
+<span class="keys"><kbd class="key-tab">Tab</kbd></span> again, and eventually autocomplete what you want.</p>
+<p>When specifying file paths using the one-letter shortcuts, the CLI will attempt
+to complete pathnames for you. This is most handy for the <code>-I</code> (init image) and
+<code>-M</code> (init mask) paths. To initiate completion, start the path with a slash
+(<code>/</code>) or <code>./</code>. For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>invoke&gt; zebra with a mustache -I./test-pictures&lt;TAB&gt;
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>-I./test-pictures/Lincoln-and-Parrot.png  -I./test-pictures/zebra.jpg        -I./test-pictures/madonna.png
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>-I./test-pictures/bad-sketch.png          -I./test-pictures/man_with_eagle/
 </code></pre></div>
 <p>You can then type <span class="keys"><kbd class="key-z">Z</kbd></span>, hit <span class="keys"><kbd class="key-tab">Tab</kbd></span> again, and it will autofill to <code>zebra.jpg</code>.</p>
 <p>More text completion features (such as autocompleting seeds) are on their way.</p>
@@ -1656,7 +1796,7 @@ the path with a slash (<code>/</code>) or <code>./</code>. For example:</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 24, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 4, 2022</span>
       
         <br>
         Created:
@@ -1666,19 +1806,30 @@ the path with a slash (<code>/</code>) or <code>./</code>. For example:</p>
   </small>
 </div>
 
-              
-            </article>
-          </div>
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
         </div>
         
       </main>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+      
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../CHANGELOG/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Changelog" rel="prev">
+        <a href="../../assets/preflight-checks/outputs/invoke_log/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Invoke log" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1687,7 +1838,7 @@ the path with a slash (<code>/</code>) or <code>./</code>. For example:</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Changelog
+              Invoke log
             </div>
           </div>
         </a>
@@ -1734,10 +1885,11 @@ the path with a slash (<code>/</code>) or <code>./</code>. For example:</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.748e2769.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>

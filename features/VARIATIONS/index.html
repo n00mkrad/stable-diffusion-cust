@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://invoke-ai.github.io/InvokeAI/features/VARIATIONS/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.2.11">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.9">
     
     
       
@@ -21,12 +21,14 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8c5ef100.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.9647289d.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.08040f6c.min.css">
         
       
+      
+
     
     
     
@@ -39,10 +41,11 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
+    
     
     
   </head>
@@ -55,7 +58,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     
@@ -111,7 +114,8 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
@@ -120,7 +124,8 @@
         
           
           
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
             <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
@@ -145,7 +150,7 @@
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -169,7 +174,7 @@
         <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     invoke-ai/InvokeAI
@@ -214,7 +219,7 @@
       <a href="https://github.com/invoke-ai/InvokeAI" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     invoke-ai/InvokeAI
@@ -260,27 +265,77 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
       
         <label class="md-nav__link" for="__nav_3">
-          Features
+          Assets
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Features" data-md-level="1">
+      <nav class="md-nav" aria-label="Assets" data-md-level="1">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
-          Features
+          Assets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1">
+          Preflight checks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Preflight checks" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Preflight checks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_1" type="checkbox" id="__nav_3_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1_1">
+          Outputs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Outputs" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Outputs
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -290,13 +345,63 @@
   
   
     <li class="md-nav__item">
-      <a href="../CHANGELOG/" class="md-nav__link">
-        Changelog
+      <a href="../../assets/preflight-checks/outputs/invoke_log/" class="md-nav__link">
+        Invoke log
       </a>
     </li>
   
 
             
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
             
               
@@ -527,6 +632,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WEBUIHOTKEYS/" class="md-nav__link">
+        **WebUI Hotkey List**
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -544,18 +663,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_4">
+        <label class="md-nav__link" for="__nav_5">
           Help
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Help" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Help
         </label>
@@ -606,22 +725,36 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_5">
+        <label class="md-nav__link" for="__nav_6">
           Installation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Installation" data-md-level="1">
-        <label class="md-nav__title" for="__nav_5">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
           Installation
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/INSTALLING_MODELS/" class="md-nav__link">
+        Installing Models
+      </a>
+    </li>
+  
+
+            
           
             
               
@@ -644,7 +777,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_LINUX/" class="md-nav__link">
-        Linux
+        Manual Installation, Linux
       </a>
     </li>
   
@@ -658,7 +791,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_MAC/" class="md-nav__link">
-        macOS
+        Manual Installation, macOS
       </a>
     </li>
   
@@ -672,7 +805,7 @@
   
     <li class="md-nav__item">
       <a href="../../installation/INSTALL_WINDOWS/" class="md-nav__link">
-        Windows
+        Manual Installation, Windows
       </a>
     </li>
   
@@ -696,18 +829,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_6">
+        <label class="md-nav__link" for="__nav_7">
           Other
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Other" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
+        <label class="md-nav__title" for="__nav_7">
           <span class="md-nav__icon md-icon"></span>
           Other
         </label>
@@ -822,14 +955,16 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
-  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/VARIATIONS.md" title="Edit this page" class="md-content__button md-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+                  
 
+  <a href="https://github.com/invoke-ai/InvokeAI/edit/main/docs/features/VARIATIONS.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 12h8v2H8v-2m2 8H6V4h7v5h5v3.1l2-2V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4v-2m-2-2h4.1l.9-.9V16H8v2m12.2-5c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
 
 
 <h1 id="variations"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 13c-1.86 0-3.41 1.28-3.86 3H2v2h2.14c.45 1.72 2 3 3.86 3s3.41-1.28 3.86-3H22v-2H11.86c-.45-1.72-2-3-3.86-3m0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2M19.86 6c-.45-1.72-2-3-3.86-3s-3.41 1.28-3.86 3H2v2h10.14c.45 1.72 2 3 3.86 3s3.41-1.28 3.86-3H22V6h-2.14M16 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2Z"/></svg></span> Variations<a class="headerlink" href="#variations" title="Permanent link">#</a></h1>
@@ -856,15 +991,15 @@ variations to create the desired image of Xena, Warrior Princess.</p>
 <p>This will be indicated as <code class="highlight"><span class="s2">&quot;prompt&quot;</span></code> in the examples below.</p>
 <p>First we let SD create a series of images in the usual way, in this case
 requesting six iterations:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>invoke&gt; lucy lawless as xena, warrior princess, character portrait, high resolution -n6
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a>...
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a>Outputs:
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a>./outputs/Xena/000001.1579445059.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S1579445059
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a>./outputs/Xena/000001.1880768722.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S1880768722
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a>./outputs/Xena/000001.332057179.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S332057179
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a>./outputs/Xena/000001.2224800325.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S2224800325
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a>./outputs/Xena/000001.465250761.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S465250761
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a>./outputs/Xena/000001.3357757885.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S3357757885
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>invoke&gt; lucy lawless as xena, warrior princess, character portrait, high resolution -n6
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>...
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Outputs:
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>./outputs/Xena/000001.1579445059.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S1579445059
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>./outputs/Xena/000001.1880768722.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S1880768722
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>./outputs/Xena/000001.332057179.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S332057179
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>./outputs/Xena/000001.2224800325.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S2224800325
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>./outputs/Xena/000001.465250761.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S465250761
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>./outputs/Xena/000001.3357757885.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -S3357757885
 </code></pre></div>
 <figure>
 <p><img alt="var1" src="../../assets/variation_walkthru/000001.3357757885.png" /></p>
@@ -876,15 +1011,15 @@ requesting six iterations:</p>
 <code>-v0.1</code> (or --variant_amount), which generates a series of variations each
 differing by a variation amount of 0.2. This number ranges from <code>0</code> to <code>1.0</code>,
 with higher numbers being larger amounts of variation.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span> -n6 -S3357757885 -v0.2
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a>...
-<a id="__codelineno-1-3" name="__codelineno-1-3"></a>Outputs:
-<a id="__codelineno-1-4" name="__codelineno-1-4"></a>./outputs/Xena/000002.784039624.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">784039624</span>:0.2 -S3357757885
-<a id="__codelineno-1-5" name="__codelineno-1-5"></a>./outputs/Xena/000002.3647897225.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.2 -S3357757885
-<a id="__codelineno-1-6" name="__codelineno-1-6"></a>./outputs/Xena/000002.917731034.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">917731034</span>:0.2 -S3357757885
-<a id="__codelineno-1-7" name="__codelineno-1-7"></a>./outputs/Xena/000002.4116285959.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">4116285959</span>:0.2 -S3357757885
-<a id="__codelineno-1-8" name="__codelineno-1-8"></a>./outputs/Xena/000002.1614299449.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">1614299449</span>:0.2 -S3357757885
-<a id="__codelineno-1-9" name="__codelineno-1-9"></a>./outputs/Xena/000002.1335553075.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">1335553075</span>:0.2 -S3357757885
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span> -n6 -S3357757885 -v0.2
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>...
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Outputs:
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>./outputs/Xena/000002.784039624.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">784039624</span>:0.2 -S3357757885
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./outputs/Xena/000002.3647897225.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.2 -S3357757885
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>./outputs/Xena/000002.917731034.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">917731034</span>:0.2 -S3357757885
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>./outputs/Xena/000002.4116285959.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">4116285959</span>:0.2 -S3357757885
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>./outputs/Xena/000002.1614299449.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">1614299449</span>:0.2 -S3357757885
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>./outputs/Xena/000002.1335553075.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">1335553075</span>:0.2 -S3357757885
 </code></pre></div>
 <h3 id="variation-sub-seeding"><strong>Variation Sub Seeding</strong><a class="headerlink" href="#variation-sub-seeding" title="Permanent link">#</a></h3>
 <p>Note that the output for each image has a <code>-V</code> option giving the "variant
@@ -905,9 +1040,9 @@ the armor on her shoulder in the second one (subseed 1614299449). Can we combine
 them to get the best of both worlds?</p>
 <p>We combine the two variations using <code>-V</code> (<code>--with_variations</code>). Again, we must
 provide the seed for the originally-chosen image in order for this to work.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span>  -S3357757885 -V3647897225,0.1,1614299449,0.1
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a>Outputs:
-<a id="__codelineno-2-3" name="__codelineno-2-3"></a>./outputs/Xena/000003.1614299449.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1 -S3357757885
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span>  -S3357757885 -V3647897225,0.1,1614299449,0.1
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Outputs:
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./outputs/Xena/000003.1614299449.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1 -S3357757885
 </code></pre></div>
 <p>Here we are providing equal weights (0.1 and 0.1) for both the subseeds. The
 resulting image is close, but not exactly what I wanted:</p>
@@ -919,14 +1054,14 @@ resulting image is close, but not exactly what I wanted:</p>
 generate more variations around the almost-but-not-quite image. We do the
 latter, using both the <code>-V</code> (combining) and <code>-v</code> (variation strength) options.
 Note that we use <code>-n6</code> to generate 6 variations:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span> -S3357757885 -V3647897225,0.1,1614299449,0.1 -v0.05 -n6
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a>Outputs:
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a>./outputs/Xena/000004.3279757577.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,3279757577:0.05 -S3357757885
-<a id="__codelineno-3-4" name="__codelineno-3-4"></a>./outputs/Xena/000004.2853129515.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2853129515:0.05 -S3357757885
-<a id="__codelineno-3-5" name="__codelineno-3-5"></a>./outputs/Xena/000004.3747154981.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,3747154981:0.05 -S3357757885
-<a id="__codelineno-3-6" name="__codelineno-3-6"></a>./outputs/Xena/000004.2664260391.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2664260391:0.05 -S3357757885
-<a id="__codelineno-3-7" name="__codelineno-3-7"></a>./outputs/Xena/000004.1642517170.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,1642517170:0.05 -S3357757885
-<a id="__codelineno-3-8" name="__codelineno-3-8"></a>./outputs/Xena/000004.2183375608.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2183375608:0.05 -S3357757885
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; <span class="s2">&quot;prompt&quot;</span> -S3357757885 -V3647897225,0.1,1614299449,0.1 -v0.05 -n6
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Outputs:
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>./outputs/Xena/000004.3279757577.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,3279757577:0.05 -S3357757885
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>./outputs/Xena/000004.2853129515.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2853129515:0.05 -S3357757885
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>./outputs/Xena/000004.3747154981.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,3747154981:0.05 -S3357757885
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>./outputs/Xena/000004.2664260391.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2664260391:0.05 -S3357757885
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>./outputs/Xena/000004.1642517170.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,1642517170:0.05 -S3357757885
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>./outputs/Xena/000004.2183375608.png: <span class="s2">&quot;prompt&quot;</span> -s50 -W512 -H512 -C7.5 -Ak_lms -V <span class="m">3647897225</span>:0.1,1614299449:0.1,2183375608:0.05 -S3357757885
 </code></pre></div>
 <p>This produces six images, all slight variations on the combination of the chosen
 two images. Here's the one I like best:</p>
@@ -962,16 +1097,23 @@ image generation requests.</p>
   </small>
 </div>
 
-              
-            </article>
-          </div>
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
         </div>
         
       </main>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../TEXTUAL_INVERSION/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Textual-Inversion" rel="prev">
@@ -1030,10 +1172,11 @@ image generation requests.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.748e2769.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>
