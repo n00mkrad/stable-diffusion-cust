@@ -252,7 +252,7 @@ class FrozenCLIPEmbedder(AbstractEncoder):
         self.max_length = max_length
         self.freeze()
         
-        self.emphasis_factor = 1.2599210499 # 3√2 # strength of () and []
+        self.emphasis_factor = 1.1 # strength of () and []
         self.token_mults = {}
         tokens_with_parens = [(k, v) for k, v in self.tokenizer.get_vocab().items() if '(' in k or ')' in k or '{' in k or '}' in k]
         fac = self.emphasis_factor
