@@ -33,6 +33,13 @@ parser.add_argument(
     help="Output path",
     dest='outpath',
 )
+parser.add_argument(
+    "-i",
+    "--img2img",
+    type=str,
+    help="Enable img2img code",
+    dest='img2img',
+)
 
 if len(sys.argv)==1:
     parser.print_help()
@@ -42,7 +49,10 @@ opt = parser.parse_args()
 
 eta=0.0
 
-pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider="DmlExecutionProvider", revision="fp16", torch_dtype=torch.float16)
+if opt.img2img:
+    pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider="DmlExecutionProvider", revision="fp16", torch_dtype=torch.float16)
+else:
+    pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider="DmlExecutionProvider", revision="fp16", torch_dtype=torch.float16)
 
 def txt_to_img(prompt, negative_prompt, steps, width, height, seed, scale):
     start_time = time.time()
