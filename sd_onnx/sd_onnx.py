@@ -4,6 +4,7 @@ import time
 import torch
 import numpy as np
 from diffusers import OnnxStableDiffusionPipeline
+from diffusers import OnnxStableDiffusionImg2ImgPipeline
 import argparse
 import json
 from PIL import PngImagePlugin, Image
@@ -36,7 +37,7 @@ parser.add_argument(
 parser.add_argument(
     "-i",
     "--img2img",
-    type=str,
+    action="store_true",
     help="Enable img2img code",
     dest='img2img',
 )
@@ -47,14 +48,18 @@ if len(sys.argv)==1:
 
 opt = parser.parse_args()
 
-eta=0.0
+
+eta = 0.0
+prov = "DmlExecutionProvider"
+# pipe = None
 
 if opt.img2img:
-    pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider="DmlExecutionProvider", revision="fp16", torch_dtype=torch.float16)
+    pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider=prov, revision="fp16", torch_dtype=torch.float16)
 else:
-    pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider="DmlExecutionProvider", revision="fp16", torch_dtype=torch.float16)
+    pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider=prov, revision="fp16", torch_dtype=torch.float16)
 
-def txt_to_img(prompt, negative_prompt, steps, width, height, seed, scale):
+
+def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_path = None, init_strength = 0.75):
     start_time = time.time()
     
     generator = torch.Generator()
@@ -65,15 +70,22 @@ def txt_to_img(prompt, negative_prompt, steps, width, height, seed, scale):
         generator = generator
     )
     
-    image = pipe(prompt, height, width, steps, scale, negative_prompt, eta, latents = latents, execution_provider="DmlExecutionProvider").images[0]
-    
     info = PngImagePlugin.PngInfo()
-    neg_prompt_meta_text = "" if negative_prompt == "" else f' [{negative_prompt}]'
-    info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
+    neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
+    
+    if opt.img2img:
+        img=Image.open(init_img_path)
+        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, prompt_neg=prompt_neg, eta=eta, latents=latents, execution_provider=prov, init_image=img, strength=init_strength).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength}')
+    else:
+        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, prompt_neg=prompt_neg, eta=eta, latents=latents, execution_provider=prov).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
+    
     image.save(os.path.join(opt.outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
     
-    image = None
     print(f'Image generated in {(time.time() - start_time):.2f}s')
+    image = None
+
 
 print(f'Model loaded.')
 
@@ -83,6 +95,6 @@ data = json.load(f)
 for i in range(len(data)):
     argdict = data[i]
     print(f'Generating {i+1}/{len(data)}: "{argdict["prompt"]}" - {argdict["steps"]} Steps - Scale {argdict["scale"]} - {argdict["w"]}x{argdict["h"]}')
-    txt_to_img(argdict["prompt"], argdict["negprompt"], int(argdict["steps"]), int(argdict["w"]), int(argdict["h"]), argdict["seed"], float(argdict["scale"]))
+    generate(argdict["prompt"], argdict["negprompt"], int(argdict["steps"]), int(argdict["w"]), int(argdict["h"]), argdict["seed"], float(argdict["scale"]), argdict["initImg"], float(argdict["initStrength"]))
 
 pipe = None
