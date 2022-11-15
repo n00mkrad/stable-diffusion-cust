@@ -1,4 +1,4 @@
-python -m pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu116
+python -m pip install torch --extra-index-url https://download.pytorch.org/whl/cu113
 python -m pip install numpy==1.23.4
 python -m pip install albumentations==0.4.3
 python -m pip install opencv-python==4.5.5.64
