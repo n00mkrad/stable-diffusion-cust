@@ -784,7 +784,10 @@ class Generate:
         and return the model object. Previously-used models will be cached.
         """
         if self.model_name == model_name and self.model is not None:
+            print("New model is current model.", flush=True)
             return self.model
+            
+        print("Changing model.", flush=True)
 
         # the model cache does the loading and offloading
         cache = self.model_cache
