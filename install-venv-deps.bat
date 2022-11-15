@@ -1,3 +1,4 @@
+pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu116
 pip install numpy==1.23.4
 pip install albumentations==0.4.3
 pip install opencv-python==4.5.5.64
@@ -21,4 +22,3 @@ pip install -e git+https://github.com/invoke-ai/Real-ESRGAN.git#egg=realesrgan
 pip install -e git+https://github.com/invoke-ai/GFPGAN.git#egg=gfpgan
 pip install -e git+https://github.com/invoke-ai/clipseg.git@models-rename#egg=clipseg
 pip install -e ./repo
-pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu116
