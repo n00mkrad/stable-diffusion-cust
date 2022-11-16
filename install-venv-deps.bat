@@ -15,10 +15,10 @@ python -m pip install torch-fidelity==0.3.0
 python -m pip install transformers==4.19.2
 python -m pip install torchmetrics==0.6.0
 python -m pip install kornia==0.6.0
+python -m pip install realesrgan
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 python -m pip install -e git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
-python -m pip install -e git+https://github.com/invoke-ai/Real-ESRGAN.git#egg=realesrgan
 python -m pip install -e git+https://github.com/invoke-ai/GFPGAN.git#egg=gfpgan
 python -m pip install -e git+https://github.com/invoke-ai/clipseg.git@models-rename#egg=clipseg
 python -m pip install -e ./repo
