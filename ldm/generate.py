@@ -205,7 +205,7 @@ class Generate:
         self.model_name  = model or self.model_cache.default_model() or FALLBACK_MODEL_NAME
 
         # for VRAM usage statistics
-        self.session_peakmem = torch.cuda.max_memory_allocated() if self._has_cuda else None
+        self.session_peakmem = None
         transformers.logging.set_verbosity_error()
 
         # gets rid of annoying messages about random seed
@@ -517,7 +517,7 @@ class Generate:
             f'>>   {len(results)} image(s) generated in', '%4.2fs' % (
                 toc - tic), flush = True
         )
-        if self._has_cuda():
+        if False and self._has_cuda():
             print(
                 f'>>   Max VRAM used for this generation:',
                 '%4.2fG.' % (torch.cuda.max_memory_allocated() / 1e9),
@@ -791,7 +791,7 @@ class Generate:
 
         # the model cache does the loading and offloading
         cache = self.model_cache
-        cache.print_vram_usage()
+        # cache.print_vram_usage()
 
         # have to get rid of all references to model in order
         # to free it from GPU memory

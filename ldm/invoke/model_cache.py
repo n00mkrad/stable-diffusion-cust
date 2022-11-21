@@ -239,7 +239,7 @@ class ModelCache(object):
         # usage statistics
         toc = time.time()
         print(f'>> Model loaded in', '%4.2fs' % (toc - tic))
-        if self._has_cuda():
+        if False and self._has_cuda():
             print(
                 '>> Max VRAM used to load the model:',
                 '%4.2fG' % (torch.cuda.max_memory_allocated() / 1e9),
