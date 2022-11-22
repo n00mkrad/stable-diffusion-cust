@@ -16,6 +16,7 @@ python -m pip install transformers==4.19.2
 python -m pip install torchmetrics==0.6.0
 python -m pip install kornia==0.6.0
 python -m pip install realesrgan
+python -m pip install picklescan
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 python -m pip install -e git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
