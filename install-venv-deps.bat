@@ -19,7 +19,7 @@ python -m pip install realesrgan
 python -m pip install picklescan
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
-python -m pip install -e git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
+python -m pip install git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
 python -m pip install -e git+https://github.com/invoke-ai/GFPGAN.git#egg=gfpgan
 python -m pip install -e git+https://github.com/invoke-ai/clipseg.git@models-rename#egg=clipseg
 python -m pip install -e ./repo
