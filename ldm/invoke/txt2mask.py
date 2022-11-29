@@ -33,10 +33,12 @@ from clipseg_models.clipseg import CLIPDensePredT
 from einops import rearrange, repeat
 from PIL import Image, ImageOps
 from torchvision import transforms
+import os
+import sys
 
 CLIP_VERSION = 'ViT-B/16'
-CLIPSEG_WEIGHTS = 'src/clipseg/weights/rd64-uni.pth'
-CLIPSEG_WEIGHTS_REFINED = 'src/clipseg/weights/rd64-uni-refined.pth'
+CLIPSEG_WEIGHTS = os.path.join(sys.path[0], "..", "..", "clipseg", "rd64-uni.pth")
+CLIPSEG_WEIGHTS_REFINED = os.path.join(sys.path[0], "..", "..", "clipseg", "rd64-uni-refined.pth")
 CLIPSEG_SIZE = 352
 
 class SegmentedGrayscale(object):
