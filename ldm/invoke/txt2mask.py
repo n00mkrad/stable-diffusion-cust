@@ -37,8 +37,8 @@ import os
 import sys
 
 CLIP_VERSION = 'ViT-B/16'
-CLIPSEG_WEIGHTS = os.path.join(sys.path[0], "..", "..", "clipseg", "rd64-uni.pth")
-CLIPSEG_WEIGHTS_REFINED = os.path.join(sys.path[0], "..", "..", "clipseg", "rd64-uni-refined.pth")
+CLIPSEG_WEIGHTS = os.path.join(sys.path[0], "..", "clipseg", "rd64-uni.pth")
+CLIPSEG_WEIGHTS_REFINED = os.path.join(sys.path[0], "..", "clipseg", "rd64-uni-refined.pth")
 CLIPSEG_SIZE = 352
 
 class SegmentedGrayscale(object):
