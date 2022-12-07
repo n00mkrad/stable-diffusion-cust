@@ -552,18 +552,18 @@ class Generate:
             opt                 = None,
             ):
         # retrieve the seed from the image;
-        seed   = None
-        image_metadata = None
-        prompt = None
-
-        args   = metadata_from_png(image_path)
-        seed   = args.seed
-        prompt = args.prompt
-        print(f'>> retrieved seed {seed} and prompt "{prompt}" from {image_path}')
-
-        if not seed:
-            print('* Could not recover seed for image. Replacing with 42. This will not affect image quality')
-            seed = 42
+        seed = 0
+        # image_metadata = None
+        # prompt = None
+        # 
+        # args   = None # metadata_from_png(image_path)
+        # seed   = None # args.seed
+        # prompt = None # args.prompt
+        # print(f'>> retrieved seed {seed} and prompt "{prompt}" from {image_path}')
+        # 
+        # if not seed:
+        #     print('* Could not recover seed for image. Replacing with 42. This will not affect image quality')
+        #     seed = 42
 
         # try to reuse the same filename prefix as the original file.
         # we take everything up to the first period
@@ -577,11 +577,11 @@ class Generate:
 
         # used by multiple postfixers
         # todo: cross-attention control
-        uc, c, extra_conditioning_info = get_uc_and_c_and_ec(
-            prompt, model =self.model,
-            skip_normalize=opt.skip_normalize,
-            log_tokens    =opt.log_tokenization
-        )
+        # uc, c, extra_conditioning_info = get_uc_and_c_and_ec(
+        #     prompt, model =self.model,
+        #     skip_normalize=opt.skip_normalize,
+        #     log_tokens    =opt.log_tokenization
+        # )
 
         if tool in ('gfpgan','codeformer','upscale'):
             if tool == 'gfpgan':
