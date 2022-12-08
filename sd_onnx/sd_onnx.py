@@ -3,8 +3,8 @@ import sys
 import time
 import torch
 import numpy as np
-from diffusers import OnnxStableDiffusionPipeline
-from diffusers import OnnxStableDiffusionImg2ImgPipeline
+from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler
+
 import argparse
 import json
 from PIL import PngImagePlugin, Image
@@ -51,13 +51,11 @@ opt = parser.parse_args()
 
 eta = 0.0
 prov = "DmlExecutionProvider"
-# pipe = None
 
 if opt.img2img:
-    pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider=prov, revision="fp16", torch_dtype=torch.float16)
+    pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider=prov, safety_checker=None)
 else:
-    pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider=prov, revision="fp16", torch_dtype=torch.float16)
-
+    pipe = OnnxStableDiffusionPipeline.from_pretrained(opt.mdlpath, provider=prov, safety_checker=None)
 
 def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_path = None, init_strength = 0.75):
     start_time = time.time()
@@ -74,11 +72,13 @@ def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_pat
     neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
     
     if opt.img2img:
+        print("img2img", flush=True)
         img=Image.open(init_img_path)
-        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, prompt_neg=prompt_neg, eta=eta, latents=latents, execution_provider=prov, init_image=img, strength=init_strength).images[0]
+        image=pipe(prompt=prompt, image=img, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength}')
     else:
-        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, prompt_neg=prompt_neg, eta=eta, latents=latents, execution_provider=prov).images[0]
+        print("txt2img", flush=True)
+        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
     
     image.save(os.path.join(opt.outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
