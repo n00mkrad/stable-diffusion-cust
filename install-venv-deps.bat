@@ -7,16 +7,17 @@ python -m pip install imageio==2.9.0
 python -m pip install pytorch-lightning==1.6.5
 python -m pip install omegaconf==2.1.1
 python -m pip install test-tube>=0.7.5
-python -m pip install streamlit==1.12.0
-python -m pip install send2trash==1.8.0
+rem python -m pip install streamlit==1.12.0
+rem python -m pip install send2trash==1.8.0
 python -m pip install pillow==9.2.0
 python -m pip install einops==0.3.0
 python -m pip install torch-fidelity==0.3.0
 python -m pip install transformers==4.22.1
 python -m pip install torchmetrics==0.6.0
 python -m pip install kornia==0.6.0
-python -m pip install realesrgan
-python -m pip install picklescan
+python -m pip install realesrgan==0.3.0
+python -m pip install picklescan==0.0.5
+python -m pip install safetensors==0.2.5
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 python -m pip install git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
