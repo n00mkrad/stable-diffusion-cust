@@ -12,7 +12,7 @@ rem python -m pip install send2trash==1.8.0
 python -m pip install pillow==9.2.0
 python -m pip install einops==0.3.0
 python -m pip install torch-fidelity==0.3.0
-python -m pip install transformers==4.22.1
+python -m pip install transformers==4.25.1
 python -m pip install torchmetrics==0.6.0
 python -m pip install kornia==0.6.0
 python -m pip install realesrgan==0.3.0
