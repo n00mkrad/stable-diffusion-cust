@@ -95,7 +95,7 @@ def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_pat
         print("inpaint", flush=True)
         img=Image.open(init_img_path)
         mask=Image.open(mask_img_path)
-        image=pipe(prompt=prompt, image=img, mask_image = mask, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta).images[0]
+        image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
 
     
