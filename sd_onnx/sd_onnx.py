@@ -83,7 +83,7 @@ def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_pat
     neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
     
     if opt.mode == "txt2img":
-        print("img2img", flush=True)
+        print("txt2img", flush=True)
         image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
     if opt.mode == "img2img":
