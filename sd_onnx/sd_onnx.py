@@ -71,31 +71,27 @@ if opt.mode == "inpaint":
 def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_path = None, init_strength = 0.75, mask_img_path = None):
     start_time = time.time()
     
-    generator = torch.Generator()
     seed = int(seed)
-    generator = generator.manual_seed(seed)
-    latents = torch.randn(
-        (1, 4, height // 8, width // 8),
-        generator = generator
-    )
+    rng = np.random.RandomState(seed)
+    print(f"Set seed to {seed}", flush=True)
     
     info = PngImagePlugin.PngInfo()
     neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
-    
+        
     if opt.mode == "txt2img":
         print("txt2img", flush=True)
-        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg).images[0]
+        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, generator=rng).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
     if opt.mode == "img2img":
         print("img2img", flush=True)
         img=Image.open(init_img_path)
-        image=pipe(prompt=prompt, image=img, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength).images[0]
+        image=pipe(prompt=prompt, image=img, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength}')
     if opt.mode == "inpaint":
         print("inpaint", flush=True)
         img=Image.open(init_img_path)
         mask=Image.open(mask_img_path)
-        image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta).images[0]
+        image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
 
     
