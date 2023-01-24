@@ -1024,7 +1024,7 @@ model</a>.</p>
 </figure>
 <p>Pretty nice, but it's annoying that the top of her head is cut
 off. She's also a bit off center. Let's fix that!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>invoke&gt; !fix images/curly.png --outcrop top <span class="m">128</span> right <span class="m">64</span> bottom <span class="m">64</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>invoke&gt;<span class="w"> </span>!fix<span class="w"> </span>images/curly.png<span class="w"> </span>--outcrop<span class="w"> </span>top<span class="w"> </span><span class="m">128</span><span class="w"> </span>right<span class="w"> </span><span class="m">64</span><span class="w"> </span>bottom<span class="w"> </span><span class="m">64</span>
 </code></pre></div>
 <p>This is saying to apply the <code>outcrop</code> extension by extending the top
 of the image by 128 pixels, and the right and bottom of the image by
@@ -1071,7 +1071,7 @@ occur with the standard model.</p>
 <p>The <code>outpaint</code> extension does the same thing, but with subtle
 differences. Starting with the same image, here is how we would add an
 additional 64 pixels to the top of the image:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; !fix images/curly.png --out_direction top <span class="m">64</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt;<span class="w"> </span>!fix<span class="w"> </span>images/curly.png<span class="w"> </span>--out_direction<span class="w"> </span>top<span class="w"> </span><span class="m">64</span>
 </code></pre></div>
 <p>(you can abbreviate <code>--out_direction</code> as <code>-D</code>.</p>
 <p>The result is shown here:</p>

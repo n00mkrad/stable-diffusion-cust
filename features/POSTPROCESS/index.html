@@ -1099,7 +1099,7 @@ the Web GUI.</p>
 work. These are loaded when you run <code>scripts/preload_models.py</code>. If
 GFPAN is failing with an error, please run the following from the
 InvokeAI directory:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python scripts/preload_models.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>scripts/preload_models.py
 </code></pre></div>
 <p>If you do not run this script in advance, the GFPGAN module will attempt
 to download the models files the first time you try to perform facial
@@ -1135,10 +1135,10 @@ modified. If you want to save the original Stable Diffusion generation, you can
 use the <code>-save_orig</code> prompt argument to save the original unaffected version
 too.</p>
 <h3 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; <span class="s2">&quot;superman dancing with a panda bear&quot;</span> -U <span class="m">2</span> <span class="m">0</span>.6 -G <span class="m">0</span>.4
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;superman dancing with a panda bear&quot;</span><span class="w"> </span>-U<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">0</span>.6<span class="w"> </span>-G<span class="w"> </span><span class="m">0</span>.4
 </code></pre></div>
 <p>This also works with img2img:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;a man wearing a pineapple hat&quot;</span> -I path/to/your/file.png -U <span class="m">2</span> <span class="m">0</span>.5 -G <span class="m">0</span>.6
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;a man wearing a pineapple hat&quot;</span><span class="w"> </span>-I<span class="w"> </span>path/to/your/file.png<span class="w"> </span>-U<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">0</span>.5<span class="w"> </span>-G<span class="w"> </span><span class="m">0</span>.6
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1189,7 +1189,7 @@ previously-generated file. Just use the syntax <code>!fix path/to/file.png
 &lt;options&gt;</code>. For example, to apply GFPGAN at strength 0.8 and upscale
 2X for a file named <code>./outputs/img-samples/000044.2945021133.png</code>,
 just run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; !fix ./outputs/img-samples/000044.2945021133.png -G <span class="m">0</span>.8 -U <span class="m">2</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt;<span class="w"> </span>!fix<span class="w"> </span>./outputs/img-samples/000044.2945021133.png<span class="w"> </span>-G<span class="w"> </span><span class="m">0</span>.8<span class="w"> </span>-U<span class="w"> </span><span class="m">2</span>
 </code></pre></div>
 <p>A new file named <code>000044.2945021133.fixed.png</code> will be created in the output
 directory. Note that the <code>!fix</code> command does not replace the original file,

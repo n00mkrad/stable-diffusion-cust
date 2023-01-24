@@ -1194,7 +1194,7 @@ will do our best to help.</p>
 <div class="admonition todo">
 <p class="admonition-title">Homebrew</p>
 <p>First you will install the "brew" package manager. Skip this if brew is already installed.</p>
-<div class="highlight"><span class="filename">install brew (and Xcode command line tools)</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight"><span class="filename">install brew (and Xcode command line tools)</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 <div class="admonition todo">
@@ -1208,36 +1208,36 @@ will do our best to help.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Standalone</label><label for="__tabbed_1_2">with pyenv</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Install cmake, protobuf, and rust</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>brew install cmake protobuf rust
+<div class="highlight"><span class="filename">Install cmake, protobuf, and rust</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>brew<span class="w"> </span>install<span class="w"> </span>cmake<span class="w"> </span>protobuf<span class="w"> </span>rust
 </code></pre></div>
 <div class="highlight"><span class="filename">Clone the InvokeAI repository</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Clone the Invoke AI repo</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git clone https://github.com/invoke-ai/InvokeAI.git
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span> InvokeAI
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/invoke-ai/InvokeAI.git
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span><span class="w"> </span>InvokeAI
 </code></pre></div>
 <p>Choose the appropriate architecture for your system and install miniconda:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">M1 arm64</label><label for="__tabbed_2_2">Intel x86_64</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Install miniconda for M1 arm64</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh <span class="se">\</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  -o Miniconda3-latest-MacOSX-arm64.sh
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>/bin/bash Miniconda3-latest-MacOSX-arm64.sh
+<div class="highlight"><span class="filename">Install miniconda for M1 arm64</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>-o<span class="w"> </span>Miniconda3-latest-MacOSX-arm64.sh
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>/bin/bash<span class="w"> </span>Miniconda3-latest-MacOSX-arm64.sh
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Install miniconda for Intel</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh <span class="se">\</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  -o Miniconda3-latest-MacOSX-x86_64.sh
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>/bin/bash Miniconda3-latest-MacOSX-x86_64.sh
+<div class="highlight"><span class="filename">Install miniconda for Intel</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>-o<span class="w"> </span>Miniconda3-latest-MacOSX-x86_64.sh
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>/bin/bash<span class="w"> </span>Miniconda3-latest-MacOSX-x86_64.sh
 </code></pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>brew install pyenv-virtualenv
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>pyenv install anaconda3-2022.05
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>pyenv virtualenv anaconda3-2022.05
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">eval</span> <span class="s2">&quot;</span><span class="k">$(</span>pyenv init -<span class="k">)</span><span class="s2">&quot;</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>pyenv activate anaconda3-2022.05
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>brew<span class="w"> </span>install<span class="w"> </span>pyenv-virtualenv
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>pyenv<span class="w"> </span>install<span class="w"> </span>anaconda3-2022.05
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>pyenv<span class="w"> </span>virtualenv<span class="w"> </span>anaconda3-2022.05
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>pyenv<span class="w"> </span>init<span class="w"> </span>-<span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>pyenv<span class="w"> </span>activate<span class="w"> </span>anaconda3-2022.05
 </code></pre></div>
 </div>
 </div>
@@ -1245,8 +1245,8 @@ will do our best to help.</p>
 </div>
 <div class="admonition todo">
 <p class="admonition-title">Clone the Invoke AI repo</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git clone https://github.com/invoke-ai/InvokeAI.git
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">cd</span> InvokeAI
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/invoke-ai/InvokeAI.git
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">cd</span><span class="w"> </span>InvokeAI
 </code></pre></div>
 </div>
 <div class="admonition todo">
@@ -1254,17 +1254,17 @@ will do our best to help.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">M1 Mac</label><label for="__tabbed_3_2">Intel x86_64 Mac</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w <span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-arm64 conda env create -f environment-mac.yml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w<span class="w"> </span><span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-arm64<span class="w"> </span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment-mac.yml
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w <span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-64 conda env create -f environment-mac.yml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">PIP_EXISTS_ACTION</span><span class="o">=</span>w<span class="w"> </span><span class="nv">CONDA_SUBDIR</span><span class="o">=</span>osx-64<span class="w"> </span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment-mac.yml
 </code></pre></div>
 </div>
 </div>
 </div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Activate the environment (you need to do this every time you want to run SD)</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>conda activate invokeai
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>invokeai
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
@@ -1281,7 +1281,7 @@ account, accepting the Stable Diffusion model weight license agreement, and
 creating a download token:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># This will take some time, depending on the speed of your internet connection</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># and will consume about 10GB of space</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>python scripts/preload_models.py
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>python<span class="w"> </span>scripts/preload_models.py
 </code></pre></div>
 </div>
 <div class="admonition todo">
@@ -1294,15 +1294,15 @@ creating a download token:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">CLI</label><label for="__tabbed_4_2">local Webserver</label><label for="__tabbed_4_3">Public Webserver</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python scripts/invoke.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>scripts/invoke.py
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python scripts/invoke.py --web
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>scripts/invoke.py<span class="w"> </span>--web
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python scripts/invoke.py --web --host <span class="m">0</span>.0.0.0
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>scripts/invoke.py<span class="w"> </span>--web<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
 </code></pre></div>
 </div>
 </div>
@@ -1318,11 +1318,11 @@ model names are defined in <code>configs/models.yaml</code>.</p>
 <p>After you followed all the instructions and try to run invoke.py, you might get
 several errors. Here's the errors I've seen and found solutions for.</p>
 <h3 id="is-it-slow">Is it slow?<a class="headerlink" href="#is-it-slow" title="Permanent link">#</a></h3>
-<div class="highlight"><span class="filename">Be sure to specify 1 sample and 1 iteration.</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>python ./scripts/orig_scripts/txt2img.py <span class="se">\</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  --prompt <span class="s2">&quot;ocean&quot;</span> <span class="se">\</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  --ddim_steps <span class="m">5</span> <span class="se">\</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  --n_samples <span class="m">1</span> <span class="se">\</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  --n_iter <span class="m">1</span>
+<div class="highlight"><span class="filename">Be sure to specify 1 sample and 1 iteration.</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>python<span class="w"> </span>./scripts/orig_scripts/txt2img.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;ocean&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>--ddim_steps<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span>--n_samples<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span>--n_iter<span class="w"> </span><span class="m">1</span>
 </code></pre></div>
 <hr />
 <h3 id="doesnt-work-anymore">Doesn't work anymore?<a class="headerlink" href="#doesnt-work-anymore" title="Permanent link">#</a></h3>
@@ -1333,24 +1333,24 @@ just fine with Anaconda. If you can't get it to work, please search a little
 first because many of the errors will get posted and solved. If you can't find a
 solution please <a href="https://github.com/invoke-ai/InvokeAI/issues">create an issue</a>.</p>
 <p>One debugging step is to update to the latest version of PyTorch nightly.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>conda install <span class="se">\</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  pytorch <span class="se">\</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  torchvision <span class="se">\</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  -c pytorch-nightly <span class="se">\</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  -n invokeai
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>conda<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>pytorch<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>torchvision<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>-c<span class="w"> </span>pytorch-nightly<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span>-n<span class="w"> </span>invokeai
 </code></pre></div>
 <p>If it takes forever to run <code>conda env create -f environment-mac.yml</code>, try this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>git clean -f
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>conda clean <span class="se">\</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  --yes <span class="se">\</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>  --all
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>git<span class="w"> </span>clean<span class="w"> </span>-f
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>conda<span class="w"> </span>clean<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>--yes<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span>--all
 </code></pre></div>
 <p>Or you could try to completley reset Anaconda:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>conda update <span class="se">\</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  --force-reinstall <span class="se">\</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  -y <span class="se">\</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  -n base <span class="se">\</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  -c defaults conda
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>conda<span class="w"> </span>update<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--force-reinstall<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>-y<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>-n<span class="w"> </span>base<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span>-c<span class="w"> </span>defaults<span class="w"> </span>conda
 </code></pre></div>
 <hr />
 <h3 id="no-module-named-cv2-torch-invokeai-transformers-taming-etc">"No module named cv2", torch, 'invokeai', 'transformers', 'taming', etc<a class="headerlink" href="#no-module-named-cv2-torch-invokeai-transformers-taming-etc" title="Permanent link">#</a></h3>
@@ -1372,9 +1372,9 @@ solution please <a href="https://github.com/invoke-ai/InvokeAI/issues">create an
    environment.</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>conda deactivate
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>conda env remove -n invokeai
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>conda env create -f environment-mac.yml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>conda<span class="w"> </span>deactivate
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>-n<span class="w"> </span>invokeai
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment-mac.yml
 </code></pre></div>
 <ol>
 <li>If you have activated the invokeai virtual environment and tried rebuilding
@@ -1382,8 +1382,8 @@ solution please <a href="https://github.com/invoke-ai/InvokeAI/issues">create an
    and you'll just need to manually install it. Make sure you activate the
    virtual environment so it installs there instead of globally.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>conda activate invokeai
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>pip install &lt;package name&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>conda<span class="w"> </span>activate<span class="w"> </span>invokeai
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>pip<span class="w"> </span>install<span class="w"> </span>&lt;package<span class="w"> </span>name&gt;
 </code></pre></div>
 <p>You might also need to install Rust (I mention this again below).</p>
 <hr />
@@ -1396,7 +1396,7 @@ created it (and all the associated 'system-level' modules).</p>
 locations in the <code>PATH</code> environment variable (<code>echo $PATH</code> to see that list) in
 that order - first match wins. You can ask for the location of the first
 <code>python3</code> found in your <code>PATH</code> with the <code>which</code> command like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>% which python3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>%<span class="w"> </span>which<span class="w"> </span>python3
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>/usr/bin/python3
 </code></pre></div>
 <p>Anything in <code>/usr/bin</code> is
@@ -1409,12 +1409,12 @@ already, <code>/usr/bin/python3</code> will execute
 Xcode you've selected with <code>xcode-select</code>).</p>
 <p>Note that <code>/usr/bin/python</code> is an entirely different python - specifically,
 python 2. Note: starting in macOS 12.3, <code>/usr/bin/python</code> no longer exists.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>% which python3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>%<span class="w"> </span>which<span class="w"> </span>python3
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>/opt/homebrew/bin/python3
 </code></pre></div>
 <p>If you installed python3 with Homebrew and you've modified your path to search
 for Homebrew binaries before system ones, you'll see the above path.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>% which python
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>%<span class="w"> </span>which<span class="w"> </span>python
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>/opt/anaconda3/bin/python
 </code></pre></div>
 <p>If you have Anaconda installed, you will see the above path. There is a
@@ -1422,13 +1422,13 @@ for Homebrew binaries before system ones, you'll see the above path.</p>
 <p>We expect that <code>/opt/anaconda3/bin/python</code> and <code>/opt/anaconda3/bin/python3</code>
 should actually be the <em>same python</em>, which you can verify by comparing the
 output of <code>python3 -V</code> and <code>python -V</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="o">(</span>invokeai<span class="o">)</span> % which python
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="o">(</span>invokeai<span class="o">)</span><span class="w"> </span>%<span class="w"> </span>which<span class="w"> </span>python
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>/Users/name/miniforge3/envs/invokeai/bin/python
 </code></pre></div>
 <p>The above is what you'll see if you have miniforge and correctly activated the
 invokeai environment, while usingd the standalone setup instructions above.</p>
 <p>If you otherwise installed via pyenv, you will get this result:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="o">(</span>anaconda3-2022.05<span class="o">)</span> % which python
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="o">(</span>anaconda3-2022.05<span class="o">)</span><span class="w"> </span>%<span class="w"> </span>which<span class="w"> </span>python
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>/Users/name/.pyenv/shims/python
 </code></pre></div>
 <p>It's all a mess and you should know
@@ -1447,7 +1447,7 @@ in /etc/paths.d - which also is the way I prefer to do.</p>
 <p>Finally, to answer the question posed by this section's title, it may help to
 list all of the <code>python</code> / <code>python3</code> things found in <code>$PATH</code> instead of just the
 first hit. To do so, add the <code>-a</code> switch to <code>which</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>% which -a python3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>%<span class="w"> </span>which<span class="w"> </span>-a<span class="w"> </span>python3
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>...
 </code></pre></div>
 <p>This will show a list of all binaries which are actually available in your PATH.</p>
@@ -1456,27 +1456,27 @@ first hit. To do so, add the <code>-a</code> switch to <code>which</code>:</p>
 <p>Tired of waiting for your renders to finish before you can see if it works?
 Reduce the steps! The image quality will be horrible but at least you'll get
 quick feedback.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>python ./scripts/txt2img.py <span class="se">\</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>  --prompt <span class="s2">&quot;ocean&quot;</span> <span class="se">\</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  --ddim_steps <span class="m">5</span> <span class="se">\</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>  --n_samples <span class="m">1</span> <span class="se">\</span>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>  --n_iter <span class="m">1</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>python<span class="w"> </span>./scripts/txt2img.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;ocean&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span>--ddim_steps<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span>--n_samples<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">  </span>--n_iter<span class="w"> </span><span class="m">1</span>
 </code></pre></div>
 <hr />
 <h3 id="oserror-cant-load-tokenizer-for-openaiclip-vit-large-patch14">OSError: Can't load tokenizer for 'openai/clip-vit-large-patch14'<a class="headerlink" href="#oserror-cant-load-tokenizer-for-openaiclip-vit-large-patch14" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>python scripts/preload_models.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>python<span class="w"> </span>scripts/preload_models.py
 </code></pre></div>
 <hr />
 <h3 id="the-operator-name-is-not-current-implemented-for-the-mps-device-sic">"The operator [name] is not current implemented for the MPS device." (sic)<a class="headerlink" href="#the-operator-name-is-not-current-implemented-for-the-mps-device-sic" title="Permanent link">#</a></h3>
 <div class="admonition example">
 <p class="admonition-title">example error</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>... NotImplementedError: The operator <span class="s1">&#39;aten::_index_put_impl_&#39;</span> is not current
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>implemented <span class="k">for</span> the MPS device. If you want this op to be added <span class="k">in</span> priority
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>during the prototype phase of this feature, please comment on
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>...<span class="w"> </span>NotImplementedError:<span class="w"> </span>The<span class="w"> </span>operator<span class="w"> </span><span class="s1">&#39;aten::_index_put_impl_&#39;</span><span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>current
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>implemented<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>MPS<span class="w"> </span>device.<span class="w"> </span>If<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>this<span class="w"> </span>op<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>added<span class="w"> </span><span class="k">in</span><span class="w"> </span>priority
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>during<span class="w"> </span>the<span class="w"> </span>prototype<span class="w"> </span>phase<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>feature,<span class="w"> </span>please<span class="w"> </span>comment<span class="w"> </span>on
 <a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>https://github.com/pytorch/pytorch/issues/77764.
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>As a temporary fix, you can <span class="nb">set</span> the environment variable
-<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="sb">`</span><span class="nv">PYTORCH_ENABLE_MPS_FALLBACK</span><span class="o">=</span><span class="m">1</span><span class="sb">`</span> to use the CPU as a fallback <span class="k">for</span> this op.
-<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>WARNING: this will be slower than running natively on MPS.
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>As<span class="w"> </span>a<span class="w"> </span>temporary<span class="w"> </span>fix,<span class="w"> </span>you<span class="w"> </span>can<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>environment<span class="w"> </span>variable
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="sb">`</span><span class="nv">PYTORCH_ENABLE_MPS_FALLBACK</span><span class="o">=</span><span class="m">1</span><span class="sb">`</span><span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>CPU<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>fallback<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>op.
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>WARNING:<span class="w"> </span>this<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>slower<span class="w"> </span>than<span class="w"> </span>running<span class="w"> </span>natively<span class="w"> </span>on<span class="w"> </span>MPS.
 </code></pre></div>
 </div>
 <p>The InvokeAI version includes this fix in
@@ -1484,10 +1484,10 @@ quick feedback.</p>
 <h3 id="could-not-build-wheels-for-tokenizers">"Could not build wheels for tokenizers"<a class="headerlink" href="#could-not-build-wheels-for-tokenizers" title="Permanent link">#</a></h3>
 <p>I have not seen this error because I had Rust installed on my computer before I
 started playing with Stable Diffusion. The fix is to install Rust.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>curl <span class="se">\</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>  --proto <span class="s1">&#39;=https&#39;</span> <span class="se">\</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>  --tlsv1.2 <span class="se">\</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>  -sSf https://sh.rustup.rs <span class="p">|</span> sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>curl<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span>--tlsv1.2<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">  </span>-sSf<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 </code></pre></div>
 <hr />
 <h3 id="how-come-seed-doesnt-work">How come <code>--seed</code> doesn't work?<a class="headerlink" href="#how-come-seed-doesnt-work" title="Permanent link">#</a></h3>
@@ -1501,7 +1501,7 @@ reproducible between CPU and GPU executions, even when using identical seeds.</p
 <p>Second, we might have a fix that at least gets a consistent seed sort of. We're
 still working on it.</p>
 <h3 id="libiomp5dylib-error">libiomp5.dylib error?<a class="headerlink" href="#libiomp5dylib-error" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>OMP: Error <span class="c1">#15: Initializing libiomp5.dylib, but found libomp.dylib already initialized.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>OMP:<span class="w"> </span>Error<span class="w"> </span><span class="c1">#15: Initializing libiomp5.dylib, but found libomp.dylib already initialized.</span>
 </code></pre></div>
 <p>You are likely using an Intel package by mistake. Be sure to run conda with the
 environment variable <code>CONDA_SUBDIR=osx-arm64</code>, like so:</p>
@@ -1552,16 +1552,16 @@ disables that flag. I don't know why, someone else provided that code and I
 don't know what it does. Maybe the <code>model.half()</code> suggestion above would fix
 this issue too. I should probably test it.</p>
 <h3 id="view-size-is-not-compatible-with-input-tensors-size-and-stride">"view size is not compatible with input tensor's size and stride"<a class="headerlink" href="#view-size-is-not-compatible-with-input-tensors-size-and-stride" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>File <span class="s2">&quot;/opt/anaconda3/envs/invokeai/lib/python3.10/site-packages/torch/nn/functional.py&quot;</span>, line <span class="m">2511</span>, <span class="k">in</span> layer_norm
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">return</span> torch.layer_norm<span class="o">(</span>input, normalized_shape, weight, bias, eps, torch.backends.cudnn.enabled<span class="o">)</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>RuntimeError: view size is not compatible with input tensor<span class="err">&#39;</span>s size and stride <span class="o">(</span>at least one dimension spans across two contiguous subspaces<span class="o">)</span>. Use .reshape<span class="o">(</span>...<span class="o">)</span> instead.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>File<span class="w"> </span><span class="s2">&quot;/opt/anaconda3/envs/invokeai/lib/python3.10/site-packages/torch/nn/functional.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">2511</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>layer_norm
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">return</span><span class="w"> </span>torch.layer_norm<span class="o">(</span>input,<span class="w"> </span>normalized_shape,<span class="w"> </span>weight,<span class="w"> </span>bias,<span class="w"> </span>eps,<span class="w"> </span>torch.backends.cudnn.enabled<span class="o">)</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>RuntimeError:<span class="w"> </span>view<span class="w"> </span>size<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>compatible<span class="w"> </span>with<span class="w"> </span>input<span class="w"> </span>tensor<span class="err">&#39;</span>s<span class="w"> </span>size<span class="w"> </span>and<span class="w"> </span>stride<span class="w"> </span><span class="o">(</span>at<span class="w"> </span>least<span class="w"> </span>one<span class="w"> </span>dimension<span class="w"> </span>spans<span class="w"> </span>across<span class="w"> </span>two<span class="w"> </span>contiguous<span class="w"> </span>subspaces<span class="o">)</span>.<span class="w"> </span>Use<span class="w"> </span>.reshape<span class="o">(</span>...<span class="o">)</span><span class="w"> </span>instead.
 </code></pre></div>
 <p>Update to the latest version of invoke-ai/InvokeAI. We were patching pytorch but
 we found a file in stable-diffusion that we could change instead. This is a
 32-bit vs 16-bit problem.</p>
 <h3 id="the-processor-must-support-the-intel-bla-bla-bla">The processor must support the Intel bla bla bla<a class="headerlink" href="#the-processor-must-support-the-intel-bla-bla-bla" title="Permanent link">#</a></h3>
 <p>What? Intel? On an Apple Silicon?</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Intel MKL FATAL ERROR: This system does not meet the minimum requirements <span class="k">for</span> use of the Intel<span class="o">(</span>R<span class="o">)</span> Math Kernel Library. The processor must support the Intel<span class="o">(</span>R<span class="o">)</span> Supplemental Streaming SIMD Extensions <span class="m">3</span> <span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span> SSSE3<span class="o">)</span> instructions. The processor must support the Intel<span class="o">(</span>R<span class="o">)</span> Streaming SIMD Extensions <span class="m">4</span>.2 <span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span> SSE4.2<span class="o">)</span> instructions. The processor must support the Intel<span class="o">(</span>R<span class="o">)</span> Advanced Vector Extensions <span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span> AVX<span class="o">)</span> instructions.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Intel<span class="w"> </span>MKL<span class="w"> </span>FATAL<span class="w"> </span>ERROR:<span class="w"> </span>This<span class="w"> </span>system<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>meet<span class="w"> </span>the<span class="w"> </span>minimum<span class="w"> </span>requirements<span class="w"> </span><span class="k">for</span><span class="w"> </span>use<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>Math<span class="w"> </span>Kernel<span class="w"> </span>Library.<span class="w"> </span>The<span class="w"> </span>processor<span class="w"> </span>must<span class="w"> </span>support<span class="w"> </span>the<span class="w"> </span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>Supplemental<span class="w"> </span>Streaming<span class="w"> </span>SIMD<span class="w"> </span>Extensions<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>SSSE3<span class="o">)</span><span class="w"> </span>instructions.<span class="w"> </span>The<span class="w"> </span>processor<span class="w"> </span>must<span class="w"> </span>support<span class="w"> </span>the<span class="w"> </span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>Streaming<span class="w"> </span>SIMD<span class="w"> </span>Extensions<span class="w"> </span><span class="m">4</span>.2<span class="w"> </span><span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>SSE4.2<span class="o">)</span><span class="w"> </span>instructions.<span class="w"> </span>The<span class="w"> </span>processor<span class="w"> </span>must<span class="w"> </span>support<span class="w"> </span>the<span class="w"> </span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>Advanced<span class="w"> </span>Vector<span class="w"> </span>Extensions<span class="w"> </span><span class="o">(</span>Intel<span class="o">(</span>R<span class="o">)</span><span class="w"> </span>AVX<span class="o">)</span><span class="w"> </span>instructions.
 </code></pre></div>
 <p>This is due to the Intel <code>mkl</code> package getting picked up when you try to install
 something that depends on it-- Rosetta can translate some Intel instructions but
@@ -1571,14 +1571,14 @@ use ARM packages, and use <code>nomkl</code> as described above.</p>
 <hr />
 <h3 id="input-types-tensor2x1280xf32-and-tensorxf16-are-not-broadcast-compatible">input types 'tensor&lt;2x1280xf32&gt;' and 'tensor&lt;*xf16&gt;' are not broadcast compatible<a class="headerlink" href="#input-types-tensor2x1280xf32-and-tensorxf16-are-not-broadcast-compatible" title="Permanent link">#</a></h3>
 <p>May appear when just starting to generate, e.g.:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>invoke&gt; clouds
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Generating:   <span class="m">0</span>%<span class="p">|</span>                                                              <span class="p">|</span> <span class="m">0</span>/1 <span class="o">[</span><span class="m">00</span>:00&lt;?, ?it/s<span class="o">]</span>/Users/<span class="o">[</span>...<span class="o">]</span>/dev/stable-diffusion/ldm/modules/embedding_manager.py:152: UserWarning: The operator <span class="s1">&#39;aten::nonzero&#39;</span> is not currently supported on the MPS backend and will fall back to run on the CPU. This may have performance implications. <span class="o">(</span>Triggered internally at /Users/runner/work/_temp/anaconda/conda-bld/pytorch_1662016319283/work/aten/src/ATen/mps/MPSFallback.mm:11.<span class="o">)</span>
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>  <span class="nv">placeholder_idx</span> <span class="o">=</span> torch.where<span class="o">(</span>
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>                                                                                                    loc<span class="o">(</span><span class="s2">&quot;mps_add&quot;</span><span class="o">(</span><span class="s2">&quot;(mpsFileLoc): /AppleInternal/Library/BuildRoots/20d6c351-ee94-11ec-bcaf-7247572f23b4/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/MPSGraphUtilities.mm&quot;</span>:219:0<span class="o">))</span>: error: input types <span class="s1">&#39;tensor&lt;2x1280xf32&gt;&#39;</span> and <span class="s1">&#39;tensor&lt;*xf16&gt;&#39;</span> are not broadcast compatible
-<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>LLVM ERROR: Failed to infer result type<span class="o">(</span>s<span class="o">)</span>.
-<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>Abort trap: <span class="m">6</span>
-<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>/Users/<span class="o">[</span>...<span class="o">]</span>/opt/anaconda3/envs/invokeai/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be <span class="m">1</span> leaked semaphore objects to clean up at shutdown
-<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>  warnings.warn<span class="o">(</span><span class="s1">&#39;resource_tracker: There appear to be %d &#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>invoke&gt;<span class="w"> </span>clouds
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Generating:<span class="w">   </span><span class="m">0</span>%<span class="p">|</span><span class="w">                                                              </span><span class="p">|</span><span class="w"> </span><span class="m">0</span>/1<span class="w"> </span><span class="o">[</span><span class="m">00</span>:00&lt;?,<span class="w"> </span>?it/s<span class="o">]</span>/Users/<span class="o">[</span>...<span class="o">]</span>/dev/stable-diffusion/ldm/modules/embedding_manager.py:152:<span class="w"> </span>UserWarning:<span class="w"> </span>The<span class="w"> </span>operator<span class="w"> </span><span class="s1">&#39;aten::nonzero&#39;</span><span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>currently<span class="w"> </span>supported<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>MPS<span class="w"> </span>backend<span class="w"> </span>and<span class="w"> </span>will<span class="w"> </span>fall<span class="w"> </span>back<span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>CPU.<span class="w"> </span>This<span class="w"> </span>may<span class="w"> </span>have<span class="w"> </span>performance<span class="w"> </span>implications.<span class="w"> </span><span class="o">(</span>Triggered<span class="w"> </span>internally<span class="w"> </span>at<span class="w"> </span>/Users/runner/work/_temp/anaconda/conda-bld/pytorch_1662016319283/work/aten/src/ATen/mps/MPSFallback.mm:11.<span class="o">)</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="nv">placeholder_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>torch.where<span class="o">(</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">                                                                                                    </span>loc<span class="o">(</span><span class="s2">&quot;mps_add&quot;</span><span class="o">(</span><span class="s2">&quot;(mpsFileLoc): /AppleInternal/Library/BuildRoots/20d6c351-ee94-11ec-bcaf-7247572f23b4/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/MPSGraphUtilities.mm&quot;</span>:219:0<span class="o">))</span>:<span class="w"> </span>error:<span class="w"> </span>input<span class="w"> </span>types<span class="w"> </span><span class="s1">&#39;tensor&lt;2x1280xf32&gt;&#39;</span><span class="w"> </span>and<span class="w"> </span><span class="s1">&#39;tensor&lt;*xf16&gt;&#39;</span><span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>broadcast<span class="w"> </span>compatible
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>LLVM<span class="w"> </span>ERROR:<span class="w"> </span>Failed<span class="w"> </span>to<span class="w"> </span>infer<span class="w"> </span>result<span class="w"> </span>type<span class="o">(</span>s<span class="o">)</span>.
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>Abort<span class="w"> </span>trap:<span class="w"> </span><span class="m">6</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>/Users/<span class="o">[</span>...<span class="o">]</span>/opt/anaconda3/envs/invokeai/lib/python3.9/multiprocessing/resource_tracker.py:216:<span class="w"> </span>UserWarning:<span class="w"> </span>resource_tracker:<span class="w"> </span>There<span class="w"> </span>appear<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span><span class="m">1</span><span class="w"> </span>leaked<span class="w"> </span>semaphore<span class="w"> </span>objects<span class="w"> </span>to<span class="w"> </span>clean<span class="w"> </span>up<span class="w"> </span>at<span class="w"> </span>shutdown
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">  </span>warnings.warn<span class="o">(</span><span class="s1">&#39;resource_tracker: There appear to be %d &#39;</span>
 </code></pre></div>
 
   <hr>

@@ -966,13 +966,13 @@ following:</p>
 <h3 id="windows">WINDOWS<a class="headerlink" href="#windows" title="Permanent link">#</a></h3>
 <p>As the default backend is not available on Windows, if you're using that
 platform, set the environment variable <code>PL_TORCH_DISTRIBUTED_BACKEND</code> to <code>gloo</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3 ./main.py -t <span class="se">\</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    --base ./configs/stable-diffusion/v1-finetune.yaml <span class="se">\</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    --actual_resume ./models/ldm/stable-diffusion-v1/model.ckpt <span class="se">\</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    -n my_cat <span class="se">\</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    --gpus <span class="m">0</span> <span class="se">\</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    --data_root D:/textual-inversion/my_cat <span class="se">\</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    --init_word <span class="s1">&#39;cat&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3<span class="w"> </span>./main.py<span class="w"> </span>-t<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--base<span class="w"> </span>./configs/stable-diffusion/v1-finetune.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--actual_resume<span class="w"> </span>./models/ldm/stable-diffusion-v1/model.ckpt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>-n<span class="w"> </span>my_cat<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>--gpus<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>--data_root<span class="w"> </span>D:/textual-inversion/my_cat<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span>--init_word<span class="w"> </span><span class="s1">&#39;cat&#39;</span>
 </code></pre></div>
 <p>During the training process, files will be created in
 <code>/logs/[project][time][project]/</code> where you can see the process.</p>
@@ -994,22 +994,22 @@ configs/stable_diffusion/v1-finetune.yaml (currently set to 4000000)</p>
 <h2 id="run-the-model"><strong>Run the Model</strong><a class="headerlink" href="#run-the-model" title="Permanent link">#</a></h2>
 <p>Once the model is trained, specify the trained .pt or .bin file when starting
 invoke using</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3 ./scripts/invoke.py <span class="se">\</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    --embedding_path /path/to/embedding.pt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3<span class="w"> </span>./scripts/invoke.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--embedding_path<span class="w"> </span>/path/to/embedding.pt
 </code></pre></div>
 <p>Then, to utilize your subject at the invoke prompt</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt; <span class="s2">&quot;a photo of *&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;a photo of *&quot;</span>
 </code></pre></div>
 <p>This also works with image2image</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; <span class="s2">&quot;waterfall and rainbow in the style of *&quot;</span> --init_img<span class="o">=</span>./init-images/crude_drawing.png --strength<span class="o">=</span><span class="m">0</span>.5 -s100 -n4
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;waterfall and rainbow in the style of *&quot;</span><span class="w"> </span>--init_img<span class="o">=</span>./init-images/crude_drawing.png<span class="w"> </span>--strength<span class="o">=</span><span class="m">0</span>.5<span class="w"> </span>-s100<span class="w"> </span>-n4
 </code></pre></div>
 <p>For .pt files it's also possible to train multiple tokens (modify the
 placeholder string in <code>configs/stable-diffusion/v1-finetune.yaml</code>) and combine
 LDM checkpoints using:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python3 ./scripts/merge_embeddings.py <span class="se">\</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    --manager_ckpts /path/to/first/embedding.pt <span class="se">\</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="o">[</span>&lt;/path/to/second/embedding.pt&gt;,<span class="o">[</span>...<span class="o">]]</span> <span class="se">\</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    --output_path /path/to/output/embedding.pt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python3<span class="w"> </span>./scripts/merge_embeddings.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>--manager_ckpts<span class="w"> </span>/path/to/first/embedding.pt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="o">[</span>&lt;/path/to/second/embedding.pt&gt;,<span class="o">[</span>...<span class="o">]]</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>--output_path<span class="w"> </span>/path/to/output/embedding.pt
 </code></pre></div>
 <p>Credit goes to rinongal and the repository</p>
 <p>Please see <a href="https://github.com/rinongal/textual_inversion">the repository</a> and

@@ -1003,7 +1003,7 @@ give you a big fat warning. If you can't find a way to coax your photoeditor to
 retain color values under transparent areas, then you can combine the <code>-I</code> and
 <code>-M</code> switches to provide both the original unedited image and the masked
 (partially transparent) image:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>invoke&gt; <span class="s2">&quot;man with cat on shoulder&quot;</span> -I./images/man.png -M./images/man-transparent.png
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;man with cat on shoulder&quot;</span><span class="w"> </span>-I./images/man.png<span class="w"> </span>-M./images/man-transparent.png
 </code></pre></div>
 <h2 id="masking-using-text"><strong>Masking using Text</strong><a class="headerlink" href="#masking-using-text" title="Permanent link">#</a></h2>
 <p>You can also create a mask using a text prompt to select the part of the image
@@ -1021,7 +1021,7 @@ I got off the web.</p>
 </figure>
 <p>You can selectively mask out the orange and replace it with a baseball in this
 way:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; a baseball -I /path/to/still_life.png -tm orange
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt;<span class="w"> </span>a<span class="w"> </span>baseball<span class="w"> </span>-I<span class="w"> </span>/path/to/still_life.png<span class="w"> </span>-tm<span class="w"> </span>orange
 </code></pre></div>
 <figure>
 <p><img alt="" src="../../assets/still-life-inpainted.png" /></p>
@@ -1032,7 +1032,7 @@ getting too much or too little masking you can adjust the threshold down (to get
 more mask), or up (to get less). In this example, by passing <code>-tm</code> a higher
 value, we are insisting on a tigher mask. However, if you make it too high, the
 orange may not be picked up at all!</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt; a baseball -I /path/to/breakfast.png -tm orange <span class="m">0</span>.6
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke&gt;<span class="w"> </span>a<span class="w"> </span>baseball<span class="w"> </span>-I<span class="w"> </span>/path/to/breakfast.png<span class="w"> </span>-tm<span class="w"> </span>orange<span class="w"> </span><span class="m">0</span>.6
 </code></pre></div>
 <p>The <code>!mask</code> command may be useful for debugging problems with the text2mask
 feature. The syntax is <code>!mask /path/to/image.png -tm &lt;text&gt; &lt;threshold&gt;</code></p>
@@ -1051,13 +1051,13 @@ the CLI via the <code>-M</code> argument. Do not attempt this with the <code>sel
 <code>deselected.png</code> files, as they contain some transparency throughout the image
 and will not produce the desired results.</p>
 <p>Here is an example of how <code>!mask</code> works:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; !mask ./test-pictures/curly.png -tm hair <span class="m">0</span>.5
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;&gt; generating masks from ./test-pictures/curly.png
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&gt;&gt; Initializing clipseg model <span class="k">for</span> text to mask inference
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt;<span class="w"> </span>!mask<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-tm<span class="w"> </span>hair<span class="w"> </span><span class="m">0</span>.5
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;&gt;<span class="w"> </span>generating<span class="w"> </span>masks<span class="w"> </span>from<span class="w"> </span>./test-pictures/curly.png
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&gt;&gt;<span class="w"> </span>Initializing<span class="w"> </span>clipseg<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>text<span class="w"> </span>to<span class="w"> </span>mask<span class="w"> </span>inference
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Outputs:
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">[</span><span class="m">941</span>.1<span class="o">]</span> outputs/img-samples/000019.curly.hair.deselected.png: !mask ./test-pictures/curly.png -tm hair <span class="m">0</span>.5
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="o">[</span><span class="m">941</span>.2<span class="o">]</span> outputs/img-samples/000019.curly.hair.selected.png: !mask ./test-pictures/curly.png -tm hair <span class="m">0</span>.5
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">[</span><span class="m">941</span>.3<span class="o">]</span> outputs/img-samples/000019.curly.hair.masked.png: !mask ./test-pictures/curly.png -tm hair <span class="m">0</span>.5
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">[</span><span class="m">941</span>.1<span class="o">]</span><span class="w"> </span>outputs/img-samples/000019.curly.hair.deselected.png:<span class="w"> </span>!mask<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-tm<span class="w"> </span>hair<span class="w"> </span><span class="m">0</span>.5
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="o">[</span><span class="m">941</span>.2<span class="o">]</span><span class="w"> </span>outputs/img-samples/000019.curly.hair.selected.png:<span class="w"> </span>!mask<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-tm<span class="w"> </span>hair<span class="w"> </span><span class="m">0</span>.5
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">[</span><span class="m">941</span>.3<span class="o">]</span><span class="w"> </span>outputs/img-samples/000019.curly.hair.masked.png:<span class="w"> </span>!mask<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-tm<span class="w"> </span>hair<span class="w"> </span><span class="m">0</span>.5
 </code></pre></div>
 <figure>
 <p><img alt="curly" src="../../assets/outpainting/curly.png" /></p>
@@ -1077,18 +1077,18 @@ and will not produce the desired results.</p>
 </figure>
 <p>It looks like we selected the hair pretty well at the 0.5 threshold (which is
 the default, so we didn't actually have to specify it), so let's have some fun:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>invoke&gt; medusa with cobras -I ./test-pictures/curly.png -M <span class="m">000019</span>.curly.hair.masked.png -C20
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt;&gt; loaded input image of size 512x512 from ./test-pictures/curly.png
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>invoke&gt;<span class="w"> </span>medusa<span class="w"> </span>with<span class="w"> </span>cobras<span class="w"> </span>-I<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-M<span class="w"> </span><span class="m">000019</span>.curly.hair.masked.png<span class="w"> </span>-C20
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt;&gt;<span class="w"> </span>loaded<span class="w"> </span>input<span class="w"> </span>image<span class="w"> </span>of<span class="w"> </span>size<span class="w"> </span>512x512<span class="w"> </span>from<span class="w"> </span>./test-pictures/curly.png
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>...
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Outputs:
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">[</span><span class="m">946</span><span class="o">]</span> outputs/img-samples/000024.801380492.png: <span class="s2">&quot;medusa with cobras&quot;</span> -s <span class="m">50</span> -S <span class="m">801380492</span> -W <span class="m">512</span> -H <span class="m">512</span> -C <span class="m">20</span>.0 -I ./test-pictures/curly.png -A k_lms -f <span class="m">0</span>.75
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">[</span><span class="m">946</span><span class="o">]</span><span class="w"> </span>outputs/img-samples/000024.801380492.png:<span class="w"> </span><span class="s2">&quot;medusa with cobras&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">50</span><span class="w"> </span>-S<span class="w"> </span><span class="m">801380492</span><span class="w"> </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">512</span><span class="w"> </span>-C<span class="w"> </span><span class="m">20</span>.0<span class="w"> </span>-I<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-A<span class="w"> </span>k_lms<span class="w"> </span>-f<span class="w"> </span><span class="m">0</span>.75
 </code></pre></div>
 <figure>
 <p><img alt="" src="../../assets/inpainting/000024.801380492.png" /></p>
 </figure>
 <p>You can also skip the <code>!mask</code> creation step and just select the masked</p>
 <p>region directly:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>invoke&gt; medusa with cobras -I ./test-pictures/curly.png -tm hair -C20
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>invoke&gt;<span class="w"> </span>medusa<span class="w"> </span>with<span class="w"> </span>cobras<span class="w"> </span>-I<span class="w"> </span>./test-pictures/curly.png<span class="w"> </span>-tm<span class="w"> </span>hair<span class="w"> </span>-C20
 </code></pre></div>
 <h2 id="using-the-runwayml-inpainting-model">Using the RunwayML inpainting model<a class="headerlink" href="#using-the-runwayml-inpainting-model" title="Permanent link">#</a></h2>
 <p>The

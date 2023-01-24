@@ -1033,27 +1033,27 @@ metadata where it can be retrieved using <code>scripts/images2prompt.py</code></
 <p>This script runs from the command-line or can be used as a Web application. The Web GUI is
 currently rudimentary, but a much better replacement is on its way.</p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python3 ./scripts/invoke.py
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>* Initializing, be patient...
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Loading model from models/ldm/text2img-large/model.ckpt
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">(</span>...more initialization messages...<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">(</span>invokeai<span class="o">)</span><span class="w"> </span>~/stable-diffusion$<span class="w"> </span>python3<span class="w"> </span>./scripts/invoke.py
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>*<span class="w"> </span>Initializing,<span class="w"> </span>be<span class="w"> </span>patient...
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Loading<span class="w"> </span>model<span class="w"> </span>from<span class="w"> </span>models/ldm/text2img-large/model.ckpt
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">(</span>...more<span class="w"> </span>initialization<span class="w"> </span>messages...<span class="o">)</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>* Initialization <span class="k">done</span>! Awaiting your command...
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>invoke&gt; ashley judd riding a camel -n2 -s150
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>*<span class="w"> </span>Initialization<span class="w"> </span><span class="k">done</span>!<span class="w"> </span>Awaiting<span class="w"> </span>your<span class="w"> </span>command...
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>invoke&gt;<span class="w"> </span>ashley<span class="w"> </span>judd<span class="w"> </span>riding<span class="w"> </span>a<span class="w"> </span>camel<span class="w"> </span>-n2<span class="w"> </span>-s150
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Outputs:
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   outputs/img-samples/00009.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">416354203</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   outputs/img-samples/00010.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -n2 -s150 -S <span class="m">1362479620</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">   </span>outputs/img-samples/00009.png:<span class="w"> </span><span class="s2">&quot;ashley judd riding a camel&quot;</span><span class="w"> </span>-n2<span class="w"> </span>-s150<span class="w"> </span>-S<span class="w"> </span><span class="m">416354203</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">   </span>outputs/img-samples/00010.png:<span class="w"> </span><span class="s2">&quot;ashley judd riding a camel&quot;</span><span class="w"> </span>-n2<span class="w"> </span>-s150<span class="w"> </span>-S<span class="w"> </span><span class="m">1362479620</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>invoke&gt; <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    outputs/img-samples/00011.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    seeds <span class="k">for</span> individual rows: <span class="o">[</span><span class="m">2685670268</span>, <span class="m">1216708065</span>, <span class="m">2335773498</span>, <span class="m">822223658</span>, <span class="m">714542046</span>, <span class="m">3395302430</span><span class="o">]</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>invoke&gt; q
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>invoke&gt;<span class="w"> </span><span class="s2">&quot;there&#39;s a fly in my soup&quot;</span><span class="w"> </span>-n6<span class="w"> </span>-g
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span>outputs/img-samples/00011.png:<span class="w"> </span><span class="s2">&quot;there&#39;s a fly in my soup&quot;</span><span class="w"> </span>-n6<span class="w"> </span>-g<span class="w"> </span>-S<span class="w"> </span><span class="m">2685670268</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span>seeds<span class="w"> </span><span class="k">for</span><span class="w"> </span>individual<span class="w"> </span>rows:<span class="w"> </span><span class="o">[</span><span class="m">2685670268</span>,<span class="w"> </span><span class="m">1216708065</span>,<span class="w"> </span><span class="m">2335773498</span>,<span class="w"> </span><span class="m">822223658</span>,<span class="w"> </span><span class="m">714542046</span>,<span class="w"> </span><span class="m">3395302430</span><span class="o">]</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>invoke&gt;<span class="w"> </span>q
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># this shows how to retrieve the prompt stored in the saved image&#39;s metadata</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python ./scripts/images2prompt.py outputs/img_samples/*.png
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="m">00009</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">416354203</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="m">00010</span>.png: <span class="s2">&quot;ashley judd riding a camel&quot;</span> -s150 -S <span class="m">1362479620</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="m">00011</span>.png: <span class="s2">&quot;there&#39;s a fly in my soup&quot;</span> -n6 -g -S <span class="m">2685670268</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="o">(</span>invokeai<span class="o">)</span><span class="w"> </span>~/stable-diffusion$<span class="w"> </span>python<span class="w"> </span>./scripts/images2prompt.py<span class="w"> </span>outputs/img_samples/*.png
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="m">00009</span>.png:<span class="w"> </span><span class="s2">&quot;ashley judd riding a camel&quot;</span><span class="w"> </span>-s150<span class="w"> </span>-S<span class="w"> </span><span class="m">416354203</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="m">00010</span>.png:<span class="w"> </span><span class="s2">&quot;ashley judd riding a camel&quot;</span><span class="w"> </span>-s150<span class="w"> </span>-S<span class="w"> </span><span class="m">1362479620</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="m">00011</span>.png:<span class="w"> </span><span class="s2">&quot;there&#39;s a fly in my soup&quot;</span><span class="w"> </span>-n6<span class="w"> </span>-g<span class="w"> </span>-S<span class="w"> </span><span class="m">2685670268</span>
 </code></pre></div>
 <p><img alt="invoke-py-demo" src="../../assets/dream-py-demo.png" /></p>
 <p>The <code>invoke&gt;</code> prompt's arguments are pretty much identical to those used in the
@@ -1253,7 +1253,7 @@ prompt. Here you can enter information to generate images from text
 (<a href="#inpainting">inpainting</a>).</p>
 <h3 id="txt2img">txt2img<a class="headerlink" href="#txt2img" title="Permanent link">#</a></h3>
 <div class="admonition example">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt; waterfall and rainbow -W640 -H480
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>invoke&gt;<span class="w"> </span>waterfall<span class="w"> </span>and<span class="w"> </span>rainbow<span class="w"> </span>-W640<span class="w"> </span>-H480
 </code></pre></div>
 <p>This will create the requested image with the dimensions 640 (width)
 and 480 (height).</p>
@@ -1472,7 +1472,7 @@ additional options:</p>
 </table>
 <h3 id="inpainting">inpainting<a class="headerlink" href="#inpainting" title="Permanent link">#</a></h3>
 <div class="admonition example">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt; waterfall and rainbow -I./vacation-photo.png -M./vacation-mask.png -W640 -H480 --fit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>invoke&gt;<span class="w"> </span>waterfall<span class="w"> </span>and<span class="w"> </span>rainbow<span class="w"> </span>-I./vacation-photo.png<span class="w"> </span>-M./vacation-mask.png<span class="w"> </span>-W640<span class="w"> </span>-H480<span class="w"> </span>--fit
 </code></pre></div>
 <p>This will do the same thing as img2img, but image alterations will
 only occur within transparent areas defined by the mask file specified
@@ -1545,17 +1545,17 @@ full or partial path to the desired file.</p>
 <p>Some examples:</p>
 <div class="admonition example">
 <p class="admonition-title">Upscale to 4X its original size and fix faces using codeformer</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>invoke&gt; !fix <span class="m">0000045</span>.4829112.png -G1 -U4 -ft codeformer
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>invoke&gt;<span class="w"> </span>!fix<span class="w"> </span><span class="m">0000045</span>.4829112.png<span class="w"> </span>-G1<span class="w"> </span>-U4<span class="w"> </span>-ft<span class="w"> </span>codeformer
 </code></pre></div>
 </div>
 <div class="admonition example">
 <p class="admonition-title">Use the GFPGAN algorithm to fix faces, then upscale to 3X using --embiggen</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>invoke&gt; !fix <span class="m">0000045</span>.4829112.png -G0.8 -ft gfpgan
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>&gt;&gt; fixing outputs/img-samples/0000045.4829112.png
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&gt;&gt; retrieved seed <span class="m">4829112</span> and prompt <span class="s2">&quot;boy enjoying a banana split&quot;</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>&gt;&gt; GFPGAN - Restoring Faces <span class="k">for</span> image seed:4829112
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>invoke&gt;<span class="w"> </span>!fix<span class="w"> </span><span class="m">0000045</span>.4829112.png<span class="w"> </span>-G0.8<span class="w"> </span>-ft<span class="w"> </span>gfpgan
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>&gt;&gt;<span class="w"> </span>fixing<span class="w"> </span>outputs/img-samples/0000045.4829112.png
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&gt;&gt;<span class="w"> </span>retrieved<span class="w"> </span>seed<span class="w"> </span><span class="m">4829112</span><span class="w"> </span>and<span class="w"> </span>prompt<span class="w"> </span><span class="s2">&quot;boy enjoying a banana split&quot;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>&gt;&gt;<span class="w"> </span>GFPGAN<span class="w"> </span>-<span class="w"> </span>Restoring<span class="w"> </span>Faces<span class="w"> </span><span class="k">for</span><span class="w"> </span>image<span class="w"> </span>seed:4829112
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Outputs:
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">[</span><span class="m">1</span><span class="o">]</span> outputs/img-samples/000017.4829112.gfpgan-00.png: !fix <span class="s2">&quot;outputs/img-samples/0000045.4829112.png&quot;</span> -s <span class="m">50</span> -S  -W <span class="m">512</span> -H <span class="m">512</span> -C <span class="m">7</span>.5 -A k_lms -G <span class="m">0</span>.8
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span>outputs/img-samples/000017.4829112.gfpgan-00.png:<span class="w"> </span>!fix<span class="w"> </span><span class="s2">&quot;outputs/img-samples/0000045.4829112.png&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">50</span><span class="w"> </span>-S<span class="w">  </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">512</span><span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5<span class="w"> </span>-A<span class="w"> </span>k_lms<span class="w"> </span>-G<span class="w"> </span><span class="m">0</span>.8
 </code></pre></div>
 </div>
 <h3 id="mask">!mask<a class="headerlink" href="#mask" title="Permanent link">#</a></h3>
@@ -1709,16 +1709,16 @@ commands issued.</p>
 during the session (Windows), or the most recent 1000 commands (Mac|Linux). You
 can then repeat a command by using the command <code>!NNN</code>, where "NNN" is the
 history line number. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>invoke&gt; !history
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>invoke&gt;<span class="w"> </span>!history
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>...
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">[</span><span class="m">14</span><span class="o">]</span> happy woman sitting under tree wearing broad hat and flowing garment
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="o">[</span><span class="m">15</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="o">[</span><span class="m">18</span><span class="o">]</span> beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="o">[</span><span class="m">20</span><span class="o">]</span> watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">[</span><span class="m">14</span><span class="o">]</span><span class="w"> </span>happy<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="o">[</span><span class="m">15</span><span class="o">]</span><span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="o">[</span><span class="m">18</span><span class="o">]</span><span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment<span class="w"> </span>-v0.2<span class="w"> </span>-n6
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="o">[</span><span class="m">20</span><span class="o">]</span><span class="w"> </span>watercolor<span class="w"> </span>of<span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment<span class="w"> </span>-v0.2<span class="w"> </span>-n6<span class="w"> </span>-S2878767194
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span><span class="w"> </span>surrealist<span class="w"> </span>painting<span class="w"> </span>of<span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment<span class="w"> </span>-v0.2<span class="w"> </span>-n6<span class="w"> </span>-S2878767194
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>...
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>invoke&gt; !20
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>invoke&gt; watercolor of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>invoke&gt;<span class="w"> </span>!20
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>invoke&gt;<span class="w"> </span>watercolor<span class="w"> </span>of<span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment<span class="w"> </span>-v0.2<span class="w"> </span>-n6<span class="w"> </span>-S2878767194
 </code></pre></div>
 <h3 id="fetch">!fetch<a class="headerlink" href="#fetch" title="Permanent link">#</a></h3>
 <p>This command retrieves the generation parameters from a previously generated
@@ -1729,13 +1729,13 @@ a folder with image png files, and wildcard *.png to retrieve the dream command
 used to generate the images, and save them to a file commands.txt for further
 processing.</p>
 <p>This example loads the generation command for a single png file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>invoke&gt; !fetch <span class="m">0000015</span>.8929913.png
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>invoke&gt;<span class="w"> </span>!fetch<span class="w"> </span><span class="m">0000015</span>.8929913.png
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># the script returns the next line, ready for editing and running:</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>invoke&gt; a fantastic alien landscape -W <span class="m">576</span> -H <span class="m">512</span> -s <span class="m">60</span> -A plms -C <span class="m">7</span>.5
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>invoke&gt;<span class="w"> </span>a<span class="w"> </span>fantastic<span class="w"> </span>alien<span class="w"> </span>landscape<span class="w"> </span>-W<span class="w"> </span><span class="m">576</span><span class="w"> </span>-H<span class="w"> </span><span class="m">512</span><span class="w"> </span>-s<span class="w"> </span><span class="m">60</span><span class="w"> </span>-A<span class="w"> </span>plms<span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5
 </code></pre></div>
 <p>This one fetches the generation commands from a batch of files and stores them
 into <code>selected.txt</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>invoke&gt; !fetch outputs<span class="se">\s</span>elected-imgs<span class="se">\*</span>.png selected.txt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>invoke&gt;<span class="w"> </span>!fetch<span class="w"> </span>outputs<span class="se">\s</span>elected-imgs<span class="se">\*</span>.png<span class="w"> </span>selected.txt
 </code></pre></div>
 <h3 id="replay">!replay<a class="headerlink" href="#replay" title="Permanent link">#</a></h3>
 <p>This command replays a text file generated by !fetch or created manually</p>
@@ -1746,8 +1746,8 @@ not generated by InvokeAI.</p>
 <h3 id="search">!search <search string><a class="headerlink" href="#search" title="Permanent link">#</a></h3>
 <p>This is similar to !history but it only returns lines that contain
 <code>search string</code>. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>invoke&gt; !search surreal
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span> surrealist painting of beautiful woman sitting under tree wearing broad hat and flowing garment -v0.2 -n6 -S2878767194
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>invoke&gt;<span class="w"> </span>!search<span class="w"> </span>surreal
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="o">[</span><span class="m">21</span><span class="o">]</span><span class="w"> </span>surrealist<span class="w"> </span>painting<span class="w"> </span>of<span class="w"> </span>beautiful<span class="w"> </span>woman<span class="w"> </span>sitting<span class="w"> </span>under<span class="w"> </span>tree<span class="w"> </span>wearing<span class="w"> </span>broad<span class="w"> </span>hat<span class="w"> </span>and<span class="w"> </span>flowing<span class="w"> </span>garment<span class="w"> </span>-v0.2<span class="w"> </span>-n6<span class="w"> </span>-S2878767194
 </code></pre></div>
 <h3 id="clear"><code>!clear</code><a class="headerlink" href="#clear" title="Permanent link">#</a></h3>
 <p>This clears the search history from memory and disk. Be advised that this
@@ -1784,9 +1784,9 @@ completions will be presented to you. You can then type a little more, hit
 to complete pathnames for you. This is most handy for the <code>-I</code> (init image) and
 <code>-M</code> (init mask) paths. To initiate completion, start the path with a slash
 (<code>/</code>) or <code>./</code>. For example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>invoke&gt; zebra with a mustache -I./test-pictures&lt;TAB&gt;
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>-I./test-pictures/Lincoln-and-Parrot.png  -I./test-pictures/zebra.jpg        -I./test-pictures/madonna.png
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>-I./test-pictures/bad-sketch.png          -I./test-pictures/man_with_eagle/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>invoke&gt;<span class="w"> </span>zebra<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>mustache<span class="w"> </span>-I./test-pictures&lt;TAB&gt;
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>-I./test-pictures/Lincoln-and-Parrot.png<span class="w">  </span>-I./test-pictures/zebra.jpg<span class="w">        </span>-I./test-pictures/madonna.png
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>-I./test-pictures/bad-sketch.png<span class="w">          </span>-I./test-pictures/man_with_eagle/
 </code></pre></div>
 <p>You can then type <span class="keys"><kbd class="key-z">Z</kbd></span>, hit <span class="keys"><kbd class="key-tab">Tab</kbd></span> again, and it will autofill to <code>zebra.jpg</code>.</p>
 <p>More text completion features (such as autocompleting seeds) are on their way.</p>

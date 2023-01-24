@@ -1096,15 +1096,15 @@
 <p>You can automate <code>invoke.py</code> by providing a text file with the prompts you want to run, one line per
 prompt. The text file must be composed with a text editor (e.g. Notepad) and not a word processor.
 Each line should look like what you would type at the invoke&gt; prompt:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>a beautiful sunny day <span class="k">in</span> the park, children playing -n4 -C10
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>stormy weather on a mountain top, goats grazing     -s100
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>innovative packaging <span class="k">for</span> a squid<span class="err">&#39;</span>s dinner           -S137038382
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>a<span class="w"> </span>beautiful<span class="w"> </span>sunny<span class="w"> </span>day<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>park,<span class="w"> </span>children<span class="w"> </span>playing<span class="w"> </span>-n4<span class="w"> </span>-C10
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>stormy<span class="w"> </span>weather<span class="w"> </span>on<span class="w"> </span>a<span class="w"> </span>mountain<span class="w"> </span>top,<span class="w"> </span>goats<span class="w"> </span>grazing<span class="w">     </span>-s100
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>innovative<span class="w"> </span>packaging<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>squid<span class="err">&#39;</span>s<span class="w"> </span>dinner<span class="w">           </span>-S137038382
 </code></pre></div>
 <p>Then pass this file's name to <code>invoke.py</code> when you invoke it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ python3 scripts/invoke.py --from_file <span class="s2">&quot;path/to/prompts.txt&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">(</span>invokeai<span class="o">)</span><span class="w"> </span>~/stable-diffusion$<span class="w"> </span>python3<span class="w"> </span>scripts/invoke.py<span class="w"> </span>--from_file<span class="w"> </span><span class="s2">&quot;path/to/prompts.txt&quot;</span>
 </code></pre></div>
 <p>You may read a series of prompts from standard input by providing a filename of <code>-</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">(</span>invokeai<span class="o">)</span> ~/stable-diffusion$ <span class="nb">echo</span> <span class="s2">&quot;a beautiful day&quot;</span> <span class="p">|</span> python3 scripts/invoke.py --from_file -
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">(</span>invokeai<span class="o">)</span><span class="w"> </span>~/stable-diffusion$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;a beautiful day&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>scripts/invoke.py<span class="w"> </span>--from_file<span class="w"> </span>-
 </code></pre></div>
 <hr />
 <h2 id="negative-and-unconditioned-prompts"><strong>Negative and Unconditioned Prompts</strong><a class="headerlink" href="#negative-and-unconditioned-prompts" title="Permanent link">#</a></h2>
@@ -1115,22 +1115,22 @@ Diffusion to attempt to ban the concept from the generated image.</p>
 <p>In the above statement, the words 'not really cool` will be ignored by Stable Diffusion.</p>
 <p>Here's a prompt that depicts what it does.</p>
 <p>original prompt:</p>
-<p><code class="highlight"><span class="s2">&quot;A fantastical translucent pony made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve&quot;</span> -s <span class="m">20</span> -W <span class="m">512</span> -H <span class="m">768</span> -C <span class="m">7</span>.5 -A k_euler_a -S <span class="m">1654590180</span></code></p>
+<p><code class="highlight"><span class="s2">&quot;A fantastical translucent pony made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">20</span><span class="w"> </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">768</span><span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5<span class="w"> </span>-A<span class="w"> </span>k_euler_a<span class="w"> </span>-S<span class="w"> </span><span class="m">1654590180</span></code></p>
 <figure>
 <p><img alt="step1" src="../../assets/negative_prompt_walkthru/step1.png" /></p>
 </figure>
 <p>That image has a woman, so if we want the horse without a rider, we can influence the image not to have a woman by putting [woman] in the prompt, like this:</p>
-<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman]&quot;</span> -s <span class="m">20</span> -W <span class="m">512</span> -H <span class="m">768</span> -C <span class="m">7</span>.5 -A k_euler_a -S <span class="m">1654590180</span></code></p>
+<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman]&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">20</span><span class="w"> </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">768</span><span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5<span class="w"> </span>-A<span class="w"> </span>k_euler_a<span class="w"> </span>-S<span class="w"> </span><span class="m">1654590180</span></code></p>
 <figure>
 <p><img alt="step2" src="../../assets/negative_prompt_walkthru/step2.png" /></p>
 </figure>
 <p>That's nice - but say we also don't want the image to be quite so blue. We can add "blue" to the list of negative prompts, so it's now [woman blue]:</p>
-<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman blue]&quot;</span> -s <span class="m">20</span> -W <span class="m">512</span> -H <span class="m">768</span> -C <span class="m">7</span>.5 -A k_euler_a -S <span class="m">1654590180</span></code></p>
+<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman blue]&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">20</span><span class="w"> </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">768</span><span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5<span class="w"> </span>-A<span class="w"> </span>k_euler_a<span class="w"> </span>-S<span class="w"> </span><span class="m">1654590180</span></code></p>
 <figure>
 <p><img alt="step3" src="../../assets/negative_prompt_walkthru/step3.png" /></p>
 </figure>
 <p>Getting close - but there's no sense in having a saddle when our horse doesn't have a rider, so we'll add one more negative prompt: [woman blue saddle].</p>
-<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman blue saddle]&quot;</span> -s <span class="m">20</span> -W <span class="m">512</span> -H <span class="m">768</span> -C <span class="m">7</span>.5 -A k_euler_a -S <span class="m">1654590180</span></code></p>
+<p><code class="highlight"><span class="s2">&quot;A fantastical translucent poney made of water and foam, ethereal, radiant, hyperalism, scottish folklore, digital painting, artstation, concept art, smooth, 8 k frostbite 3 engine, ultra detailed, art by artgerm and greg rutkowski and magali villeneuve [woman blue saddle]&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="m">20</span><span class="w"> </span>-W<span class="w"> </span><span class="m">512</span><span class="w"> </span>-H<span class="w"> </span><span class="m">768</span><span class="w"> </span>-C<span class="w"> </span><span class="m">7</span>.5<span class="w"> </span>-A<span class="w"> </span>k_euler_a<span class="w"> </span>-S<span class="w"> </span><span class="m">1654590180</span></code></p>
 <figure>
 <p><img alt="step4" src="../../assets/negative_prompt_walkthru/step4.png" /></p>
 </figure>
@@ -1284,14 +1284,14 @@ syntax and it will get confused.</p>
 <p>You may blend together different sections of the prompt to explore the
 AI's latent semantic space and generate interesting (and often
 surprising!) variations. The syntax is:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>blue sphere:0.25 red cube:0.75 hybrid
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>blue<span class="w"> </span>sphere:0.25<span class="w"> </span>red<span class="w"> </span>cube:0.75<span class="w"> </span>hybrid
 </code></pre></div>
 <p>This will tell the sampler to blend 25% of the concept of a blue
 sphere with 75% of the concept of a red cube. The blend weights can
 use any combination of integers and floating point numbers, and they
 do not need to add up to 1. Everything to the left of the <code>:XX</code> up to
 the previous <code>:XX</code> is used for merging, so the overall effect is:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="m">0</span>.25 * <span class="s2">&quot;blue sphere&quot;</span> + <span class="m">0</span>.75 * <span class="s2">&quot;white duck&quot;</span> + hybrid
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="m">0</span>.25<span class="w"> </span>*<span class="w"> </span><span class="s2">&quot;blue sphere&quot;</span><span class="w"> </span>+<span class="w"> </span><span class="m">0</span>.75<span class="w"> </span>*<span class="w"> </span><span class="s2">&quot;white duck&quot;</span><span class="w"> </span>+<span class="w"> </span>hybrid
 </code></pre></div>
 <p>Because you are exploring the "mind" of the AI, the AI's way of mixing
 two concepts may not match yours, leading to surprising effects. To
