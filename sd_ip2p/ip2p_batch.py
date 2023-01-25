@@ -23,6 +23,13 @@ parser.add_argument(
     dest='jsonpath',
 )
 parser.add_argument(
+    "-m",
+    "--model_path",
+    type=str,
+    help="Custom model folder path",
+    dest='modeldir',
+)
+parser.add_argument(
     "-o",
     "--outpath",
     type=str,
@@ -36,9 +43,27 @@ if len(sys.argv)==1:
 
 args = parser.parse_args()
 
+
 model_id = "timbrooks/instruct-pix2pix"
-pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16", safety_checker=None)
+from huggingface_hub import snapshot_download
+
+if not args.modeldir:
+    ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", ".md", ".git*"]
+    rev = "fp16"
+    try:
+        args.modeldir = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore)
+    except:
+        args.modeldir = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore, local_files_only=True)
+
+print(f"Trying to load model from '{args.modeldir}'", flush=True)
+
+try:
+    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.modeldir, torch_dtype=torch.float16, safety_checker=None)
+except:
+    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.modeldir, torch_dtype=torch.float16, safety_checker=None, local_files_only=True)
+
 pipe.to("cuda")
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
 pipe.enable_attention_slicing()
 
 
@@ -80,18 +105,5 @@ for i in range(len(data)):
     generate(inpath, prompt, prompt_neg, seed, cfg_txt, cfg_img)
 
 pipe = None
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
