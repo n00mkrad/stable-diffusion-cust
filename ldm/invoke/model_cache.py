@@ -177,6 +177,29 @@ class ModelCache(object):
             self._invalidate_cached_model(model_name)
         return True
     
+    def transform_checkpoint_dict_key(self, k):
+        chckpoint_dict_replacements = {
+            'cond_stage_model.transformer.embeddings.': 'cond_stage_model.transformer.text_model.embeddings.',
+            'cond_stage_model.transformer.encoder.': 'cond_stage_model.transformer.text_model.encoder.',
+            'cond_stage_model.transformer.final_layer_norm.': 'cond_stage_model.transformer.text_model.final_layer_norm.',
+        }
+        for text, replacement in chckpoint_dict_replacements.items():
+            if k.startswith(text):
+                k = replacement + k[len(text):]
+        return k
+
+    def get_state_dict_from_checkpoint(self, pl_sd):
+        pl_sd = pl_sd.pop("state_dict", pl_sd)
+        pl_sd.pop("state_dict", None)
+        sd = {}
+        for k, v in pl_sd.items():
+            new_key = self.transform_checkpoint_dict_key(k)
+            if new_key is not None:
+                sd[new_key] = v
+        pl_sd.clear()
+        pl_sd.update(sd)
+        return pl_sd
+    
     def _load_model(self, model_name:str):
         """Load and initialize the model from configuration variables passed at object creation time"""
         if model_name not in self.config:
@@ -206,7 +229,8 @@ class ModelCache(object):
         model_hash  = self._cached_sha256(weights,weight_bytes)
         pl_sd = torch.load(io.BytesIO(weight_bytes), map_location='cpu')
         del weight_bytes
-        sd    = pl_sd['state_dict']
+        #sd    = pl_sd['state_dict']
+        sd = self.get_state_dict_from_checkpoint(pl_sd)
         model = instantiate_from_config(c.model)
         m, u  = model.load_state_dict(sd, strict=False)
 
