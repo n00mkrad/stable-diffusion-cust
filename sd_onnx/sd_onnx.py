@@ -3,7 +3,7 @@ import sys
 import time
 import torch
 import numpy as np
-from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline, DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler
+from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline, OnnxStableDiffusionInpaintPipelineLegacy, DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler
 
 import argparse
 import json
@@ -44,7 +44,7 @@ parser.add_argument(
 parser.add_argument(
     "-mode",
     "--mode",
-    choices=['txt2img', 'img2img', 'inpaint'],
+    choices=['txt2img', 'img2img', 'inpaint', 'inpaint-legacy'],
     default="txt2img",
     help="Specify generation mode",
     dest='mode',
@@ -66,6 +66,8 @@ if opt.mode == "img2img":
     pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(opt.mdlpath, provider=prov, safety_checker=None)
 if opt.mode == "inpaint":
     pipe = OnnxStableDiffusionInpaintPipeline.from_pretrained(opt.mdlpath, provider=prov, safety_checker=None)
+if opt.mode == "inpaint-legacy":
+    pipe = OnnxStableDiffusionInpaintPipelineLegacy.from_pretrained(opt.mdlpath, provider=prov, safety_checker=None)
 
 
 def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_path = None, init_strength = 0.75, mask_img_path = None):
@@ -93,6 +95,12 @@ def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_pat
         mask=Image.open(mask_img_path)
         image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
+    if opt.mode == "inpaint-legacy":
+        print("inpaint legacy", flush=True)
+        img=Image.open(init_img_path).convert('RGB')
+        mask=Image.open(mask_img_path)
+        image=pipe(prompt=prompt, image=img, mask_image = mask, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength} -M {mask_img_path}')
 
     
     image.save(os.path.join(opt.outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
