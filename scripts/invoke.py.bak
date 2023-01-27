@@ -281,10 +281,6 @@ def main_loop(gen, opt):
                 step_callback = make_step_callback(gen, opt, prefix) if opt.save_intermediates > 0 else image_progress
                 
                 def image_writer(image, seed, upscaled=False, first_seed=None, use_prefix=None):
-                    if opt.upscale or opt.facetool_strength > 0.01:
-                        if not upscaled and not opt.save_original:
-                            return
-                            
                     # note the seed is the seed of the current image
                     # the first_seed is the original seed that noise is added to
                     # when the -v switch is used to generate variations
