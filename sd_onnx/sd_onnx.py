@@ -103,8 +103,7 @@ def generate(prompt, prompt_neg, steps, width, height, seed, scale, init_img_pat
 
 print(f'Model loaded.')
 
-f = open(opt.jsonpath)
-data = json.load(f)
+data = json.load(open(opt.jsonpath, encoding='utf-8'))
 
 for i in range(len(data)):
     argdict = data[i]
