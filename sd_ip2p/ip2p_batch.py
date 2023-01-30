@@ -75,7 +75,7 @@ def generate(inpath, prompt, prompt_neg, seed, cfg_txt, cfg_img):
     
     info = PngImagePlugin.PngInfo()
     
-    image = PIL.Image.open(inpath)
+    image = Image.open(inpath)
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert("RGB")
     image
@@ -89,8 +89,7 @@ def generate(inpath, prompt, prompt_neg, seed, cfg_txt, cfg_img):
 
 print(f'Model loaded.')
 
-f = open(args.jsonpath)
-data = json.load(f)
+data = json.load(open(args.jsonpath, encoding='utf-8'))
 
 for i in range(len(data)):
     argdict = data[i]
@@ -101,6 +100,7 @@ for i in range(len(data)):
     seed = int(argdict["seed"])
     cfg_txt = float(argdict["scale_txt"])
     cfg_img = float(argdict["scale_img"])
+    print(f'Source Image: {inpath}')
     print(f'Generating {i+1}/{len(data)}: Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
     generate(inpath, prompt, prompt_neg, seed, cfg_txt, cfg_img)
 
