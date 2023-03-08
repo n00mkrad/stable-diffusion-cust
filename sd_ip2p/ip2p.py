@@ -42,14 +42,19 @@ stdin_queue = queue.Queue()
 
 # Read messages from stdin and add them to the queue
 def read_stdin():
-    while True: # TODO: Check if this loop causes performance issues as it has no wait times
+    while True:
         message = sys.stdin.readline().strip()
+
         if not message:
             time.sleep(0.01)
+
+        if message == "stop":
+            stdin_queue.queue.clear()
+
         if message == "kill":
-            sys.exit()
+            os._exit(0)
+
         stdin_queue.put(message)
-        # print(f"Queueing message ({stdin_queue.qsize()})", flush=True)
 
 # Start the thread to read from stdin
 stdin_thread = threading.Thread(target=read_stdin)
@@ -82,17 +87,12 @@ print(f'Model loaded.')
 
 def generate(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
     start_time = time.time()
-    
-    print(f"Using seed {seed}", flush=True)
     rng = torch.manual_seed(seed)
-    
     info = PngImagePlugin.PngInfo()
-    
     image = Image.open(inpath)
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert("RGB")
     image
-    
     image = pipe(prompt, negative_prompt = prompt_neg, image=image, num_inference_steps=steps, guidance_scale=cfg_txt, image_guidance_scale=cfg_img, generator=rng).images[0]
     metadataDict = {"prompt": prompt, "image": inpath, "prompt_neg": prompt_neg, "steps": steps, "seed": seed, "cfg_txt": cfg_txt, "cfg_img": cfg_img}
     info.add_text('NmkdInstructPixToPix',  json.dumps(metadataDict, separators=(',', ':')))
@@ -108,7 +108,6 @@ def generate_from_json(argdict):
     seed = int(argdict["seed"])
     cfg_txt = float(argdict["scale_txt"])
     cfg_img = float(argdict["scale_img"])
-    # print(f'Using Image: {inpath}')
     print(f'Generating - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
     generate(inpath, args.outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img)
 
@@ -128,6 +127,9 @@ while True:
             data = json.loads(cmd_args)
             generate_from_json(data)
             
+        if cmd == "stop":
+            print(f"Stopped.", flush=True)
+
         if cmd == "exit":
             os._exit(0)
             
