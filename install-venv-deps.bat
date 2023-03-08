@@ -15,7 +15,7 @@ python -m pip install kornia==0.6.0
 python -m pip install realesrgan==0.3.0
 python -m pip install picklescan==0.0.5
 python -m pip install safetensors==0.2.5
-python -m pip install git+https://github.com/huggingface/diffusers@180841bbde4b200be43350164eef80c93a68983a
+python -m pip install git+https://github.com/huggingface/diffusers@b285d94e107bf041c08cbdff784f5b0fdcf2388f
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 python -m pip install git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion

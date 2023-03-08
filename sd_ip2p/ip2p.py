@@ -1,35 +1,51 @@
+from glob import glob
 import PIL
 from PIL import PngImagePlugin, Image
-import requests
 import torch
-from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler
-
+from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler # InstructPix2Pix
+from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline # SD ONNX
+import numpy as np
 import argparse
 import os, sys, time
-import random
-import numpy as np
-import string
 import json
 import threading
 import queue
+import traceback
 
 os.chdir(sys.path[0])
 
+
 parser = argparse.ArgumentParser()
 
+parser.add_argument(
+    "-p",
+    "--pipeline",
+    type=str,
+    help="Diffusers Pipeline to run",
+    choices=["InstructPix2Pix", "SdOnnx"],
+    dest="pipeline",
+)
+parser.add_argument(
+    "-g",
+    "--generation_mode",
+    type=str,
+    help="Image generation mode",
+    choices=["txt2img", "img2img", "inpaint"],
+    dest="generation_mode",
+)
 parser.add_argument(
     "-m",
     "--model_path",
     type=str,
     help="Custom model folder path",
-    dest='modeldir',
+    dest="model_path",
 )
 parser.add_argument(
     "-o",
     "--outpath",
     type=str,
     help="Output path",
-    dest='outpath',
+    dest="outpath",
 )
 
 if len(sys.argv)==1:
@@ -38,9 +54,9 @@ if len(sys.argv)==1:
 
 args = parser.parse_args()
 
+
 stdin_queue = queue.Queue()
 
-# Read messages from stdin and add them to the queue
 def read_stdin():
     while True:
         message = sys.stdin.readline().strip()
@@ -56,36 +72,48 @@ def read_stdin():
 
         stdin_queue.put(message)
 
-# Start the thread to read from stdin
 stdin_thread = threading.Thread(target=read_stdin)
 stdin_thread.start()
 
+pipe = None
 
-model_id = "timbrooks/instruct-pix2pix"
-from huggingface_hub import snapshot_download
-
-if not args.modeldir:
-    ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", ".md", ".git*"]
-    rev = "fp16"
+def load_ip2p():
+    global pipe
+    model_id = "timbrooks/instruct-pix2pix"
+    from huggingface_hub import snapshot_download
+    
+    if not args.model_path:
+        ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", ".md", ".git*"]
+        rev = "fp16"
+        try:
+            args.model_path = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore)
+        except:
+            args.model_path = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore, local_files_only=True)
+    
+    print(f"Trying to load model from '{args.model_path}'", flush=True)
+    
     try:
-        args.modeldir = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore)
+        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.model_path, torch_dtype=torch.float16, safety_checker=None)
     except:
-        args.modeldir = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore, local_files_only=True)
+        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.model_path, torch_dtype=torch.float16, safety_checker=None, local_files_only=True)
+    
+    pipe.to("cuda")
+    pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+    pipe.enable_attention_slicing()
 
-print(f"Trying to load model from '{args.modeldir}'", flush=True)
+def load_sd_onnx():
+    global pipe
+    prov = "DmlExecutionProvider"
+    if args.generation_mode == "txt2img":
+        pipe = OnnxStableDiffusionPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
+    if args.generation_mode == "img2img":
+        pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
+    if args.generation_mode == "inpaint":
+        pipe = OnnxStableDiffusionInpaintPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
 
-try:
-    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.modeldir, torch_dtype=torch.float16, safety_checker=None)
-except:
-    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.modeldir, torch_dtype=torch.float16, safety_checker=None, local_files_only=True)
-
-pipe.to("cuda")
-pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
-pipe.enable_attention_slicing()
-
-print(f'Model loaded.')
-
-def generate(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
+def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
+    global pipe
+    print(f'Generating ({args.pipeline}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
     start_time = time.time()
     rng = torch.manual_seed(seed)
     info = PngImagePlugin.PngInfo()
@@ -100,16 +128,54 @@ def generate(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img)
     print(f'Image generated in {(time.time() - start_time):.2f}s', flush=True)
     image = None
 
+def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, scale, init_img_path = None, init_strength = 0.75, mask_img_path = None):
+    global pipe
+    print(f'Generating ({args.pipeline}- {args.generation_mode}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Scale {scale} - Res {width}x{height}')
+    start_time = time.time()
+    seed = int(seed)
+    rng = np.random.RandomState(seed)
+    info = PngImagePlugin.PngInfo()
+    neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
+    eta = 0.0
+    if args.generation_mode == "txt2img":
+        image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, generator=rng).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
+    if args.generation_mode == "img2img":
+        img=Image.open(init_img_path)
+        image=pipe(prompt=prompt, image=img, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength}')
+    if args.generation_mode == "inpaint":
+        img=Image.open(init_img_path)
+        mask=Image.open(mask_img_path)
+        image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
+        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
+    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
+    print(f'Image generated in {(time.time() - start_time):.2f}s')
+    image = None
+
 def generate_from_json(argdict):
-    inpath = argdict["initImg"]
-    prompt = argdict["prompt"]
-    prompt_neg = argdict["prompt_neg"]
-    steps = int(argdict["steps"])
-    seed = int(argdict["seed"])
-    cfg_txt = float(argdict["scale_txt"])
-    cfg_img = float(argdict["scale_img"])
-    print(f'Generating - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
-    generate(inpath, args.outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img)
+    inpath = argdict.get("initImg")
+    prompt = argdict.get("prompt")
+    prompt_neg = argdict.get("prompt_neg")
+    steps = int(argdict.get("steps") or 0)
+    seed = int(argdict.get("seed") or 0)
+    cfg_txt = float(argdict.get("scale_txt") or 0.0)
+    cfg_img = float(argdict.get("scale_img") or 0.0)
+    w = int(argdict.get("w") or 0)
+    h = int(argdict.get("h") or 0)
+    init_strength = float(argdict.get("initStrength") or 0.0)
+    mask_path = argdict.get("inpaintMask")
+    if args.pipeline == "InstructPix2Pix":
+        generate_ip2p(inpath, args.outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img)
+    if args.pipeline == "SdOnnx":
+        generate_sd_onnx(prompt, prompt_neg, args.outpath, steps, w, h, seed, cfg_txt, inpath, init_strength, mask_path)
+
+print(f"Loading...", flush=True)
+if args.pipeline == "InstructPix2Pix":
+    load_ip2p()
+if args.pipeline == "SdOnnx":
+    load_sd_onnx()
+print(f"Model loaded.", flush=True)
 
 # Process messages from the queue
 while True:
@@ -117,7 +183,6 @@ while True:
         # if stdin_queue.empty:
         #     time.sleep(0.01)
         #     continue
-
         message = stdin_queue.get(block=True, timeout=1)
         split = message.split()
         cmd = split[0]
@@ -140,6 +205,7 @@ while True:
 
     except Exception as ex:
         print(f"Exception: {str(ex)}", flush=True)
+        traceback.print_stack()
         break
 
 pipe = None
