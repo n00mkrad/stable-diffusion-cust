@@ -1,4 +1,3 @@
-from glob import glob
 import PIL
 from PIL import PngImagePlugin, Image
 import torch
@@ -150,17 +149,17 @@ def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, sc
         image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
         info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
     image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
-    print(f'Image generated in {(time.time() - start_time):.2f}s')
+    print(f'Image generated in {(time.time() - start_time):.2f}s', flush=True)
     image = None
 
 def generate_from_json(argdict):
     inpath = argdict.get("initImg")
     prompt = argdict.get("prompt")
-    prompt_neg = argdict.get("prompt_neg")
+    prompt_neg = argdict.get("promptNeg")
     steps = int(argdict.get("steps") or 0)
     seed = int(argdict.get("seed") or 0)
-    cfg_txt = float(argdict.get("scale_txt") or 0.0)
-    cfg_img = float(argdict.get("scale_img") or 0.0)
+    cfg_txt = float(argdict.get("scaleTxt") or 0.0)
+    cfg_img = float(argdict.get("scaleImg") or 0.0)
     w = int(argdict.get("w") or 0)
     h = int(argdict.get("h") or 0)
     init_strength = float(argdict.get("initStrength") or 0.0)
