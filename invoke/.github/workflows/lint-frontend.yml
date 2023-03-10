@@ -1,0 +1,37 @@
+name: Lint frontend
+
+on:
+  pull_request:
+    paths:
+      - 'invokeai/frontend/web/**'
+    types:
+      - 'ready_for_review'
+      - 'opened'
+      - 'synchronize'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'invokeai/frontend/web/**'
+  merge_group:
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: invokeai/frontend/web
+
+jobs:
+  lint-frontend:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Setup Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - uses: actions/checkout@v3
+      - run: 'yarn install --frozen-lockfile'
+      - run: 'yarn run lint:tsc'
+      - run: 'yarn run lint:madge'
+      - run: 'yarn run lint:eslint'
+      - run: 'yarn run lint:prettier'

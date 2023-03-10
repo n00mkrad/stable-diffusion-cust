@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+# General
+site_name: InvokeAI Stable Diffusion Toolkit Docs
+site_url: https://invoke-ai.github.io/InvokeAI
+site_author: mauwii
+dev_addr: '127.0.0.1:8080'
+
+# Repository
+repo_name: 'invoke-ai/InvokeAI'
+repo_url: 'https://github.com/invoke-ai/InvokeAI'
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2022 InvokeAI Team
+
+# Configuration
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/file-document-edit-outline
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: blue
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - toc.integrate
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: '#'
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: 'invoke-ai'
+      repo: 'InvokeAI'
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - tables
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - redirects:
+      redirect_maps:
+          'installation/INSTALL_AUTOMATED.md': 'installation/010_INSTALL_AUTOMATED.md'
+          'installation/INSTALL_MANUAL.md': 'installation/020_INSTALL_MANUAL.md'
+          'installation/INSTALL_SOURCE.md': 'installation/020_INSTALL_MANUAL.md'
+          'installation/INSTALL_DOCKER.md': 'installation/040_INSTALL_DOCKER.md'
+          'installation/INSTALLING_MODELS.md': 'installation/050_INSTALLING_MODELS.md'
+          'installation/INSTALL_PATCHMATCH.md': 'installation/060_INSTALL_PATCHMATCH.md'

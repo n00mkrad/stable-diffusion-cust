@@ -1,0 +1,110 @@
+import {
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+
+import IAIButton from 'common/components/IAIButton';
+
+import { FaPlus } from 'react-icons/fa';
+
+import { useAppDispatch, useAppSelector } from 'app/storeHooks';
+import { useTranslation } from 'react-i18next';
+
+import type { RootState } from 'app/store';
+import { setAddNewModelUIOption } from 'features/ui/store/uiSlice';
+import AddCheckpointModel from './AddCheckpointModel';
+import AddDiffusersModel from './AddDiffusersModel';
+
+function AddModelBox({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Flex
+      position="relative"
+      width="50%"
+      height={40}
+      justifyContent="center"
+      alignItems="center"
+      onClick={onClick}
+      as={Button}
+    >
+      <Text fontWeight="bold">{text}</Text>
+    </Flex>
+  );
+}
+
+export default function AddModel() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const addNewModelUIOption = useAppSelector(
+    (state: RootState) => state.ui.addNewModelUIOption
+  );
+
+  const dispatch = useAppDispatch();
+
+  const { t } = useTranslation();
+
+  const addModelModalClose = () => {
+    onClose();
+    dispatch(setAddNewModelUIOption(null));
+  };
+
+  return (
+    <>
+      <IAIButton
+        aria-label={t('modelManager.addNewModel')}
+        tooltip={t('modelManager.addNewModel')}
+        onClick={onOpen}
+        size="sm"
+      >
+        <Flex columnGap={2} alignItems="center">
+          <FaPlus />
+          {t('modelManager.addNew')}
+        </Flex>
+      </IAIButton>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={addModelModalClose}
+        size="3xl"
+        closeOnOverlayClick={false}
+      >
+        <ModalOverlay />
+        <ModalContent margin="auto" paddingInlineEnd={4}>
+          <ModalHeader>{t('modelManager.addNewModel')}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {addNewModelUIOption == null && (
+              <Flex columnGap={4}>
+                <AddModelBox
+                  text={t('modelManager.addCheckpointModel')}
+                  onClick={() => dispatch(setAddNewModelUIOption('ckpt'))}
+                />
+                <AddModelBox
+                  text={t('modelManager.addDiffuserModel')}
+                  onClick={() => dispatch(setAddNewModelUIOption('diffusers'))}
+                />
+              </Flex>
+            )}
+            {addNewModelUIOption == 'ckpt' && <AddCheckpointModel />}
+            {addNewModelUIOption == 'diffusers' && <AddDiffusersModel />}
+          </ModalBody>
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
