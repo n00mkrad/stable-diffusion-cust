@@ -231,14 +231,14 @@ class TextualInversionManager(BaseTextualInversionManager):
                 if ti.embedding_vector_length > 1:
                     print(
                         f">> Preparing tokens for textual inversion {ti.trigger_string}..."
-                    )
+                    , flush=True)
                 try:
                     self._inject_tokens_and_assign_embeddings(ti)
                 except ValueError as e:
                     print(
                         f"   | Ignoring incompatible embedding trigger {ti.trigger_string}"
-                    )
-                    print(f"   | The error was {str(e)}")
+                    , flush=True)
+                    print(f"   | The error was {str(e)}", flush=True)
                     continue
                 injected_token_ids.append(ti.trigger_token_id)
                 injected_token_ids.extend(ti.pad_token_ids)
