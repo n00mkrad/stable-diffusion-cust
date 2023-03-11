@@ -123,7 +123,7 @@ def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg
     image = image.convert("RGB")
     image
     image = pipe(prompt, negative_prompt = prompt_neg, image=image, num_inference_steps=steps, guidance_scale=cfg_txt, image_guidance_scale=cfg_img, generator=rng).images[0]
-    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "prompt_neg": prompt_neg, "initImg": inpath, "steps": steps, "seed": seed, "scaleTxt": cfg_txt, "scaleImg": cfg_img}
+    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": inpath, "steps": steps, "seed": seed, "scaleTxt": cfg_txt, "scaleImg": cfg_img}
     info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators=(',', ':')))
     image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
     print(f'Image generated in {(time.time() - start_time):.2f}s', flush=True)
@@ -136,7 +136,7 @@ def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, sc
     seed = int(seed)
     rng = np.random.RandomState(seed)
     info = PngImagePlugin.PngInfo()
-    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "prompt_neg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
+    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
     info.add_text('NmkdInstructPixToPix',  json.dumps(metadataDict, separators=(',', ':')))
     eta = 0.0
     if args.generation_mode == "txt2img":
