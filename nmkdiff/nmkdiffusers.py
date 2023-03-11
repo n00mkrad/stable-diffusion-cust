@@ -2,7 +2,7 @@ import PIL
 from PIL import PngImagePlugin, Image
 import torch
 from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler # InstructPix2Pix
-from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline # SD ONNX
+from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline, OnnxStableDiffusionInpaintPipelineLegacy # SD ONNX
 import numpy as np
 import argparse
 import os, sys, time
@@ -29,7 +29,7 @@ parser.add_argument(
     "--generation_mode",
     type=str,
     help="Image generation mode",
-    choices=["txt2img", "img2img", "inpaint"],
+    choices=["txt2img", "img2img", "inpaint", "inpaint-legacy"],
     dest="generation_mode",
 )
 parser.add_argument(
@@ -109,6 +109,8 @@ def load_sd_onnx():
         pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
     if args.generation_mode == "inpaint":
         pipe = OnnxStableDiffusionInpaintPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
+    if args.mode == "inpaint-legacy":
+        pipe = OnnxStableDiffusionInpaintPipelineLegacy.from_pretrained(args.model_path, provider=prov, safety_checker=None)
 
 def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
     global pipe
@@ -121,8 +123,8 @@ def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg
     image = image.convert("RGB")
     image
     image = pipe(prompt, negative_prompt = prompt_neg, image=image, num_inference_steps=steps, guidance_scale=cfg_txt, image_guidance_scale=cfg_img, generator=rng).images[0]
-    metadataDict = {"prompt": prompt, "image": inpath, "prompt_neg": prompt_neg, "steps": steps, "seed": seed, "cfg_txt": cfg_txt, "cfg_img": cfg_img}
-    info.add_text('NmkdInstructPixToPix',  json.dumps(metadataDict, separators=(',', ':')))
+    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "prompt_neg": prompt_neg, "initImg": inpath, "steps": steps, "seed": seed, "scaleTxt": cfg_txt, "scaleImg": cfg_img}
+    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators=(',', ':')))
     image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
     print(f'Image generated in {(time.time() - start_time):.2f}s', flush=True)
     image = None
@@ -134,28 +136,32 @@ def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, sc
     seed = int(seed)
     rng = np.random.RandomState(seed)
     info = PngImagePlugin.PngInfo()
-    neg_prompt_meta_text = "" if prompt_neg == "" else f' [{prompt_neg}]'
+    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "prompt_neg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
+    info.add_text('NmkdInstructPixToPix',  json.dumps(metadataDict, separators=(',', ':')))
     eta = 0.0
     if args.generation_mode == "txt2img":
         image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, generator=rng).images[0]
-        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale}')
     if args.generation_mode == "img2img":
-        img=Image.open(init_img_path)
+        img=Image.open(init_img_path).convert('RGB')
         image=pipe(prompt=prompt, image=img, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
-        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f {init_strength}')
     if args.generation_mode == "inpaint":
-        img=Image.open(init_img_path)
+        img=Image.open(init_img_path).convert('RGB')
         mask=Image.open(mask_img_path)
         image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
-        info.add_text('Dream',  f'"{prompt}{neg_prompt_meta_text}" -s {steps} -S {seed} -W {width} -H {height} -C {scale} -I {init_img_path} -f 0.0 -M {mask_img_path}')
+    if args.mode == "inpaint-legacy":
+        img=Image.open(init_img_path).convert('RGB')
+        mask=Image.open(mask_img_path)
+        image=pipe(prompt=prompt, image=img, mask_image = mask, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
+
+    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators=(',', ':')))
     image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo=info)
     print(f'Image generated in {(time.time() - start_time):.2f}s', flush=True)
     image = None
 
 def generate_from_json(argdict):
-    inpath = argdict.get("initImg")
     prompt = argdict.get("prompt")
     prompt_neg = argdict.get("promptNeg")
+    inpath = argdict.get("initImg")
     steps = int(argdict.get("steps") or 0)
     seed = int(argdict.get("seed") or 0)
     cfg_txt = float(argdict.get("scaleTxt") or 0.0)
