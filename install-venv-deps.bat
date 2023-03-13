@@ -7,7 +7,7 @@ python -m pip install pytorch-lightning==1.6.5
 python -m pip install omegaconf==2.1.1
 python -m pip install test-tube>=0.7.5
 python -m pip install pillow==9.2.0
-python -m pip install einops==0.3.0
+python -m pip install einops==0.6.0
 python -m pip install torch-fidelity==0.3.0
 python -m pip install transformers==4.25.1
 python -m pip install torchmetrics==0.6.0
