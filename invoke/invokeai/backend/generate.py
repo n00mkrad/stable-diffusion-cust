@@ -935,13 +935,14 @@ class Generate:
         except Exception as e:
             print(f"** model {model_name} could not be loaded: {str(e)}")
             print(traceback.format_exc(), file=sys.stderr)
-            if previous_model_name is None:
-                raise e
-            print("** trying to reload previous model")
-            model_data = cache.get_model(previous_model_name)  # load previous
-            if model_data is None:
-                raise e
-            model_name = previous_model_name
+            raise e
+            # if previous_model_name is None:
+            #     raise e
+            # print("** trying to reload previous model")
+            # model_data = cache.get_model(previous_model_name)  # load previous
+            # if model_data is None:
+            #     raise e
+            # model_name = previous_model_name
 
         self.model = model_data["model"]
         self.width = model_data["width"]
