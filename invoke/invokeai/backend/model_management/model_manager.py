@@ -92,7 +92,7 @@ class ModelManager(object):
         """
         if not self.valid_model(model_name):
             print(
-                f'** "{model_name}" is not a known model name. Please check your models.yaml file'
+                f'** "{model_name}" is not a known model name. Please check your models.yaml file', flush=True
             )
             return self.current_model
 
@@ -103,7 +103,7 @@ class ModelManager(object):
 
         if model_name in self.models:
             requested_model = self.models[model_name]["model"]
-            print(f">> Retrieving model {model_name} from system RAM cache")
+            print(f">> Retrieving model {model_name} from system RAM cache", flush=True)
             self.models[model_name]["model"] = self._model_from_cpu(requested_model)
             width = self.models[model_name]["width"]
             height = self.models[model_name]["height"]
@@ -253,7 +253,7 @@ class ModelManager(object):
             line = f'{name:25s} {models[name]["status"]:>10s}  {models[name]["format"]:10s} {models[name]["description"]}'
             if models[name]["status"] == "active":
                 line = f"\033[1m{line}\033[0m"
-            print(line)
+            print(line, flush=True)
 
     def del_model(self, model_name: str, delete_files: bool = False) -> None:
         """
@@ -261,7 +261,7 @@ class ModelManager(object):
         """
         omega = self.config
         if model_name not in omega:
-            print(f"** Unknown model {model_name}")
+            print(f"** Unknown model {model_name}", flush=True)
             return
         # save these for use in deletion later
         conf = omega[model_name]
@@ -274,13 +274,13 @@ class ModelManager(object):
             self.stack.remove(model_name)
         if delete_files:
             if weights:
-                print(f"** deleting file {weights}")
+                print(f"** deleting file {weights}", flush=True)
                 Path(weights).unlink(missing_ok=True)
             elif path:
-                print(f"** deleting directory {path}")
+                print(f"** deleting directory {path}", flush=True)
                 rmtree(path, ignore_errors=True)
             elif repo_id:
-                print(f"** deleting the cached model directory for {repo_id}")
+                print(f"** deleting the cached model directory for {repo_id}", flush=True)
                 self._delete_model_from_cache(repo_id)
 
     def add_model(
@@ -322,7 +322,7 @@ class ModelManager(object):
         """Load and initialize the model from configuration variables passed at object creation time"""
         if model_name not in self.config:
             print(
-                f'"{model_name}" is not a known model name. Please check your models.yaml file'
+                f'"{model_name}" is not a known model name. Please check your models.yaml file', flush=True
             )
             return
 
@@ -339,7 +339,7 @@ class ModelManager(object):
         model_format = mconfig.get("format", "ckpt")
         if model_format == "ckpt":
             weights = mconfig.weights
-            print(f">> Loading {model_name} from {weights}")
+            print(f">> Loading {model_name} from {weights}", flush=True)
             model, width, height, model_hash = self._load_ckpt_model(
                 model_name, mconfig
             )
@@ -354,7 +354,7 @@ class ModelManager(object):
         
         # usage statistics
         toc = time.time()
-        print(">> Model loaded in", "%4.2fs" % (toc - tic))
+        print(">> Model loaded in", "%4.2fs" % (toc - tic), flush=True)
         if self._has_cuda():
             print(
                 ">> Max VRAM used to load the model:",
@@ -368,11 +368,11 @@ class ModelManager(object):
         name_or_path = self.model_name_or_path(mconfig)
         using_fp16 = self.precision == "float16"
 
-        print(f">> Loading diffusers model from {name_or_path}")
+        print(f">> Loading diffusers model from {name_or_path}", flush=True)
         if using_fp16:
-            print("  | Using faster float16 precision")
+            print("  | Using faster float16 precision", flush=True)
         else:
-            print("  | Using more accurate float32 precision")
+            print("  | Using more accurate float32 precision", flush=True)
 
         # TODO: scan weights maybe?
         pipeline_args: dict[str, Any] = dict(
@@ -405,7 +405,7 @@ class ModelManager(object):
                     pass
                 else:
                     print(
-                        f"** An unexpected error occurred while downloading the model: {e})"
+                        f"** An unexpected error occurred while downloading the model: {e})", flush=True
                     )
             if pipeline:
                 break
@@ -424,7 +424,7 @@ class ModelManager(object):
         width = pipeline.unet.config.sample_size * pipeline.vae_scale_factor
         height = width
 
-        print(f"  | Default image dimensions = {width} x {height}")
+        print(f"  | Default image dimensions = {width} x {height}", flush=True)
 
         return pipeline, width, height, model_hash
 
@@ -441,7 +441,7 @@ class ModelManager(object):
             weights = os.path.normpath(os.path.join(Globals.root, weights))
 
         # Convert to diffusers and return a diffusers pipeline
-        print(f">> Converting legacy checkpoint {model_name} into a diffusers model...")
+        print(f">> Converting legacy checkpoint {model_name} into a diffusers model...", flush=True)
 
         from . import load_pipeline_from_original_stable_diffusion_ckpt
 
@@ -497,7 +497,7 @@ class ModelManager(object):
         if model_name not in self.models:
             return
 
-        print(f">> Offloading {model_name} to CPU")
+        print(f">> Offloading {model_name} to CPU", flush=True)
         model = self.models[model_name]["model"]
         self.models[model_name]["model"] = self._model_to_cpu(model)
 
@@ -511,30 +511,30 @@ class ModelManager(object):
         and option to exit if an infected file is identified.
         """
         # scan model
-        print(f">> Scanning Model: {model_name}")
+        print(f">> Scanning Model: {model_name}", flush=True)
         scan_result = scan_file_path(checkpoint)
         if scan_result.infected_files != 0:
             if scan_result.infected_files == 1:
-                print(f"\n### Issues Found In Model: {scan_result.issues_count}")
+                print(f"\n### Issues Found In Model: {scan_result.issues_count}", flush=True)
                 print(
                     "### WARNING: The model you are trying to load seems to be infected."
                 )
-                print("### For your safety, InvokeAI will not load this model.")
-                print("### Please use checkpoints from trusted sources.")
-                print("### Exiting InvokeAI")
+                print("### For your safety, InvokeAI will not load this model.", flush=True)
+                print("### Please use checkpoints from trusted sources.", flush=True)
+                print("### Exiting InvokeAI", flush=True)
                 sys.exit()
             else:
                 print(
-                    "\n### WARNING: InvokeAI was unable to scan the model you are using."
+                    "\n### WARNING: InvokeAI was unable to scan the model you are using.", flush=True
                 )
                 model_safe_check_fail = ask_user(
                     "Do you want to to continue loading the model?", ["y", "n"]
                 )
                 if model_safe_check_fail.lower() != "y":
-                    print("### Exiting InvokeAI")
+                    print("### Exiting InvokeAI", flush=True)
                     sys.exit()
         else:
-            print(">> Model scanned ok")
+            print(">> Model scanned ok", flush=True)
 
     def import_diffuser_model(
         self,
@@ -650,10 +650,10 @@ class ModelManager(object):
         model_path: Path = None
         thing = path_url_or_repo  # to save typing
 
-        print(f">> Probing {thing} for import")
+        print(f">> Probing {thing} for import", flush=True)
 
         if thing.startswith(("http:", "https:", "ftp:")):
-            print(f"  | {thing} appears to be a URL")
+            print(f"  | {thing} appears to be a URL", flush=True)
             model_path = self._resolve_path(
                 thing, "models/ldm/stable-diffusion-v1"
             )  # _resolve_path does a download if needed
@@ -661,15 +661,15 @@ class ModelManager(object):
         elif Path(thing).is_file() and thing.endswith((".ckpt", ".safetensors")):
             if Path(thing).stem in ["model", "diffusion_pytorch_model"]:
                 print(
-                    f"  | {Path(thing).name} appears to be part of a diffusers model. Skipping import"
+                    f"  | {Path(thing).name} appears to be part of a diffusers model. Skipping import", flush=True
                 )
                 return
             else:
-                print(f"  | {thing} appears to be a checkpoint file on disk")
+                print(f"  | {thing} appears to be a checkpoint file on disk", flush=True)
                 model_path = self._resolve_path(thing, "models/ldm/stable-diffusion-v1")
 
         elif Path(thing).is_dir() and Path(thing, "model_index.json").exists():
-            print(f"  | {thing} appears to be a diffusers file on disk")
+            print(f"  | {thing} appears to be a diffusers file on disk", flush=True)
             model_name = self.import_diffuser_model(
                 thing,
                 vae=dict(repo_id="stabilityai/sd-vae-ft-mse"),
@@ -680,13 +680,13 @@ class ModelManager(object):
 
         elif Path(thing).is_dir():
             if (Path(thing) / "model_index.json").exists():
-                print(f"  | {thing} appears to be a diffusers model.")
+                print(f"  | {thing} appears to be a diffusers model.", flush=True)
                 model_name = self.import_diffuser_model(
                     thing, commit_to_conf=commit_to_conf
                 )
             else:
                 print(
-                    f"  |{thing} appears to be a directory. Will scan for models to import"
+                    f"  |{thing} appears to be a directory. Will scan for models to import", flush=True
                 )
                 for m in list(Path(thing).rglob("*.ckpt")) + list(
                     Path(thing).rglob("*.safetensors")
@@ -694,11 +694,11 @@ class ModelManager(object):
                     if model_name := self.heuristic_import(
                         str(m), convert, commit_to_conf=commit_to_conf
                     ):
-                        print(f" >> {model_name} successfully imported")
+                        print(f" >> {model_name} successfully imported", flush=True)
                 return model_name
 
         elif re.match(r"^[\w.+-]+/[\w.+-]+$", thing):
-            print(f"  | {thing} appears to be a HuggingFace diffusers repo_id")
+            print(f"  | {thing} appears to be a HuggingFace diffusers repo_id", flush=True)
             model_name = self.import_diffuser_model(
                 thing, commit_to_conf=commit_to_conf
             )
@@ -706,7 +706,7 @@ class ModelManager(object):
             return model_name
         else:
             print(
-                f"** {thing}: Unknown thing. Please provide a URL, file path, directory or HuggingFace repo_id"
+                f"** {thing}: Unknown thing. Please provide a URL, file path, directory or HuggingFace repo_id", flush=True
             )
 
         # Model_path is set in the event of a legacy checkpoint file.
@@ -715,7 +715,7 @@ class ModelManager(object):
             return
 
         if model_path.stem in self.config:  # already imported
-            print("  | Already imported. Skipping")
+            print("  | Already imported. Skipping", flush=True)
             return model_path.stem
 
         # another round of heuristics to guess the correct config file.
@@ -729,12 +729,12 @@ class ModelManager(object):
         if model_config_file is None:
             model_type = self.probe_model_type(checkpoint)
             if model_type == SDLegacyType.V1:
-                print("  | SD-v1 model detected")
+                print("  | SD-v1 model detected", flush=True)
                 model_config_file = Path(
                     Globals.root, "configs/stable-diffusion/v1-inference.yaml"
                 )
             elif model_type == SDLegacyType.V1_INPAINT:
-                print("  | SD-v1 inpainting model detected")
+                print("  | SD-v1 inpainting model detected", flush=True)
                 model_config_file = Path(
                     Globals.root, "configs/stable-diffusion/v1-inpainting-inference.yaml"
                 )
@@ -811,7 +811,7 @@ class ModelManager(object):
 
         model_name = model_name or diffusers_path.name
         model_description = model_description or f"Optimized version of {model_name}"
-        print(f">> Optimizing {model_name} (30-60s)")
+        print(f">> Optimizing {model_name} (30-60s)", flush=True)
         try:
             # By passing the specified VAE to the conversion function, the autoencoder
             # will be built into the model rather than tacked on afterward via the config file
@@ -826,7 +826,7 @@ class ModelManager(object):
             print(
                 f"  | Success. Optimized model is now located at {str(diffusers_path)}"
             )
-            print(f"  | Writing new config file entry for {model_name}")
+            print(f"  | Writing new config file entry for {model_name}", flush=True)
             new_config = dict(
                 path=str(diffusers_path),
                 description=model_description,
@@ -837,17 +837,17 @@ class ModelManager(object):
             self.add_model(model_name, new_config, True)
             if commit_to_conf:
                 self.commit(commit_to_conf)
-            print(">> Conversion succeeded")
+            print(">> Conversion succeeded", flush=True)
         except Exception as e:
-            print(f"** Conversion failed: {str(e)}")
+            print(f"** Conversion failed: {str(e)}", flush=True)
             print(
-                "** If you are trying to convert an inpainting or 2.X model, please indicate the correct config file (e.g. v1-inpainting-inference.yaml)"
+                "** If you are trying to convert an inpainting or 2.X model, please indicate the correct config file (e.g. v1-inpainting-inference.yaml)", flush=True
             )
 
         return model_name
 
     def search_models(self, search_folder):
-        print(f">> Finding Models In: {search_folder}")
+        print(f">> Finding Models In: {search_folder}", flush=True)
         models_folder_ckpt = Path(search_folder).glob("**/*.ckpt")
         models_folder_safetensors = Path(search_folder).glob("**/*.safetensors")
 
@@ -1000,10 +1000,10 @@ class ModelManager(object):
             dest = hub / model.stem
             if dest.exists() and not source.exists():
                 continue
-            print(f"** {source} => {dest}")
+            print(f"** {source} => {dest}", flush=True)
             if source.exists():
                 if dest.is_symlink():
-                    print(f"** Found symlink at {dest.name}. Not migrating.")
+                    print(f"** Found symlink at {dest.name}. Not migrating.", flush=True)
                 elif dest.exists():
                     if source.is_dir():
                         rmtree(source)
@@ -1020,7 +1020,7 @@ class ModelManager(object):
         ]
         for d in empty:
             os.rmdir(d)
-        print("** Migration is done. Continuing...")
+        print("** Migration is done. Continuing...", flush=True)
 
     def _resolve_path(
         self, source: Union[str, Path], dest_directory: str
@@ -1104,6 +1104,7 @@ class ModelManager(object):
     def _diffuser_sha256(
         self, name_or_path: Union[str, Path], chunksize=4096
     ) -> Union[str, bytes]:
+        return 0
         path = None
         if isinstance(name_or_path, Path):
             path = name_or_path
@@ -1117,7 +1118,7 @@ class ModelManager(object):
             with open(hashpath) as f:
                 hash = f.read()
             return hash
-        print("  | Calculating sha256 hash of model files")
+        print("  | Calculating sha256 hash of model files", flush=True)
         tic = time.time()
         sha = hashlib.sha256()
         count = 0
@@ -1135,6 +1136,7 @@ class ModelManager(object):
         return hash
 
     def _cached_sha256(self, path, data) -> Union[str, bytes]:
+        return 0
         dirname = os.path.dirname(path)
         basename = os.path.basename(path)
         base, _ = os.path.splitext(basename)
@@ -1147,7 +1149,7 @@ class ModelManager(object):
                 hash = f.read()
             return hash
 
-        print("   | Calculating sha256 hash of weights file")
+        print("   | Calculating sha256 hash of weights file", flush=True)
         tic = time.time()
         sha = hashlib.sha256()
         sha.update(data)
@@ -1174,12 +1176,12 @@ class ModelManager(object):
             local_files_only=not Globals.internet_available,
         )
 
-        print(f"  | Loading diffusers VAE from {name_or_path}")
+        print(f"  | Loading diffusers VAE from {name_or_path}", flush=True)
         if using_fp16:
             vae_args.update(torch_dtype=torch.float16)
             fp_args_list = [{"revision": "fp16"}, {}]
         else:
-            print("  | Using more accurate float32 precision")
+            print("  | Using more accurate float32 precision", flush=True)
             fp_args_list = [{}]
 
         vae = None
@@ -1203,7 +1205,7 @@ class ModelManager(object):
                 break
 
         if not vae and deferred_error:
-            print(f"** Could not load VAE {name_or_path}: {str(deferred_error)}")
+            print(f"** Could not load VAE {name_or_path}: {str(deferred_error)}", flush=True)
 
         return vae
 
