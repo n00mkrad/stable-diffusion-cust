@@ -51,12 +51,13 @@ class TextualInversionManager(BaseTextualInversionManager):
             ):  # in case a token with literal angle brackets encountered
                 print(f">> Loaded local embedding for trigger {concept_name}")
                 continue
-            bin_file = self.hf_concepts_library.get_concept_model_path(concept_name)
-            if not bin_file:
-                continue
-            print(f">> Loaded remote embedding for trigger {concept_name}")
-            self.load_textual_inversion(bin_file)
-            self.hf_concepts_library.concepts_loaded[concept_name] = True
+            print(f">> Embedding not found: {concept_name}", flush=True)
+            # bin_file = self.hf_concepts_library.get_concept_model_path(concept_name)
+            # if not bin_file:
+            #     continue
+            # print(f">> Loaded remote embedding for trigger {concept_name}")
+            # self.load_textual_inversion(bin_file)
+            # self.hf_concepts_library.concepts_loaded[concept_name] = True
 
     def get_all_trigger_strings(self) -> list[str]:
         return [ti.trigger_string for ti in self.textual_inversions]
@@ -363,7 +364,7 @@ class TextualInversionManager(BaseTextualInversionManager):
             embedding_info = self._parse_embedding_bin(embedding_file)
 
         else:
-            print(">> Invalid embedding format")
+            print(f">> Invalid embedding format: {os.path.basename(embedding_file)}", flush=True)
             embedding_info = None
 
         return embedding_info
@@ -413,7 +414,7 @@ class TextualInversionManager(BaseTextualInversionManager):
                 ].shape[0]
                 embedding_info["token_dim"] = embedding_info["embedding"].size()[1]
         else:
-            print(">> Invalid embedding format")
+            print(f">> Invalid embedding format: {os.path.basename(embedding_file)}", flush=True)
             embedding_info = None
 
         return embedding_info

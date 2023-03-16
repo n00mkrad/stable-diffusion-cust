@@ -84,7 +84,7 @@ class HuggingFaceConceptsLibrary(object):
         """
         if not concept_name in self.list_concepts():
             print(
-                f"This concept is not a local embedding trigger, nor is it a HuggingFace concept. Generation will continue without the concept."
+                f"Not a valid embedding trigger: {concept_name}"
             )
             return None
         return self.get_concept_file(concept_name.lower(), "learned_embeds.bin")
