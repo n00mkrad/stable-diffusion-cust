@@ -82,7 +82,7 @@ def load_ip2p():
     from huggingface_hub import snapshot_download
     
     if not args.model_path:
-        ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", ".md", ".git*"]
+        ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", "*.md", ".git*", "*.png", "*.pt"]
         rev = "fp16"
         try:
             args.model_path = snapshot_download(repo_id=model_id, revision=rev, ignore_patterns=ignore)
