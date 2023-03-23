@@ -550,7 +550,7 @@ def get_mem_free_total(device):
 
 
 class InvokeAIDiffusersCrossAttention(
-    diffusers.models.attention.CrossAttention, InvokeAICrossAttentionMixin
+    diffusers.models.cross_attention.CrossAttention, InvokeAICrossAttentionMixin
 ):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

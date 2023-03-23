@@ -48,7 +48,7 @@ echo Will now install: safetensors~=0.3.0
 python -m pip install safetensors~=0.3.0
 
 echo Will now install: diffusers
-python -m pip install git+https://github.com/huggingface/diffusers@v0.14.0
+python -m pip install git+https://github.com/Stax124/diffusers@5d41b5383c6a0421a24b17f4520d71a1834c1dac
 
 echo Will now install: clip
 python -m pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
