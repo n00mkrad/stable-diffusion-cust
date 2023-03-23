@@ -38,9 +38,6 @@ python -m pip install transformers~=4.26
 echo Will now install: torchmetrics==0.6.0
 python -m pip install torchmetrics==0.6.0
 
-rem echo Will now install: kornia==0.6.0
-rem python -m pip install kornia==0.6.0
-
 echo Will now install: realesrgan==0.3.0
 python -m pip install realesrgan==0.3.0
 

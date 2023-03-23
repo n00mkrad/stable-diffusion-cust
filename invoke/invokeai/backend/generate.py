@@ -1267,7 +1267,7 @@ class Generate:
     def _resolution_check(self, width, height, log=False):
         resize_needed = False
         w, h = map(
-            lambda x: x - x % 64, (width, height)
+            lambda x: x - x % 8, (width, height)
         )  # resize to integer multiple of 64
         if h != height or w != width:
             if log:

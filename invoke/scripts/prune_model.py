@@ -1,6 +1,6 @@
 import torch
 from omegaconf import OmegaConf
-from ldm.util import instantiate_from_config
+from invokeai.backend.util import instantiate_from_config
 import argparse
 import os
 import sys
