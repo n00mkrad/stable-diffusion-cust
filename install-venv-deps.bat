@@ -60,7 +60,7 @@ echo Will now install: k_diffusion
 python -m pip install git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
 
 echo Will now install: gfpgan
-python -m pip install -e git+https://github.com/invoke-ai/GFPGAN.git#egg=gfpgan
+python -m pip install gfpgan==1.3.8
 
 echo Will now install: clipseg
 python -m pip install -e git+https://github.com/invoke-ai/clipseg.git@models-rename#egg=clipseg
