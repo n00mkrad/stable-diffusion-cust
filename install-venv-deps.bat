@@ -57,13 +57,13 @@ echo Will now install: taming-transformers
 python -m pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 
 echo Will now install: k_diffusion
-python -m pip install git+https://github.com/Birch-san/k-diffusion.git@mps#egg=k_diffusion
+python -m pip install git+https://github.com/Birch-san/k-diffusion.git@363386981fee88620709cf8f6f2eea167bd6cd74#egg=k_diffusion
 
 echo Will now install: gfpgan
 python -m pip install gfpgan==1.3.8
 
 echo Will now install: clipseg
-python -m pip install -e git+https://github.com/invoke-ai/clipseg.git@models-rename#egg=clipseg
+python -m pip install -e git+https://github.com/invoke-ai/clipseg.git@1f754751c85d7d4255fa681f4491ff5711c1c288#egg=clipseg
 
 echo Will now install: local invoke repo
 python -m pip install -e ./repo/invoke
