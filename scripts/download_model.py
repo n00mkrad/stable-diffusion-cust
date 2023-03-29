@@ -43,6 +43,7 @@ snapshot_dir = snapshot_download(repo_id=args.repo, ignore_patterns=ignore, cach
 print(f"Moving {snapshot_dir} to {args.save_path}", flush=True)
 os.rename(snapshot_dir, args.save_path)
 shutil.rmtree(os.path.join(snapshot_dir, "..", ".."))
+shutil.rmtree(args.cache_path)
 
 print(f"Done.", flush=True)
 os._exit(0)
