@@ -129,8 +129,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    dtype = torch.float16 if args.fp16 else torch.float32
-
     pipe = download_from_original_stable_diffusion_ckpt(
         checkpoint_path=args.checkpoint_path,
         original_config_file=args.original_config_file,
@@ -147,7 +145,6 @@ if __name__ == "__main__":
         stable_unclip_prior=args.stable_unclip_prior,
         clip_stats_path=args.clip_stats_path,
         controlnet=args.controlnet,
-        torch_dtype=torch.float16,
         load_safety_checker=False,
     )
 
@@ -155,4 +152,8 @@ if __name__ == "__main__":
         # only save the controlnet model
         pipe.controlnet.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
     else:
+        if args.fp16:
+            pipe.unet = pipe.unet.half()
+            pipe.vae = pipe.vae.half()
+            pipe.text_encoder = pipe.text_encoder.half()
         pipe.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
