@@ -38,8 +38,7 @@ if len(sys.argv)==1:
 args = parser.parse_args()
 
 
-ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", ".md", ".git*"]
-# rev = "fp16"
+ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", "*.md", ".git*"]
 snapshot_dir = snapshot_download(repo_id=args.repo, ignore_patterns=ignore, cache_dir=args.cache_path)
 print(f"Moving {snapshot_dir} to {args.save_path}", flush=True)
 os.rename(snapshot_dir, args.save_path)
