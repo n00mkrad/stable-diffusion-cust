@@ -20,7 +20,7 @@ parser.add_argument(
     "-c",
     "--cache_path",
     type=str,
-    help="Save path",
+    help="Cache path",
     dest="cache_path",
 )
 parser.add_argument(
