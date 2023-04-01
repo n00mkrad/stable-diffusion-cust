@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """
 Functions for better format logging
     write_log -- logs the name of the output image, prompt, and prompt args to the terminal and different types of file

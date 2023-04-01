@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """make variations of input image"""
 
 import argparse, os, sys, glob

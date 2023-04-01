@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # adapted from bloc97's CrossAttentionControl colab
 # https://github.com/bloc97/CrossAttentionControl
 
@@ -566,7 +567,7 @@ class InvokeAIDiffusersCrossAttention(
         return hidden_states
 
 
-## ????diffusers implementation follows
+## 🧨diffusers implementation follows
 
 
 """

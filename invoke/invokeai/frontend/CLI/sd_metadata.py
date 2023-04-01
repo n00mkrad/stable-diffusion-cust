@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 '''
 This is a modularized version of the sd-metadata.py script,
 which retrieves and prints the metadata from a series of generated png files.

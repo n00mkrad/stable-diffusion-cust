@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from ldm.modules.encoders.modules import FrozenCLIPEmbedder, BERTEmbedder
 from ldm.modules.embedding_manager import EmbeddingManager
 from ldm.invoke.globals import Globals

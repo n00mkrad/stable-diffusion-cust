@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """
 Query and install embeddings from the HuggingFace SD Concepts Library
 at https://huggingface.co/sd-concepts-library.
@@ -6,7 +7,6 @@ The interface is through the Concepts() object.
 """
 import os
 import re
-import traceback
 from typing import Callable
 from urllib import error as ul_error
 from urllib import request
@@ -15,7 +15,6 @@ from huggingface_hub import (
     HfApi,
     HfFolder,
     ModelFilter,
-    ModelSearchArguments,
     hf_hub_url,
 )
 
@@ -236,7 +235,7 @@ class HuggingFaceConceptsLibrary(object):
         except ul_error.HTTPError as e:
             if e.code == 404:
                 print(
-                    f"This concept is not known to the Hugging Face library. Generation will continue without the concept."
+                    f"Concept {concept_name} is not known to the Hugging Face library. Generation will continue without the concept."
                 )
             else:
                 print(
@@ -246,7 +245,7 @@ class HuggingFaceConceptsLibrary(object):
             return False
         except ul_error.URLError as e:
             print(
-                f"ERROR: {str(e)}. This may reflect a network issue. Generation will continue without the concept."
+                f"ERROR while downloading {concept_name}: {str(e)}. This may reflect a network issue. Generation will continue without the concept."
             )
             os.rmdir(dest)
             return False

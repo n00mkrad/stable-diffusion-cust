@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 class Restoration:
     def __init__(self) -> None:
         pass

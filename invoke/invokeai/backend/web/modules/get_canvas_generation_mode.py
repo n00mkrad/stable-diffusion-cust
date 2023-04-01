@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from typing import Literal, Union
 
 from PIL import Image, ImageChops

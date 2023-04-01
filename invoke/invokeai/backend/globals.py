@@ -16,7 +16,6 @@ import os.path as osp
 from argparse import Namespace
 from pathlib import Path
 from typing import Union
-import sys
 
 Globals = Namespace()
 
@@ -35,15 +34,7 @@ Globals.converted_ckpts_dir = "converted_ckpts"
 # 2) use VIRTUAL_ENV environment variable, with a check for initfile being there
 # 3) use ~/invokeai
 
-if (
-    os.environ.get("VIRTUAL_ENV")
-    and Path(os.environ.get("VIRTUAL_ENV"), "..", Globals.initfile).exists()
-):
-    Globals.root = osp.abspath(osp.join(os.environ.get("VIRTUAL_ENV"), ".."))
-else:
-    Globals.root = osp.abspath(osp.expanduser("~/invokeai"))
-    
-Globals.root = osp.abspath(osp.join(sys.path[0], ".."))
+import sys; Globals.root = osp.abspath(osp.join(sys.path[0], ".."));
 
 # Try loading patchmatch
 Globals.try_patchmatch = True
@@ -92,7 +83,7 @@ def global_converted_ckpts_dir() -> Path:
 
 
 def global_set_root(root_dir: Union[str, Path]):
-    Globals.root = root_dir
+    Globals.root= osp.abspath(osp.join(sys.path[0], "..")) # root_dir
 
 
 def global_cache_dir(subdir: Union[str, Path] = "") -> Path:
@@ -107,7 +98,7 @@ def global_cache_dir(subdir: Union[str, Path] = "") -> Path:
     The legacy location for transformers used to be global_cache_dir('transformers')
     and global_cache_dir('diffusers') for diffusers.
     """
-    home: str = osp.join(Globals.root, "..", "..", "cache", "hf")
+    home: str = os.getenv("HF_HOME")
 
     if home is None:
         home = os.getenv("XDG_CACHE_HOME")

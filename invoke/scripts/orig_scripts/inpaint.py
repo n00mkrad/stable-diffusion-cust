@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import argparse, os, sys, glob
 from omegaconf import OmegaConf
 from PIL import Image

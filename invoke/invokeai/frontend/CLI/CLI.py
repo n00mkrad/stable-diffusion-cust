@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import os
 import re
 import shlex
@@ -215,9 +216,8 @@ def main_loop(gen, opt):
         path_max = 260
         name_max = 255
 
-    
     while not done:
-        try:
+        try: # nmkd patched
             operation = "generate"
     
             try:
@@ -490,6 +490,7 @@ def main_loop(gen, opt):
             print()
         except KeyboardInterrupt:
             pass
+
     print(
         f'\nGoodbye!\nYou can start InvokeAI again by running the "invoke.bat" (or "invoke.sh") script from {Globals.root}'
     )
@@ -611,10 +612,6 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
         command = completer.get_line(int(command_no))
         completer.set_line(command)
         operation = None
-        
-    elif command.startswith("!exit"):
-        os._exit(0)
-        operation = None
 
     else:  # not a recognized command, so give the --help text
         command = "-h"
@@ -633,7 +630,7 @@ def set_default_output_dir(opt: Args, completer: Completer):
     completer.set_default_dir(opt.outdir)
 
 
-def import_model(model_path: str, gen, opt, completer, convert=False):
+def import_model(model_path: str, gen, opt, completer):
     """
     model_path can be (1) a URL to a .ckpt file; (2) a local .ckpt file path;
     (3) a huggingface repository id; or (4) a local directory containing a
@@ -664,7 +661,6 @@ def import_model(model_path: str, gen, opt, completer, convert=False):
         model_path,
         model_name=model_name,
         description=model_desc,
-        convert=convert,
     )
 
     if not imported_name:
@@ -673,7 +669,6 @@ def import_model(model_path: str, gen, opt, completer, convert=False):
                 model_path,
                 model_name=model_name,
                 description=model_desc,
-                convert=convert,
                 model_config_file=config_file,
             )
     if not imported_name:
@@ -764,7 +759,6 @@ def _get_model_name_and_desc(
     )
     return model_name, model_description
 
-
 def convert_model(model_name_or_path: Union[Path, str], gen, opt, completer):
     model_name_or_path = model_name_or_path.replace("\\", "/")  # windows
     manager = gen.model_manager
@@ -779,16 +773,10 @@ def convert_model(model_name_or_path: Union[Path, str], gen, opt, completer):
             original_config_file = Path(model_info["config"])
             model_name = model_name_or_path
             model_description = model_info["description"]
-            vae = model_info["vae"]
+            vae_path = model_info.get("vae")
         else:
             print(f"** {model_name_or_path} is not a legacy .ckpt weights file")
             return
-        if vae_repo := invokeai.backend.model_management.model_manager.VAE_TO_REPO_ID.get(
-            Path(vae).stem
-        ):
-            vae_repo = dict(repo_id=vae_repo)
-        else:
-            vae_repo = None
         model_name = manager.convert_and_import(
             ckpt_path,
             diffusers_path=Path(
@@ -797,11 +785,11 @@ def convert_model(model_name_or_path: Union[Path, str], gen, opt, completer):
             model_name=model_name,
             model_description=model_description,
             original_config_file=original_config_file,
-            vae=vae_repo,
+            vae_path=vae_path,
         )
     else:
         try:
-            import_model(model_name_or_path, gen, opt, completer, convert=True)
+            import_model(model_name_or_path, gen, opt, completer)
         except KeyboardInterrupt:
             return
 

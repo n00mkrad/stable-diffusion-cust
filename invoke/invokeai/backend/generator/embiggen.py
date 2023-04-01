@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """
 invokeai.backend.generator.embiggen descends from .generator
 and generates with .generator.img2img

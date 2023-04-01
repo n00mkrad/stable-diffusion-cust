@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """Helper class for dealing with image generation arguments.
 
 The Args class parses both the command line (shell) arguments, as well as the
@@ -490,7 +491,7 @@ class Args(object):
             "-z",
             type=int,
             default=6,
-            choices=range(0, 9),
+            choices=range(0, 10),
             dest="png_compression",
             help="level of PNG compression, from 0 (none) to 9 (maximum). Default is 6.",
         )

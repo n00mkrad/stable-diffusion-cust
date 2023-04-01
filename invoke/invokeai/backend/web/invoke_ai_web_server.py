@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import base64
 import glob
 import io
@@ -29,7 +30,6 @@ from ..image_util import PngWriter, retrieve_metadata
 from ...frontend.merge.merge_diffusers import merge_diffusion_models
 from ..prompting import (
     get_prompt_structure,
-    get_tokenizer,
     get_tokens_for_prompt_object,
 )
 from ..stable_diffusion import PipelineIntermediateState
@@ -1023,13 +1023,21 @@ class InvokeAIWebServer:
                     "RGB"
                 )
 
-            def image_progress(sample, step):
+            def image_progress(intermediate_state: PipelineIntermediateState):
                 if self.canceled.is_set():
                     raise CanceledException
 
                 nonlocal step_index
                 nonlocal generation_parameters
                 nonlocal progress
+
+                step = intermediate_state.step
+                if intermediate_state.predicted_original is not None:
+                    # Some schedulers report not only the noisy latents at the current timestep,
+                    # but also their estimate so far of what the de-noised latents will be.
+                    sample = intermediate_state.predicted_original
+                else:
+                    sample = intermediate_state.latents
 
                 generation_messages = {
                     "txt2img": "common.statusGeneratingTextToImage",
@@ -1274,7 +1282,7 @@ class InvokeAIWebServer:
                     None
                     if type(parsed_prompt) is Blend
                     else get_tokens_for_prompt_object(
-                        get_tokenizer(self.generate.model), parsed_prompt
+                        self.generate.model.tokenizer, parsed_prompt
                     )
                 )
                 attention_maps_image_base64_url = (
@@ -1303,16 +1311,9 @@ class InvokeAIWebServer:
 
                 progress.set_current_iteration(progress.current_iteration + 1)
 
-            def diffusers_step_callback_adapter(*cb_args, **kwargs):
-                if isinstance(cb_args[0], PipelineIntermediateState):
-                    progress_state: PipelineIntermediateState = cb_args[0]
-                    return image_progress(progress_state.latents, progress_state.step)
-                else:
-                    return image_progress(*cb_args, **kwargs)
-
             self.generate.prompt2image(
                 **generation_parameters,
-                step_callback=diffusers_step_callback_adapter,
+                step_callback=image_progress,
                 image_callback=image_done,
             )
 

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) 2022 Kyle Schouviller (https://github.com/kyle0654)
 
 from abc import ABC
@@ -50,6 +51,10 @@ class Invoker:
         new_state = GraphExecutionState(graph=Graph() if graph is None else graph)
         self.services.graph_execution_manager.set(new_state)
         return new_state
+    
+    def cancel(self, graph_execution_state_id: str) -> None:
+        """Cancels the given execution state"""
+        self.services.queue.cancel(graph_execution_state_id)
 
     def __start_service(self, service) -> None:
         # Call start() method on any services that have it

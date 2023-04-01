@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) 2023 Kyle Schouviller (https://github.com/kyle0654)
 
 from abc import ABC, abstractmethod

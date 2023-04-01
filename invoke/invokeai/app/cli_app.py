@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) 2022 Kyle Schouviller (https://github.com/kyle0654)
 
 import argparse
@@ -14,11 +15,13 @@ from pydantic.fields import Field
 
 from ..backend import Args
 from .cli.commands import BaseCommand, CliContext, ExitCli, add_parsers, get_graph_execution_history
+from .cli.completer import set_autocompleter
 from .invocations import *
 from .invocations.baseinvocation import BaseInvocation
 from .services.events import EventServiceBase
-from .services.generate_initializer import get_generate
-from .services.graph import EdgeConnection, GraphExecutionState
+from .services.model_manager_initializer import get_model_manager
+from .services.restoration_services import RestorationServices
+from .services.graph import Edge, EdgeConnection, GraphExecutionState
 from .services.image_storage import DiskImageStorage
 from .services.invocation_queue import MemoryInvocationQueue
 from .services.invocation_services import InvocationServices
@@ -76,7 +79,7 @@ def get_command_parser() -> argparse.ArgumentParser:
 
 def generate_matching_edges(
     a: BaseInvocation, b: BaseInvocation
-) -> list[tuple[EdgeConnection, EdgeConnection]]:
+) -> list[Edge]:
     """Generates all possible edges between two invocations"""
     atype = type(a)
     btype = type(b)
@@ -93,9 +96,9 @@ def generate_matching_edges(
     matching_fields = matching_fields.difference(invalid_fields)
 
     edges = [
-        (
-            EdgeConnection(node_id=a.id, field=field),
-            EdgeConnection(node_id=b.id, field=field),
+        Edge(
+            source=EdgeConnection(node_id=a.id, field=field),
+            destination=EdgeConnection(node_id=b.id, field=field)
         )
         for field in matching_fields
     ]
@@ -110,30 +113,30 @@ class SessionError(Exception):
 def invoke_all(context: CliContext):
     """Runs all invocations in the specified session"""
     context.invoker.invoke(context.session, invoke_all=True)
-    while not context.session.is_complete():
+    while not context.get_session().is_complete():
         # Wait some time
-        session = context.get_session()
         time.sleep(0.1)
 
     # Print any errors
     if context.session.has_error():
         for n in context.session.errors:
             print(
-                f"Error in node {n} (source node {context.session.prepared_source_mapping[n]}): {session.errors[n]}"
+                f"Error in node {n} (source node {context.session.prepared_source_mapping[n]}): {context.session.errors[n]}"
             )
         
         raise SessionError()
 
 
 def invoke_cli():
-    args = Args()
-    config = args.parse_args()
+    config = Args()
+    config.parse_args()
+    model_manager = get_model_manager(config)
 
-    generate = get_generate(args, config)
-
-    # NOTE: load model on first use, uncomment to load at startup
-    # TODO: Make this a config option?
-    # generate.load_model()
+    # This initializes the autocompleter and returns it.
+    # Currently nothing is done with the returned Completer
+    # object, but the object can be used to change autocompletion
+    # behavior on the fly, if desired.
+    completer = set_autocompleter(model_manager)
 
     events = EventServiceBase()
 
@@ -145,7 +148,7 @@ def invoke_cli():
     db_location = os.path.join(output_folder, "invokeai.db")
 
     services = InvocationServices(
-        generate=generate,
+        model_manager=model_manager,
         events=events,
         images=DiskImageStorage(output_folder),
         queue=MemoryInvocationQueue(),
@@ -153,6 +156,7 @@ def invoke_cli():
             filename=db_location, table_name="graph_executions"
         ),
         processor=DefaultInvocationProcessor(),
+        restoration=RestorationServices(config),
     )
 
     invoker = Invoker(services)
@@ -166,8 +170,8 @@ def invoke_cli():
 
     while True:
         try:
-            cmd_input = input("> ")
-        except KeyboardInterrupt:
+            cmd_input = input("invoke> ")
+        except (KeyboardInterrupt, EOFError):
             # Ctrl-c exits
             break
 
@@ -206,7 +210,7 @@ def invoke_cli():
                     continue
 
                 # Pipe previous command output (if there was a previous command)
-                edges = []
+                edges: list[Edge] = list()
                 if len(history) > 0 or current_id != start_id:
                     from_id = (
                         history[0] if current_id == start_id else str(current_id - 1)
@@ -228,19 +232,19 @@ def invoke_cli():
                         matching_edges = generate_matching_edges(
                             link_node, command.command
                         )
-                        matching_destinations = [e[1] for e in matching_edges]
-                        edges = [e for e in edges if e[1] not in matching_destinations]
+                        matching_destinations = [e.destination for e in matching_edges]
+                        edges = [e for e in edges if e.destination not in matching_destinations]
                         edges.extend(matching_edges)
 
                 if "link" in args and args["link"]:
                     for link in args["link"]:
-                        edges = [e for e in edges if e[1].node_id != command.command.id and e[1].field != link[2]]
+                        edges = [e for e in edges if e.destination.node_id != command.command.id and e.destination.field != link[2]]
                         edges.append(
-                            (
-                                EdgeConnection(node_id=link[1], field=link[0]),
-                                EdgeConnection(
+                            Edge(
+                                source=EdgeConnection(node_id=link[1], field=link[0]),
+                                destination=EdgeConnection(
                                     node_id=command.command.id, field=link[2]
-                                ),
+                                )
                             )
                         )
 

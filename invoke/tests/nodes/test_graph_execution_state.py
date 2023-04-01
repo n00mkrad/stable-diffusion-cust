@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from .test_invoker import create_edge
 from .test_nodes import ImageTestInvocation, ListPassThroughInvocation, PromptTestInvocation, PromptCollectionTestInvocation
 from invokeai.app.invocations.baseinvocation import BaseInvocation, BaseInvocationOutput, InvocationContext
@@ -21,12 +22,13 @@ def simple_graph():
 def mock_services():
     # NOTE: none of these are actually called by the test invocations
     return InvocationServices(
-        generate = None,
+        model_manager = None,
         events = None,
         images = None,
         queue = MemoryInvocationQueue(),
         graph_execution_manager = SqliteItemStorage[GraphExecutionState](filename = sqlite_memory, table_name = 'graph_executions'),
-        processor = DefaultInvocationProcessor()
+        processor = DefaultInvocationProcessor(),
+        restoration = None,
     )
 
 def invoke_next(g: GraphExecutionState, services: InvocationServices) -> tuple[BaseInvocation, BaseInvocationOutput]:
