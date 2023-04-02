@@ -1230,7 +1230,7 @@ def write_commands(opt, file_path: str, outfilepath: str):
 
 
 def report_model_error(opt: Namespace, e: Exception):
-    print(f'** An error occurred while attempting to initialize the model: "{str(e)}"')
+    print(f'** An error occurred while attempting to initialize the model: "{str(e)}"'); return
     print(
         "** This can be caused by a missing or corrupted models file, and can sometimes be fixed by (re)installing the models."
     )
