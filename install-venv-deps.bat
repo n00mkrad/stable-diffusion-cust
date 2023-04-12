@@ -15,7 +15,7 @@ echo --- Will now install: imageio ---
 python -m pip install imageio==2.9.0
 
 echo --- Will now install: pytorch-lightning ---
-python -m pip install pytorch-lightning==1.7.7
+python -m pip install pytorch-lightning==1.6.5
 
 echo --- Will now install: omegaconf ---
 python -m pip install omegaconf==2.1.1
