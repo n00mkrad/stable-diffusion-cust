@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch
 from omegaconf import OmegaConf
 from invokeai.backend.util import instantiate_from_config

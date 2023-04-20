@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import sys
 import argparse, os, re
 import torch

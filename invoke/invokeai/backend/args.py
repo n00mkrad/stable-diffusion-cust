@@ -1236,7 +1236,7 @@ def metadata_dumps(opt, seeds=[], model_hash=None, postprocessing=None):
     if opt.init_img:
         rfc_dict["type"] = "img2img"
         rfc_dict["strength_steps"] = rfc_dict.pop("strength")
-        rfc_dict["orig_hash"] = calculate_init_img_hash(opt.init_img)
+        rfc_dict["orig_hash"] = 0
         rfc_dict["inpaint_replace"] = opt.inpaint_replace
     else:
         rfc_dict["type"] = "txt2img"

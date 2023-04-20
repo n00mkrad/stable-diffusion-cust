@@ -70,7 +70,7 @@ class TextualInversionManager(BaseTextualInversionManager):
             self.hf_concepts_library.concepts_loaded[concept_name] = True
 
     def get_all_trigger_strings(self) -> list[str]:
-        return [ti.trigger_string for ti in self.textual_inversions]
+        return [f"{ti.trigger_string} from {self.trigger_to_sourcefile[ti.trigger_string]}" for ti in self.textual_inversions]
 
     def load_textual_inversion(
         self, ckpt_path: Union[str, Path], defer_injecting_tokens: bool = False
