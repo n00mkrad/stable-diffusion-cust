@@ -109,7 +109,7 @@ def load_sd_onnx():
         pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
     if args.generation_mode == "inpaint":
         pipe = OnnxStableDiffusionInpaintPipeline.from_pretrained(args.model_path, provider=prov, safety_checker=None)
-    if args.mode == "inpaint-legacy":
+    if args.generation_mode == "inpaint-legacy":
         pipe = OnnxStableDiffusionInpaintPipelineLegacy.from_pretrained(args.model_path, provider=prov, safety_checker=None)
 
 def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
