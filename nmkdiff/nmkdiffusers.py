@@ -148,7 +148,7 @@ def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, sc
         img=Image.open(init_img_path).convert('RGB')
         mask=Image.open(mask_img_path)
         image=pipe(prompt=prompt, image=img, mask_image = mask, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, generator=rng).images[0]
-    if args.mode == "inpaint-legacy":
+    if args.generation_mode == "inpaint-legacy":
         img=Image.open(init_img_path).convert('RGB')
         mask=Image.open(mask_img_path)
         image=pipe(prompt=prompt, image=img, mask_image = mask, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, eta=eta, strength=init_strength, generator=rng).images[0]
