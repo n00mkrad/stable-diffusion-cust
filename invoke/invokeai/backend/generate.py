@@ -1079,7 +1079,7 @@ class Generate:
         if self.sampler_name in scheduler_map:
             sampler_class, extra_config = scheduler_map[self.sampler_name]
             msg = (
-                f">> Setting Sampler to {self.sampler_name} ({sampler_class.__name__})"
+                f">> Setting Sampler to {self.sampler_name} ({sampler_class.__name__} {extra_config})"
             )
             self.sampler = sampler_class.from_config({**self.model.scheduler.config, **extra_config})
         else:
