@@ -10,6 +10,7 @@ import json
 import threading
 import queue
 import traceback
+# import tomesd
 
 os.chdir(sys.path[0])
 
@@ -114,6 +115,7 @@ def load_sd_onnx():
 
 def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, seed, cfg_txt, cfg_img):
     global pipe
+    # tomesd.apply_patch(pipe, ratio=0.5)
     print(f'Generating ({args.pipeline}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
     start_time = time.time()
     rng = torch.manual_seed(seed)
@@ -137,7 +139,6 @@ def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, seed, sc
     rng = np.random.RandomState(seed)
     info = PngImagePlugin.PngInfo()
     metadataDict = {"mode": args.generation_mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
-    info.add_text('NmkdInstructPixToPix',  json.dumps(metadataDict, separators=(',', ':')))
     eta = 0.0
     if args.generation_mode == "txt2img":
         image=pipe(prompt=prompt, height=height, width=width, num_inference_steps=steps, guidance_scale=scale, negative_prompt=prompt_neg, generator=rng).images[0]
