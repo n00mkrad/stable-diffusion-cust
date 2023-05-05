@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import requests
 
 from ldm.invoke import __app_name__, __version__

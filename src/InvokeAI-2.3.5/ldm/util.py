@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import importlib
 import math
 import multiprocessing as mp

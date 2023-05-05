@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 from contextlib import contextmanager
 from dataclasses import dataclass
 from math import ceil

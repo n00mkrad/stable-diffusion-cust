@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import os
 import re
 import shlex
@@ -248,7 +249,7 @@ def main_loop(gen, opt, completer):
             break
 
         if not command.startswith("!history"):
-            completer.add_history(command)
+            pass
 
         if command.startswith("!"):
             command, operation = do_command(command, gen, opt, completer)
@@ -534,12 +535,12 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
             print(str(e))
         except Exception as e:
             report_model_error(opt, e)
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!models"):
         gen.model_manager.print_models()
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!import"):
@@ -551,7 +552,7 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
         else:
             try:
                 import_model(path[1], gen, opt, completer)
-                completer.add_history(command)
+                pass
             except KeyboardInterrupt:
                 print('\n')
         operation = None
@@ -563,7 +564,7 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
         else:
             try:
                 convert_model(path[1], gen, opt, completer)
-                completer.add_history(command)
+                pass
             except KeyboardInterrupt:
                 print('\n')
         operation = None
@@ -574,7 +575,7 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
             print("** please provide the name of a model")
         else:
             edit_model(path[1], gen, opt, completer)
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!del"):
@@ -583,20 +584,20 @@ def do_command(command: str, gen, opt: Args, completer) -> tuple:
             print("** please provide the name of a model")
         else:
             del_config(path[1], gen, opt, completer)
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!fetch"):
         file_path = command.replace("!fetch", "", 1).strip()
         retrieve_dream_command(opt, file_path, completer)
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!replay"):
         file_path = command.replace("!replay", "", 1).strip()
         if infile is None and os.path.isfile(file_path):
             infile = open(file_path, "r", encoding="utf-8")
-        completer.add_history(command)
+        pass
         operation = None
 
     elif command.startswith("!trigger"):
@@ -1235,7 +1236,7 @@ def write_commands(opt, file_path: str, outfilepath: str):
 
 
 def report_model_error(opt: Namespace, e: Exception):
-    print(f'** An error occurred while attempting to initialize the model: "{str(e)}"')
+    print(f'** An error occurred while attempting to initialize the model: "{e}"'); return
     print(
         "** This can be caused by a missing or corrupted models file, and can sometimes be fixed by (re)installing the models."
     )

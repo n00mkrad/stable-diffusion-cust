@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import os.path
 from cmath import log
 import torch

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 '''
 This module is provided for backward compatibility with the
 original (hasty) API.

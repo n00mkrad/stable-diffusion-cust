@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import os
 import torch
 import numpy as np

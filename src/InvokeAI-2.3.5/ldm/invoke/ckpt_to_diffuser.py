@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 # coding=utf-8
 # Copyright 2022 The HuggingFace Inc. team.
 #

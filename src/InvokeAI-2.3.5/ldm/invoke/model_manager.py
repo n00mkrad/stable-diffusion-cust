@@ -5,6 +5,7 @@ below a preset minimum, the least recently used model will be
 cleared and loaded from disk when next needed.
 """
 from __future__ import annotations
+import functools; print = functools.partial(print)
 
 import contextlib
 import gc
@@ -1171,7 +1172,7 @@ class ModelManager(object):
             with open(hashpath) as f:
                 hash = f.read()
             return hash
-        print("   | Calculating sha256 hash of model files")
+        return 0
         tic = time.time()
         sha = hashlib.sha256()
         count = 0

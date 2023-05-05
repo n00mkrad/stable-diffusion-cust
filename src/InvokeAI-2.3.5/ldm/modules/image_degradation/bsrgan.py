@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 # -*- coding: utf-8 -*-
 """
 # --------------------------------------------

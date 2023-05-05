@@ -3,6 +3,7 @@ Base class for ldm.invoke.generator.*
 including img2img, txt2img, and inpaint
 '''
 from __future__ import annotations
+import functools; print = functools.partial(print)
 
 import os
 import os.path as osp
@@ -21,7 +22,7 @@ from pathlib import Path
 from pytorch_lightning import seed_everything
 from tqdm import trange
 
-import invokeai.assets.web as web_assets
+# import invokeai.assets.web as web_assets
 from ldm.models.diffusion.ddpm import DiffusionWrapper
 from ldm.util import rand_perlin_2d
 

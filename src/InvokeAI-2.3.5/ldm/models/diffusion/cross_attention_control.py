@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 
 # adapted from bloc97's CrossAttentionControl colab
 # https://github.com/bloc97/CrossAttentionControl

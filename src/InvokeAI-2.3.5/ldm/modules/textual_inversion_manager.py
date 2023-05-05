@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import traceback
 from dataclasses import dataclass
 from pathlib import Path
@@ -51,7 +52,7 @@ class TextualInversionManager(BaseTextualInversionManager):
             ):  # in case a token with literal angle brackets encountered
                 print(f">> Loaded local embedding for trigger {concept_name}")
                 continue
-            bin_file = self.hf_concepts_library.get_concept_model_path(concept_name)
+            print(f">> Embedding not found: {concept_name}"); return
             if not bin_file:
                 continue
             print(f">> Loaded remote embedding for trigger {concept_name}")
@@ -59,7 +60,7 @@ class TextualInversionManager(BaseTextualInversionManager):
             self.hf_concepts_library.concepts_loaded[concept_name] = True
 
     def get_all_trigger_strings(self) -> list[str]:
-        return [ti.trigger_string for ti in self.textual_inversions]
+        return [f"{ti.trigger_string} from {self.trigger_to_sourcefile[ti.trigger_string]}" for ti in self.textual_inversions]
 
     def load_textual_inversion(
         self, ckpt_path: Union[str, Path], defer_injecting_tokens: bool = False
@@ -406,18 +407,22 @@ class TextualInversionManager(BaseTextualInversionManager):
         basename = Path(filepath).stem
         short_path = Path(filepath).parents[0].name+'/'+Path(filepath).name
         
-        print(f'   | Loading v4 embedding file: {short_path}')
-        embedding_info = {}
-        if list(embedding_ckpt.keys()) == 0:
+        print(f'   | Loading v4 embedding file: {short_path}') # nmkd patched
+        try:
+            embedding_info = {}
+            if list(embedding_ckpt.keys()) == 0:
+                print(f"   ** Invalid embeddings file: {short_path}")
+                embedding_info = None
+            else:
+                for token in list(embedding_ckpt.keys()):
+                    embedding_info["name"] = (
+                        token
+                        or f"<{basename}>"
+                    )
+                    embedding_info["embedding"] = embedding_ckpt[token]
+                    embedding_info["num_vectors_per_token"] = 1  # All Concepts seem to default to 1
+                    embedding_info["token_dim"] = embedding_info["embedding"].size()[0]
+            return embedding_info
+        except:
             print(f"   ** Invalid embeddings file: {short_path}")
-            embedding_info = None
-        else:
-            for token in list(embedding_ckpt.keys()):
-                embedding_info["name"] = (
-                    token
-                    or f"<{basename}>"
-                )
-                embedding_info["embedding"] = embedding_ckpt[token]
-                embedding_info["num_vectors_per_token"] = 1  # All Concepts seem to default to 1
-                embedding_info["token_dim"] = embedding_info["embedding"].size()[0]
-        return embedding_info
+            return list()

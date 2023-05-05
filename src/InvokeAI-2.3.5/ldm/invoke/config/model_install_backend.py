@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 """
 Utility (backend) functions used by model_install.py
 """

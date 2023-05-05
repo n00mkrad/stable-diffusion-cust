@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import math
 from functools import partial
 from typing import Optional

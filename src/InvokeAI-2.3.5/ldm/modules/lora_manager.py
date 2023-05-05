@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import os
 from diffusers import StableDiffusionPipeline
 from pathlib import Path

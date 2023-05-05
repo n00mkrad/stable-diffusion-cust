@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 """
 Readline helper functions for invoke.py.
 You may import the global singleton `completer` to get access to the

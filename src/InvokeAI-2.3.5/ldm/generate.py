@@ -1134,7 +1134,7 @@ class Generate:
         if isinstance(self.model, DiffusionPipeline):
             return self._set_scheduler()
         else:
-            return return self._set_scheduler() # self._set_sampler_legacy()
+            return self._set_scheduler() # self._set_sampler_legacy()
 
     # very repetitive code - can this be simplified? The KSampler names are
     # consistent, at least

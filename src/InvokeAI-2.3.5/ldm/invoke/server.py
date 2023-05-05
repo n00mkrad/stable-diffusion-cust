@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import argparse
 import json
 import copy

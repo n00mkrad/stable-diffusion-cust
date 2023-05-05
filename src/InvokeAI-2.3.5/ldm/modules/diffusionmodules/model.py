@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 # pytorch_diffusion + derived encoder decoder
 import gc
 import math

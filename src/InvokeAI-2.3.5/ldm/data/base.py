@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 from abc import abstractmethod
 from torch.utils.data import (
     Dataset,

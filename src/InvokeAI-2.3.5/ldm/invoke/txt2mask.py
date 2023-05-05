@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 '''Makes available the Txt2Mask class, which assists in the automatic
 assignment of masks via text prompt using clipseg.
 

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 import warnings
 import math
 from PIL import Image, ImageFilter

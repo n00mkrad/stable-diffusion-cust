@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 #!/usr/bin/env python
 
 import sys
