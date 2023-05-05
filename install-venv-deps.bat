@@ -1,6 +1,7 @@
+@echo off
 
 echo --- Will now install: torch==1.11.0+cu113 torchvision==0.12.0+cu113 ---
-python -m pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+python -m pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
 
 echo --- Will now install: albumentations ---
 python -m pip install albumentations==0.4.3

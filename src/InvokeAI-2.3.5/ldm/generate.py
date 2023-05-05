@@ -1134,7 +1134,7 @@ class Generate:
         if isinstance(self.model, DiffusionPipeline):
             return self._set_scheduler()
         else:
-            return self._set_sampler_legacy()
+            return return self._set_scheduler() # self._set_sampler_legacy()
 
     # very repetitive code - can this be simplified? The KSampler names are
     # consistent, at least
@@ -1173,27 +1173,39 @@ class Generate:
 
         # See https://github.com/huggingface/diffusers/issues/277#issuecomment-1371428672
         scheduler_map = dict(
-            ddim=diffusers.DDIMScheduler,
-            dpmpp_2=diffusers.DPMSolverMultistepScheduler,
-            k_dpm_2=diffusers.KDPM2DiscreteScheduler,
-            k_dpm_2_a=diffusers.KDPM2AncestralDiscreteScheduler,
-            # DPMSolverMultistepScheduler is technically not `k_` anything, as it is neither
-            # the k-diffusers implementation nor included in EDM (Karras 2022), but we can
-            # provide an alias for compatibility.
-            k_dpmpp_2=diffusers.DPMSolverMultistepScheduler,
-            k_euler=diffusers.EulerDiscreteScheduler,
-            k_euler_a=diffusers.EulerAncestralDiscreteScheduler,
-            k_heun=diffusers.HeunDiscreteScheduler,
-            k_lms=diffusers.LMSDiscreteScheduler,
-            plms=diffusers.PNDMScheduler,
+            ddim=(diffusers.DDIMScheduler, dict()),
+            plms=(diffusers.PNDMScheduler, dict()),
+            lms=(diffusers.LMSDiscreteScheduler, dict()),
+            heun=(diffusers.HeunDiscreteScheduler, dict()),
+            euler=(diffusers.EulerDiscreteScheduler, dict(use_karras_sigmas=False)),
+            k_euler=(diffusers.EulerDiscreteScheduler, dict(use_karras_sigmas=True)),
+            euler_a=(diffusers.EulerAncestralDiscreteScheduler, dict()),
+            dpm_2=(diffusers.KDPM2DiscreteScheduler, dict()),
+            dpm_2_a=(diffusers.KDPM2AncestralDiscreteScheduler, dict()),
+            dpmpp_2s=(diffusers.DPMSolverSinglestepScheduler, dict()),
+            dpmpp_2m=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=False)),
+            k_dpmpp_2m=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True)),
         )
 
+        scheduler_convert_map = {
+            "k_lms": "lms",
+            "k_heun": "heun",
+            "k_euler_a": "euler_a",
+            "k_dpm_2": "dpm_2",
+            "k_dpm_2_a": "dpm_2_a",
+            "dpmpp_2": "dpmpp_2m",
+            "k_dpmpp_2": "k_dpmpp_2m",
+        }
+
+        if self.sampler_name in scheduler_convert_map:
+            self.sampler_name = scheduler_convert_map[self.sampler_name]
+
         if self.sampler_name in scheduler_map:
-            sampler_class = scheduler_map[self.sampler_name]
+            sampler_class, extra_config = scheduler_map[self.sampler_name]
             msg = (
-                f">> Setting Sampler to {self.sampler_name} ({sampler_class.__name__})"
+                f">> Setting Sampler to {self.sampler_name} ({sampler_class.__name__} {extra_config})"
             )
-            self.sampler = sampler_class.from_config(self.model.scheduler.config)
+            self.sampler = sampler_class.from_config({**self.model.scheduler.config, **extra_config})
         else:
             msg = (
                 f">> Unsupported Sampler: {self.sampler_name} "

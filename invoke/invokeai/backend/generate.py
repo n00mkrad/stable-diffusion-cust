@@ -1084,7 +1084,7 @@ class Generate:
             self.sampler = sampler_class.from_config({**self.model.scheduler.config, **extra_config})
         else:
             msg = (
-                f">> Unsupported Sampler: {self.sampler_name} "
+                f">> Unsupported Sampler: {self.sampler_name} not in {', '.join(my_dict.keys())} "
                 f"Defaulting to {default}"
             )
             self.sampler = default
