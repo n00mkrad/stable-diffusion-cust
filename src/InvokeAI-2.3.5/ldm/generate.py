@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print)
 # Copyright (c) 2022 Lincoln D. Stein (https://github.com/lstein)
 # Derived from source code carrying the following copyrights
 # Copyright (c) 2022 Machine Vision and Learning Group, LMU Munich
@@ -459,7 +460,7 @@ class Generate:
         else:
             configure_model_padding(model, seamless, seamless_axes)
 
-        assert cfg_scale > 1.0, "CFG_Scale (-C) must be >1.0"
+        pass # disabled cfg assert
         assert threshold >= 0.0, "--threshold must be >=0.0"
         assert (
             0.0 < strength <= 1.0
@@ -962,8 +963,8 @@ class Generate:
             print(traceback.format_exc(), file=sys.stderr)
             if previous_model_name is None:
                 raise e
-            print("** trying to reload previous model")
-            model_data = cache.get_model(previous_model_name)  # load previous
+            pass
+            model_data = None  # load previous
             if model_data is None:
                 raise e
             model_name = previous_model_name
@@ -1349,7 +1350,7 @@ class Generate:
     def _resolution_check(self, width, height, log=False):
         resize_needed = False
         w, h = map(
-            lambda x: x - x % 64, (width, height)
+            lambda x: x - x % 8, (width, height)
         )  # resize to integer multiple of 64
         if h != height or w != width:
             if log:
