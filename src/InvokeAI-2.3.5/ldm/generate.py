@@ -55,6 +55,7 @@ def fix_func(orig):
         return new_func
     return orig
 
+print(f"invoke_pid={os.getpid()}")
 
 torch.rand = fix_func(torch.rand)
 torch.rand_like = fix_func(torch.rand_like)
