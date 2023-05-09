@@ -978,7 +978,7 @@ class Generate:
         # uncache generators so they pick up new models
         self.generators = {}
 
-        seed_everything(random.randrange(0, np.iinfo(np.uint32).max))
+        torch.manual_seed(random.randrange(0, np.iinfo(np.uint32).max))
         if self.embedding_path and not model_data.get("ti_embeddings_loaded"):
             print(f'>> Loading embeddings from {self.embedding_path}')
             for root, _, files in os.walk(self.embedding_path):
