@@ -67,7 +67,7 @@ echo --- Will now install: clipseg ---
 python -m pip install git+https://github.com/invoke-ai/clipseg.git@1f754751c85d7d4255fa681f4491ff5711c1c288#egg=clipseg
 
 echo --- Will now install: local invoke repo ---
-python -m pip install ./repo/invoke
+python -m pip install ./repo/src/InvokeAI-2.3.5
 
 echo --- Will now install: numpy ---
 python -m pip install numpy==1.23.4
