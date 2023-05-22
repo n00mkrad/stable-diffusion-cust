@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 from torchvision.datasets.utils import download_url
 from ldm.util import instantiate_from_config
 import torch

@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 from peft import LoraModel, LoraConfig, set_peft_model_state_dict
 import torch
 import json

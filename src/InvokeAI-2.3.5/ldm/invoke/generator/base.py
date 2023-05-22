@@ -3,7 +3,7 @@ Base class for ldm.invoke.generator.*
 including img2img, txt2img, and inpaint
 '''
 from __future__ import annotations
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 
 import os
 import os.path as osp

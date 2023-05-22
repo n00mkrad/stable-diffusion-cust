@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 # -*- coding: utf-8 -*-
 import numpy as np
 import cv2

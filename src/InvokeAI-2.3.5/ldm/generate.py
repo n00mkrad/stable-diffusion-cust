@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) 2022 Lincoln D. Stein (https://github.com/lstein)
 # Derived from source code carrying the following copyrights
 # Copyright (c) 2022 Machine Vision and Learning Group, LMU Munich

@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 import os, yaml, pickle, shutil, tarfile, glob
 import cv2
 import albumentations

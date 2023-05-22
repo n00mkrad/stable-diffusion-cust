@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 
 # adapted from bloc97's CrossAttentionControl colab
 # https://github.com/bloc97/CrossAttentionControl
@@ -451,7 +451,7 @@ class InvokeAIDiffusersCrossAttention(diffusers.models.attention.Attention, Invo
 
 
 
-## 🧨diffusers implementation follows
+## ????diffusers implementation follows
 
 
 """

@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 import torch
 import pytorch_lightning as pl
 import torch.nn.functional as F

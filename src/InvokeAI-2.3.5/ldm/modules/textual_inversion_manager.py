@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 import traceback
 from dataclasses import dataclass
 from pathlib import Path

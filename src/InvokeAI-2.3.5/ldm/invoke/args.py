@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 """Helper class for dealing with image generation arguments.
 
 The Args class parses both the command line (shell) arguments, as well as the

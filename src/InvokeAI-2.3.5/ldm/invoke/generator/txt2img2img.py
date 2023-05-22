@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 '''
 ldm.invoke.generator.txt2img inherits from ldm.invoke.generator
 '''

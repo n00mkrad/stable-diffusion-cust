@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 # adopted from
 # https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py
 # and

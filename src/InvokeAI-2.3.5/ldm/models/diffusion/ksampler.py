@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 """wrapper around part of Katherine Crowson's k-diffusion library, making it call compatible with other Samplers"""
 
 import k_diffusion as K

@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 '''
 ldm.invoke.generator.embiggen descends from ldm.invoke.generator
 and generates with ldm.invoke.generator.img2img

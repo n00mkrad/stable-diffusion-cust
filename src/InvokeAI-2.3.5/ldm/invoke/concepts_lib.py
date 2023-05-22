@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 """
 Query and install embeddings from the HuggingFace SD Concepts Library
 at https://huggingface.co/sd-concepts-library.

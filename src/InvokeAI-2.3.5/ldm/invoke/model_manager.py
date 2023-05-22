@@ -5,7 +5,7 @@ below a preset minimum, the least recently used model will be
 cleared and loaded from disk when next needed.
 """
 from __future__ import annotations
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 
 import contextlib
 import gc

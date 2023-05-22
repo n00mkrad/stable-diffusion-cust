@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 '''
 This module is provided for backward compatibility with the
 original (hasty) API.

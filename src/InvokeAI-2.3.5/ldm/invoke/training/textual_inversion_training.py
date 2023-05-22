@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 # This code was copied from
 # https://github.com/huggingface/diffusers/blob/main/examples/textual_inversion/textual_inversion.py
 # on January 2, 2023

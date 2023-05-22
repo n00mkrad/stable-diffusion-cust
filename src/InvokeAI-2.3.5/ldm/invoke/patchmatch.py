@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 '''
 This module defines a singleton object, "patchmatch" that
 wraps the actual patchmatch object. It respects the global

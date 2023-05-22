@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 """
 ldm.invoke.merge_diffusers exports a single function call merge_diffusion_models()
 used to merge 2-3 models together and create a new InvokeAI-registered diffusion model.

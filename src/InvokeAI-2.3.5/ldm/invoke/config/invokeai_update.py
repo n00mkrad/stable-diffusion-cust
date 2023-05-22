@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 '''
 Minimalist updater script. Prompts user for the tag or branch to update to and runs
 pip install <path_to_git_source>.

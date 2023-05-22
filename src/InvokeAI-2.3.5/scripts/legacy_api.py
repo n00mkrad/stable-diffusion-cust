@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 #!/usr/bin/env python3
 # Copyright (c) 2022 Lincoln D. Stein (https://github.com/lstein)
 

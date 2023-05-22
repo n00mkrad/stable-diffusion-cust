@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print)
+import functools; print = functools.partial(print, flush=True)
 import math
 from functools import partial
 from typing import Optional
@@ -662,7 +662,7 @@ class WeightedFrozenCLIPEmbedder(FrozenCLIPEmbedder):
             all_token_ids = all_token_ids[0:max_token_count_without_bos_eos_markers]
             per_token_weights = per_token_weights[0:max_token_count_without_bos_eos_markers]
 
-        # pad out to a 77-entry array: [bos_token, <prompt tokens>, eos_token, pad_token…]
+        # pad out to a 77-entry array: [bos_token, <prompt tokens>, eos_token, pad_token???]
         # (77 = self.max_length)
         all_token_ids = [self.tokenizer.bos_token_id] + all_token_ids + [self.tokenizer.eos_token_id]
         per_token_weights = [1.0] + per_token_weights + [1.0]
