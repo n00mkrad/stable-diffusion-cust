@@ -32,9 +32,9 @@ dependencies = [
   "albumentations",
   "click",
   "clip_anytorch",
-  "compel~=1.1.0",
+  "compel~=1.1.5",
   "datasets",
-  "diffusers[torch]~=0.15.0",
+  "diffusers[torch]~=0.16.1",
   "k-diffusion",
   "dnspython==2.2.1",
   "einops",
@@ -86,7 +86,7 @@ requires-python = ">=3.9, <3.11"
 "test" = ["pytest-cov", "pytest>6.0.0"]
 "xformers" = [
   "triton; sys_platform=='linux'",
-  "xformers~=0.0.16; sys_platform!='darwin'",
+  "xformers~=0.0.19; sys_platform!='darwin'",
 ]
 
 [project.scripts]

@@ -46,7 +46,7 @@ echo --- Will now install: safetensors ---
 python -m pip install safetensors~=0.3.0
 
 echo --- Will now install: diffusers ---
-python -m pip install diffusers==0.15.1
+python -m pip install diffusers==0.16.1
 
 echo --- Will now install: clip ---
 python -m pip install git+https://github.com/openai/CLIP.git@main#egg=clip
@@ -65,6 +65,9 @@ python -m pip install git+https://github.com/invoke-ai/clipseg.git@1f754751c85d7
 
 echo --- Will now install: local invoke repo ---
 python -m pip install ./repo/src/InvokeAI-2.3.5
+
+echo --- Will now install: peft ---
+python -m pip install peft
 
 echo --- Will now install: numpy ---
 python -m pip install numpy==1.23.4

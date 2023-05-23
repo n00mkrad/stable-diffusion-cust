@@ -1,4 +1,4 @@
-import functools; print = functools.partial(print, flush=True)
+import functools; print = functools.partial(print)
 # Copyright (c) 2022 Lincoln D. Stein (https://github.com/lstein)
 # Derived from source code carrying the following copyrights
 # Copyright (c) 2022 Machine Vision and Learning Group, LMU Munich
@@ -14,11 +14,15 @@ import time
 import traceback
 from typing import List
 
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=UserWarning)
+    import torch
+    
 import cv2
 import diffusers
 import numpy as np
 import skimage
-import torch
 import transformers
 from diffusers.pipeline_utils import DiffusionPipeline
 from diffusers.utils.import_utils import is_xformers_available
@@ -981,13 +985,15 @@ class Generate:
         torch.manual_seed(random.randrange(0, np.iinfo(np.uint32).max))
         if self.embedding_path and not model_data.get("ti_embeddings_loaded"):
             print(f'>> Loading embeddings from {self.embedding_path}')
-            for root, _, files in os.walk(self.embedding_path):
-                for name in files:
-                    ti_path = os.path.join(root, name)
-                    self.model.textual_inversion_manager.load_textual_inversion(
-                        ti_path, defer_injecting_tokens=True
-                    )
-            model_data["ti_embeddings_loaded"] = True
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=UserWarning)
+                for root, _, files in os.walk(self.embedding_path):
+                    for name in files:
+                        ti_path = os.path.join(root, name)
+                        self.model.textual_inversion_manager.load_textual_inversion(
+                            ti_path, defer_injecting_tokens=True
+                        )
+                model_data["ti_embeddings_loaded"] = True
         print(
             f'>> Textual inversion triggers: {", ".join(sorted(self.model.textual_inversion_manager.get_all_trigger_strings()))}'
         )
