@@ -15,8 +15,8 @@ def download_realesrgan():
     model_url = "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth"
     wdn_model_url = "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-wdn-x4v3.pth"
 
-    model_dest = "../../models/realesrgan/realesr-general-x4v3.pth"
-    wdn_model_dest = "../../models/realesrgan/realesr-general-wdn-x4v3.pth"
+    model_dest = "../../../invoke/models/realesrgan/realesr-general-x4v3.pth"
+    wdn_model_dest = "../../../invoke/models/realesrgan/realesr-general-wdn-x4v3.pth"
 
     download_with_progress_bar(model_url, model_dest, "RealESRGAN")
     download_with_progress_bar(wdn_model_url, wdn_model_dest, "RealESRGANwdn")
@@ -27,15 +27,15 @@ def download_gfpgan():
     for model in (
         [
             "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth",
-            "../../invoke/models/gfpgan/GFPGANv1.4.pth",
+            "../../../invoke/models/gfpgan/GFPGANv1.4.pth",
         ],
         [
             "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth",
-            "../../invoke/models/gfpgan/weights/detection_Resnet50_Final.pth",
+            "../../../invoke/models/gfpgan/weights/detection_Resnet50_Final.pth",
         ],
         [
             "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth",
-            "../../invoke/models/gfpgan/weights/parsing_parsenet.pth",
+            "../../../invoke/models/gfpgan/weights/parsing_parsenet.pth",
         ],
     ):
         model_url, model_dest = model[0], model[1]
@@ -48,7 +48,7 @@ def download_codeformer():
     model_url = (
         "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth"
     )
-    model_dest = "../../invoke/models/codeformer/codeformer.pth"
+    model_dest = "../../../invoke/models/codeformer/codeformer.pth"
     download_with_progress_bar(model_url, model_dest, "CodeFormer")#
     
 class ProgressBar:
