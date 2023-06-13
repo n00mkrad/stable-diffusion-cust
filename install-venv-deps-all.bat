@@ -141,4 +141,6 @@ python -m pip install --no-deps xxhash==3.2.0
 python -m pip install --no-deps yapf==0.33.0
 python -m pip install --no-deps yarl==1.9.2
 python -m pip install --no-deps zipp==3.15.0
+python -m pip install --no-deps voluptuous==0.13.1
+python -m pip install --no-deps lycoris-lora==0.1.5
 python -m pip install --no-deps ./repo/src/InvokeAI-2.3.5
