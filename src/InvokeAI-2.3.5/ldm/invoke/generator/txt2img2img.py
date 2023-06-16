@@ -3,6 +3,7 @@ import functools; print = functools.partial(print, flush=True)
 ldm.invoke.generator.txt2img inherits from ldm.invoke.generator
 '''
 
+import os
 import math
 from typing import Callable, Optional
 
@@ -133,7 +134,7 @@ class Txt2Img2Img(Generator):
 
             aspect = width / height
             dimension = self.model.unet.config.sample_size * self.model.vae_scale_factor
-            min_dimension = math.floor(dimension * 0.5)
+            min_dimension = math.floor(dimension * float(os.getenv('INVOKE_NMKD_HIRES_MINDIM_MULT', '0.5')))
             model_area = dimension * dimension # hardcoded for now since all models are trained on square images
 
             if aspect > 1.0:
