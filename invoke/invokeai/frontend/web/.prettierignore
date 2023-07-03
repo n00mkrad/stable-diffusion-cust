@@ -1,6 +1,0 @@
-dist/
-.husky/
-node_modules/
-patches/
-stats.html
-.yarn/

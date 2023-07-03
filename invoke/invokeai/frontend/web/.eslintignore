@@ -1,8 +1,0 @@
-dist/
-.husky/
-node_modules/
-patches/
-stats.html
-index.html
-.yarn/
-*.scss
