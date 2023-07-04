@@ -55,7 +55,6 @@ python -m pip install --no-deps importlib-metadata==6.6.0
 python -m pip install --no-deps Jinja2==3.1.2
 python -m pip install --no-deps jsonmerge==1.9.0
 python -m pip install --no-deps jsonschema==4.17.3
-python -m pip install --no-deps git+https://github.com/Birch-san/k-diffusion.git@b23db2229953b109e8559c9756545e42eaa0172e
 python -m pip install --no-deps kiwisolver==1.4.4
 python -m pip install --no-deps kornia==0.6.12
 python -m pip install --no-deps lazy_loader==0.2
@@ -141,7 +140,7 @@ python -m pip install --no-deps xxhash==3.2.0
 python -m pip install --no-deps yapf==0.33.0
 python -m pip install --no-deps yarl==1.9.2
 python -m pip install --no-deps zipp==3.15.0
-python -m pip install --no-deps k_diffusion==0.0.15
+python -m pip install --no-deps k-diffusion==0.0.15
 python -m pip install --no-deps voluptuous==0.13.1
 python -m pip install --no-deps lycoris-lora==0.1.5
 python -m pip install --no-deps toml==0.10.2
