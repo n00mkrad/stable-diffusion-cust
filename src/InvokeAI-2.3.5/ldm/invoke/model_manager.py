@@ -1022,7 +1022,7 @@ class ModelManager(object):
             ),
         ]
         legacy_locations.extend(list(global_cache_dir("diffusers").glob("*")))
-        legacy_layout = False
+        return
         for model in legacy_locations:
             legacy_layout = legacy_layout or model.exists()
         if not legacy_layout:

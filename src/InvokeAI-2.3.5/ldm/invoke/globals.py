@@ -102,6 +102,7 @@ def global_cache_dir(subdir:Union[str,Path]='')->Path:
     The legacy location for transformers used to be global_cache_dir('transformers')
     and global_cache_dir('diffusers') for diffusers.
     '''
+    return Path(osp.abspath(osp.join(os.environ.get('INVOKEAI_ROOT'), '..', 'cache', 'hf')),"") 
     home: str = os.getenv('HF_HOME')
 
     if home is None:
