@@ -18,9 +18,9 @@ python -m pip install --no-deps certifi==2023.5.7
 python -m pip install --no-deps charset-normalizer==3.1.0
 python -m pip install --no-deps clean-fid==0.1.35
 python -m pip install --no-deps click==8.1.3
-python -m pip install --no-deps clip @ git+https://github.com/openai/CLIP.git@a9b1bf5920416aaeaec965c25dd9e8f98c864f16
+python -m pip install --no-deps git+https://github.com/openai/CLIP.git@a9b1bf5920416aaeaec965c25dd9e8f98c864f16
 python -m pip install --no-deps clip-anytorch==2.5.2
-python -m pip install --no-deps clipseg @ git+https://github.com/invoke-ai/clipseg.git@1f754751c85d7d4255fa681f4491ff5711c1c288
+python -m pip install --no-deps git+https://github.com/invoke-ai/clipseg.git@1f754751c85d7d4255fa681f4491ff5711c1c288
 python -m pip install --no-deps colorama==0.4.6
 python -m pip install --no-deps coloredlogs==15.0.1
 python -m pip install --no-deps compel==1.1.6
@@ -55,7 +55,7 @@ python -m pip install --no-deps importlib-metadata==6.6.0
 python -m pip install --no-deps Jinja2==3.1.2
 python -m pip install --no-deps jsonmerge==1.9.0
 python -m pip install --no-deps jsonschema==4.17.3
-python -m pip install --no-deps k-diffusion @ git+https://github.com/Birch-san/k-diffusion.git@b23db2229953b109e8559c9756545e42eaa0172e
+python -m pip install --no-deps git+https://github.com/Birch-san/k-diffusion.git@b23db2229953b109e8559c9756545e42eaa0172e
 python -m pip install --no-deps kiwisolver==1.4.4
 python -m pip install --no-deps kornia==0.6.12
 python -m pip install --no-deps lazy_loader==0.2
