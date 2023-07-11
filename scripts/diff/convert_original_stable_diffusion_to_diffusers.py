@@ -15,6 +15,7 @@
 """ Conversion script for the LDM checkpoints. """
 
 import argparse
+
 import torch
 
 from diffusers.pipelines.stable_diffusion.convert_from_ckpt import download_from_original_stable_diffusion_ckpt
@@ -124,8 +125,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--controlnet", action="store_true", default=None, help="Set flag if this is a controlnet checkpoint."
     )
+    parser.add_argument("--half", action="store_true", help="Save weights in half precision.")
     parser.add_argument(
-        "--fp16", action="store_true", default=None, help="Set flag to save as float16 checkpoint."
+        "--vae_path",
+        type=str,
+        default=None,
+        required=False,
+        help="Set to a path, hub id to an already converted vae to not convert it again.",
     )
     args = parser.parse_args()
 
@@ -145,15 +151,14 @@ if __name__ == "__main__":
         stable_unclip_prior=args.stable_unclip_prior,
         clip_stats_path=args.clip_stats_path,
         controlnet=args.controlnet,
-        load_safety_checker=False,
+        vae_path=args.vae_path,
     )
+
+    if args.half:
+        pipe.to(torch_dtype=torch.float16)
 
     if args.controlnet:
         # only save the controlnet model
         pipe.controlnet.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
     else:
-        if args.fp16:
-            pipe.unet = pipe.unet.half()
-            pipe.vae = pipe.vae.half()
-            pipe.text_encoder = pipe.text_encoder.half()
         pipe.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
