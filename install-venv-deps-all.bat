@@ -26,7 +26,7 @@ python -m pip install --no-deps coloredlogs==15.0.1
 python -m pip install --no-deps compel==1.1.6
 python -m pip install --no-deps contourpy==1.0.7
 python -m pip install --no-deps cycler==0.11.0
-python -m pip install --no-deps diffusers==0.16.1
+python -m pip install --no-deps git+https://github.com/huggingface/diffusers@ed2a3584ab2ee59676eb95c884ba2d7bb831f41d
 python -m pip install --no-deps dill==0.3.6
 python -m pip install --no-deps dnspython==2.2.1
 python -m pip install --no-deps docker-pycreds==0.4.0
