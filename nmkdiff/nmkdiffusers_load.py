@@ -41,7 +41,7 @@ def load_sd_onnx(pipe, path_mdl, mode):
     # Load model if not yet loaded
     if loaded_models.get("model") != path_mdl:
         print(f'ONNX: Loading model ({path_mdl})')
-        pipe = DiffusionPipeline.from_pretrained(path_mdl, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
+        pipe = DiffusionPipeline.from_pretrained(path_mdl, torch_dtype = torch.float16, provider=prov)
     # Cast to Text2Img/Img2Img/Inpaint Pipeline, save in loaded_models
     if pipe is not None:
         if mode == "txt2img":
