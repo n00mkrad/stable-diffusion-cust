@@ -15,7 +15,7 @@ import threading
 import queue
 import traceback
 
-from nmkdiffusers_load import load_sdxl
+from nmkdiffusers_load import load_sd_onnx, load_ip2p, load_sdxl
 
 os.chdir(sys.path[0])
 
@@ -98,6 +98,8 @@ pipe = None
 refiner = None
 
 def set_scheduler(sampler_name):
+    if pipe is None:
+        return
     if sampler_name == "ddim": sched = DDIMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
     if sampler_name == "plms": sched = PNDMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
     if sampler_name == "lms": sched = LMSDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
@@ -110,48 +112,11 @@ def set_scheduler(sampler_name):
     if sampler_name == "dpmpp_2s": sched = DPMSolverSinglestepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
     if sampler_name == "dpmpp_2m": sched = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
     if sampler_name == "k_dpmpp_2m": sched = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
-    if pipe is not None:
-        print(f"Set base scheduler to {sampler_name}")
-        pipe.scheduler = sched
+    print(f"Set base scheduler to {sampler_name}")
+    pipe.scheduler = sched
     if refiner is not None:
         print(f"Set refiner scheduler to {sampler_name}")
         refiner.scheduler = sched
-
-def load_ip2p():
-    global pipe
-    model_id = "timbrooks/instruct-pix2pix"
-    from huggingface_hub import snapshot_download
-    
-    if not args.model_path:
-        ignore = ["*.ckpt", "*.safetensors", "safety_checker/*", "*.md", ".git*", "*.png", "*.pt"]
-        rev = "fp16"
-        try:
-            args.model_path = snapshot_download(repo_id = model_id, revision = rev, ignore_patterns = ignore)
-        except:
-            args.model_path = snapshot_download(repo_id = model_id, revision = rev, ignore_patterns = ignore, local_files_only = True)
-    
-    print(f"Trying to load model from '{args.model_path}'")
-    
-    try:
-        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.model_path, torch_dtype = torch.float16, safety_checker = None)
-    except:
-        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(args.model_path, torch_dtype = torch.float16, safety_checker = None, local_files_only = True)
-    
-    pipe.to("cuda")
-    pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
-    pipe.enable_attention_slicing()
-
-def load_sd_onnx():
-    global pipe
-    prov = "DmlExecutionProvider"
-    if args.generation_mode == "txt2img":
-        pipe = OnnxStableDiffusionPipeline.from_pretrained(args.model_path, provider = prov, safety_checker = None)
-    if args.generation_mode == "img2img":
-        pipe = OnnxStableDiffusionImg2ImgPipeline.from_pretrained(args.model_path, provider = prov, safety_checker = None)
-    if args.generation_mode == "inpaint":
-        pipe = OnnxStableDiffusionInpaintPipeline.from_pretrained(args.model_path, provider = prov, safety_checker = None)
-    if args.generation_mode == "inpaint-legacy":
-        pipe = OnnxStableDiffusionInpaintPipelineLegacy.from_pretrained(args.model_path, provider = prov, safety_checker = None)
 
 def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, sampler, seed, cfg_txt, cfg_img):
     global pipe
@@ -253,8 +218,10 @@ def generate_from_json(argdict):
     mask_path = argdict.get("inpaintMask")
     sampler = argdict.get("sampler")
     if args.pipeline == "InstructPix2Pix":
+        pipe = load_ip2p(pipe, argdict.get("model"))
         generate_ip2p(inpath, args.outpath, prompt, prompt_neg, steps, sampler, seed, cfg_txt, cfg_img)
     if args.pipeline == "SdOnnx":
+        pipe = load_sd_onnx(pipe, argdict.get("model"), mode)
         generate_sd_onnx(prompt, prompt_neg, args.outpath, steps, w, h, sampler, seed, cfg_txt, inpath, init_strength, mask_path)
     if args.pipeline == "SdXl":
         pipe, refiner = load_sdxl(pipe, refiner, argdict.get("model"), argdict.get("modelRefiner"), mode, args.sdxl_opt)
@@ -262,7 +229,7 @@ def generate_from_json(argdict):
         generate_sd_xl(mode, prompt, prompt_neg, args.outpath, steps, w, h, sampler, seed, cfg_txt, inpath, init_strength, mask_path, refine_frac)
 
 def main():
-    # print(f"Loading...")
+    print(f"Ready.")
     # if args.pipeline == "InstructPix2Pix":
     #     load_ip2p()
     # if args.pipeline == "SdOnnx":
@@ -296,10 +263,8 @@ def main():
     
         except Exception as ex:
             print(f"Exception: {str(ex)}")
-            traceback.print_stack()
+            print(traceback.format_exc())
             break
-    
-    pipe = None
     
     print(f"Exiting...")
     os._exit(0)
