@@ -52,6 +52,7 @@ python -m pip install --no-deps idna==3.4
 python -m pip install --no-deps imageio==2.31.0
 python -m pip install --no-deps imgaug==0.2.6
 python -m pip install --no-deps importlib-metadata==6.6.0
+python -m pip install --no-deps invisible-watermark==0.2.0
 python -m pip install --no-deps Jinja2==3.1.2
 python -m pip install --no-deps jsonmerge==1.9.0
 python -m pip install --no-deps jsonschema==4.17.3
