@@ -1310,8 +1310,11 @@ class ModelManager(object):
         vae_config = create_vae_diffusers_config(original_conf, image_size=512) # TODO: fix
         diffusers_vae = convert_ldm_vae_state_dict(vae_state_dict,vae_config)
         vae = AutoencoderKL(**vae_config)
-        diffusers_vae = { key.replace(".query.", ".to_q.").replace(".key.", ".to_k.").replace(".value.", ".to_v.").replace(".proj_attn.", ".to_out.0."): value for key, value in diffusers_vae.items() }
-        vae.load_state_dict(diffusers_vae)
+        try:
+            vae.load_state_dict(diffusers_vae)
+        except:
+            diffusers_vae = { key.replace(".query.", ".to_q.").replace(".key.", ".to_k.").replace(".value.", ".to_v.").replace(".proj_attn.", ".to_out.0."): value for key, value in diffusers_vae.items() }
+            vae.load_state_dict(diffusers_vae)
         return vae
 
     @staticmethod
