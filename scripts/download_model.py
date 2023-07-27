@@ -50,10 +50,13 @@ whitelist = [
     "feature_extractor/*",
     "scheduler/*",
     "text_encoder/*",
+    "text_encoder_2/*",
     "tokenizer/*",
+    "tokenizer_2/*",
     "unet/*",
     "vae/*",
     "*.json",
+    "*.txt",
 ]
 
 snapshot_dir = snapshot_download(repo_id=args.repo, revision=args.rev, allow_patterns=whitelist, cache_dir=args.cache_path)
