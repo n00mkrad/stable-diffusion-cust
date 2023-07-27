@@ -1193,8 +1193,8 @@ class Generate:
             dpmpp_2s=(diffusers.DPMSolverSinglestepScheduler, dict()),
             dpmpp_2m=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=False)),
             k_dpmpp_2m=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True)),
-            dpmpp_2m_sde=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True, algorithm_type="sde-dpmsolver++"),
-            k_dpmpp_2m_sde=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True, algorithm_type="sde-dpmsolver++"),
+            dpmpp_2m_sde=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")),
+            k_dpmpp_2m_sde=(diffusers.DPMSolverMultistepScheduler, dict(use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")),
             unipc=(diffusers.UniPCMultistepScheduler, dict(use_karras_sigmas=True)),
         )
 
