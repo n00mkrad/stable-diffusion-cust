@@ -1251,6 +1251,11 @@ def load_pipeline_from_original_stable_diffusion_ckpt(
             )
 
             vae = AutoencoderKL(**vae_config)
+            try:
+                vae.load_state_dict(converted_vae_checkpoint)
+            except:
+                converted_vae_checkpoint = { key.replace(".query.", ".to_q.").replace(".key.", ".to_k.").replace(".value.", ".to_v.").replace(".proj_attn.", ".to_out.0."): value for key, value in converted_vae_checkpoint.items() }
+                vae.load_state_dict(converted_vae_checkpoint)
             vae.load_state_dict(converted_vae_checkpoint)
 
         # Convert the text model.

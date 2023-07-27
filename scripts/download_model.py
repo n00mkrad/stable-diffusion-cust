@@ -59,7 +59,7 @@ whitelist = [
     "*.txt",
 ]
 
-snapshot_dir = snapshot_download(repo_id=args.repo, revision=args.rev, allow_patterns=whitelist, cache_dir=args.cache_path)
+snapshot_dir = snapshot_download(repo_id=args.repo, revision=args.rev, allow_patterns=whitelist, cache_dir=args.cache_path, local_dir_use_symlinks=False, etag_timeout=30, max_workers=1)
 print(f"Moving {snapshot_dir} to {args.save_path}", flush=True)
 os.rename(snapshot_dir, args.save_path)
 shutil.rmtree(os.path.join(snapshot_dir, "..", ".."))
