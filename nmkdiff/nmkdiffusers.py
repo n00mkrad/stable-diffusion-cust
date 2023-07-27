@@ -2,10 +2,10 @@ import functools; print = functools.partial(print, flush = True)
 import PIL
 from PIL import PngImagePlugin, Image
 import torch
+import diffusers
 from diffusers import StableDiffusionInstructPix2PixPipeline # InstructPix2Pix
 from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline, OnnxStableDiffusionInpaintPipelineLegacy # SD ONNX
 from diffusers import StableDiffusionXLPipeline, StableDiffusionXLImg2ImgPipeline, StableDiffusionXLInpaintPipeline, DiffusionPipeline # SDXL
-from diffusers import DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, HeunDiscreteScheduler, EulerDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, KDPM2DiscreteScheduler, KDPM2AncestralDiscreteScheduler, DPMSolverSinglestepScheduler, DPMSolverMultistepScheduler, DPMSolverMultistepScheduler # Samplers
 from transformers import CLIPTextModel, CLIPTokenizer
 import numpy as np
 import argparse
@@ -16,6 +16,7 @@ import queue
 import traceback
 
 from nmkdiffusers_load import load_sd_onnx, load_ip2p, load_sdxl
+from nmkdiffusers_generate import generate_ip2p, generate_sd_onnx, generate_sd_xl
 
 os.chdir(sys.path[0])
 
@@ -93,150 +94,54 @@ def read_stdin():
 stdin_thread = threading.Thread(target = read_stdin)
 stdin_thread.start()
 
-# do_refine = args.model_path_refiner is not None and os.path.exists(args.model_path_refiner)
 pipe = None
 refiner = None
 
 def set_scheduler(sampler_name):
     if pipe is None:
         return
-    if sampler_name == "ddim": sched = DDIMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "plms": sched = PNDMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "lms": sched = LMSDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "heun": sched = HeunDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "euler": sched = EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "k_euler": sched = EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
-    if sampler_name == "euler_a": sched = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpm_2": sched = KDPM2DiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpm_2_a": sched = KDPM2AncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpmpp_2s": sched = DPMSolverSinglestepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpmpp_2m": sched = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "k_dpmpp_2m": sched = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
+    if sampler_name == "ddim": sched = diffusers.DDIMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "plms": sched = diffusers.PNDMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "lms": sched = diffusers.LMSDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "heun": sched = diffusers.HeunDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "euler": sched = diffusers.EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "k_euler": sched = diffusers.EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
+    if sampler_name == "euler_a": sched = diffusers.EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "dpm_2": sched = diffusers.KDPM2DiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "dpm_2_a": sched = diffusers.KDPM2AncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "dpmpp_2s": sched = diffusers.DPMSolverSinglestepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
+    if sampler_name == "k_dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
+    if sampler_name == "dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False, algorithm_type="sde-dpmsolver++")
+    if sampler_name == "k_dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True, algorithm_type="sde-dpmsolver++")
+    if sampler_name == "unipc": sched = diffusers.UniPCMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
     print(f"Set base scheduler to {sampler_name}")
     pipe.scheduler = sched
     if refiner is not None:
         print(f"Set refiner scheduler to {sampler_name}")
         refiner.scheduler = sched
 
-def generate_ip2p(inpath, outpath, prompt, prompt_neg, steps, sampler, seed, cfg_txt, cfg_img):
-    global pipe
-    set_scheduler(sampler)
-    print(f'Generating ({args.pipeline}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
-    start_time = time.time()
-    rng = torch.manual_seed(seed)
-    info = PngImagePlugin.PngInfo()
-    image = Image.open(inpath)
-    image = PIL.ImageOps.exif_transpose(image).convert("RGB")
-    image = pipe(prompt, negative_prompt = prompt_neg, image = image, num_inference_steps = steps, guidance_scale = cfg_txt, image_guidance_scale = cfg_img, generator = rng).images[0]
-    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": inpath, "steps": steps, "seed": seed, "scaleTxt": cfg_txt, "scaleImg": cfg_img}
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
-    print(f'Image generated in {(time.time() - start_time):.2f}s')
-    image = None
-
-def generate_sd_onnx(prompt, prompt_neg, outpath, steps, width, height, sampler, seed, scale, init_img_path = None, init_strength = 0.75, mask_img_path = None):
-    global pipe
-    set_scheduler(sampler)
-    print(f'Generating ({args.pipeline} {args.generation_mode}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Scale {scale} - Res {width}x{height}')
-    start_time = time.time()
-    seed = int(seed)
-    rng = np.random.RandomState(seed)
-    info = PngImagePlugin.PngInfo()
-    metadataDict = {"mode": args.generation_mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
-    eta = 0.0
-    if args.generation_mode == "txt2img":
-        image = pipe(prompt = prompt, height = height, width = width, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, generator = rng).images[0]
-    if args.generation_mode == "img2img":
-        img = Image.open(init_img_path).convert('RGB')
-        image = pipe(prompt = prompt, image = img, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, eta = eta, strength = init_strength, generator = rng).images[0]
-    if args.generation_mode == "inpaint":
-        img = Image.open(init_img_path).convert('RGB')
-        mask = Image.open(mask_img_path)
-        image = pipe(prompt = prompt, image = img, mask_image = mask, height = height, width = width, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, eta = eta, generator = rng).images[0]
-    if args.generation_mode == "inpaint-legacy":
-        img = Image.open(init_img_path).convert('RGB')
-        mask = Image.open(mask_img_path)
-        image = pipe(prompt = prompt, image = img, mask_image = mask, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, eta = eta, strength = init_strength, generator = rng).images[0]
-
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
-    print(f'Image generated in {(time.time() - start_time):.2f}s')
-    image = None
-    
-def generate_sd_xl(mode, prompt, prompt_neg, outpath, steps, width, height, sampler, seed, scale, init_img_path = None, init_strength = 0.75, mask_img_path = None, refine_frac = 0.7):
-    global pipe
-    global refiner
-    set_scheduler(sampler)
-    print(f'Generating ({args.pipeline} {mode}) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Scale {scale} - Res {width}x{height}')
-    start_time = time.time()
-    seed = int(seed)
-    g = torch.Generator()
-    g.manual_seed(seed)
-    info = PngImagePlugin.PngInfo()
-    metadataDict = {"mode": mode, "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path, "sampler": sampler, "refineFrac": refine_frac}
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    do_refine = refiner is not None and refine_frac < 0.999
-    refine_frac = refine_frac if do_refine else 1.0
-    print(f'SDXL: Using refine_frac = {refine_frac}')
-    base_img_type = "latent" if do_refine else "pil"
-    print(f'SDXL: Running base model [{mode}]')
-    # Generate
-    if mode == "txt2img":
-        image = pipe(prompt = prompt, height = height, width = width, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, generator = g, output_type = base_img_type, denoising_end = refine_frac).images[0]
-    if mode == "img2img":
-        img = Image.open(init_img_path).convert('RGB')
-        image = pipe(prompt = prompt, image = img, strength = init_strength, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, generator = g, output_type = base_img_type).images[0]
-    if mode == "inpaint":
-        img = Image.open(init_img_path).convert('RGB')
-        mask = Image.open(mask_img_path)
-        image = pipe(prompt = prompt, image = img, mask_image = mask, strength = init_strength, height = img.height, width = img.width, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, generator = g, output_type = base_img_type).images[0]
-    # Refine (optional)
-    if do_refine:
-        print(f'SDXL: Running refine model @ {refine_frac}')
-        image = refiner(prompt = prompt, num_inference_steps = steps, denoising_start = refine_frac, guidance_scale = scale, negative_prompt = prompt_neg, generator = g, image = image[None, :]).images[0]
-    # Add metadata and save
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
-    print(f'Image generated in {(time.time() - start_time):.2f}s')
-    
-    image = None
-
 def generate_from_json(argdict):
     global pipe, refiner
     mode = argdict.get("mode")
-    prompt = argdict.get("prompt")
-    prompt_neg = argdict.get("promptNeg")
-    inpath = argdict.get("initImg")
-    steps = int(argdict.get("steps") or 0)
-    steps_refine = int(argdict.get("stepsRefine") or 0)
-    seed = int(argdict.get("seed") or 0)
-    cfg_txt = float(argdict.get("scaleTxt") or 0.0)
-    cfg_img = float(argdict.get("scaleImg") or 0.0)
-    w = int(argdict.get("w") or 0)
-    h = int(argdict.get("h") or 0)
-    init_strength = float(argdict.get("initStrength") or 0.0)
-    mask_path = argdict.get("inpaintMask")
+    model = argdict.get("model")
     sampler = argdict.get("sampler")
+    # Load and run pipeline
     if args.pipeline == "InstructPix2Pix":
-        pipe = load_ip2p(pipe, argdict.get("model"))
-        generate_ip2p(inpath, args.outpath, prompt, prompt_neg, steps, sampler, seed, cfg_txt, cfg_img)
+        pipe = load_ip2p(pipe, model)
+        set_scheduler(sampler)
+        generate_ip2p(pipe, argdict, args.outpath)
     if args.pipeline == "SdOnnx":
-        pipe = load_sd_onnx(pipe, argdict.get("model"), mode)
-        generate_sd_onnx(prompt, prompt_neg, args.outpath, steps, w, h, sampler, seed, cfg_txt, inpath, init_strength, mask_path)
+        pipe = load_sd_onnx(pipe, model, mode)
+        set_scheduler(sampler)
+        generate_sd_onnx(pipe, argdict, args.outpath)
     if args.pipeline == "SdXl":
-        pipe, refiner = load_sdxl(pipe, refiner, argdict.get("model"), argdict.get("modelRefiner"), mode, args.sdxl_opt)
-        refine_frac = float(argdict.get("refineFrac") or 0.0)
-        generate_sd_xl(mode, prompt, prompt_neg, args.outpath, steps, w, h, sampler, seed, cfg_txt, inpath, init_strength, mask_path, refine_frac)
+        pipe, refiner = load_sdxl(pipe, refiner, model, argdict.get("modelRefiner"), mode, args.sdxl_opt)
+        set_scheduler(sampler)
+        generate_sd_xl(pipe, refiner, argdict, args.outpath)
 
 def main():
     print(f"Ready.")
-    # if args.pipeline == "InstructPix2Pix":
-    #     load_ip2p()
-    # if args.pipeline == "SdOnnx":
-    #     load_sd_onnx()
-    # if args.pipeline == "SdXl":
-    #     load_sdxl()
-    # print(f"Model loaded.")
     
     # Process messages from the queue
     while True:
