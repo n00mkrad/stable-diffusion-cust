@@ -14,7 +14,9 @@ import json
 import threading
 import queue
 import traceback
+import gc
 
+import nmkdiffusers_load
 from nmkdiffusers_load import load_sd_onnx, load_ip2p, load_sdxl
 from nmkdiffusers_generate import generate_ip2p, generate_sd_onnx, generate_sd_xl
 
@@ -54,10 +56,16 @@ parser.add_argument(
     dest = "model_path_refiner",
 )
 parser.add_argument(
-    "--sdxl_optimize",
+    "--offload",
     action = "store_true",
-    help = "Reduce SD XL VRAM usage at the cost of some inference speed",
-    dest = "sdxl_opt",
+    help = "Reduce VRAM usage at the cost of some inference speed",
+    dest = "offload",
+)
+parser.add_argument(
+    "--sdxl_sequential",
+    action = "store_true",
+    help = "Reduce VRAM usage by loading base and refiner sequentially instead of both at the same time",
+    dest = "sdxl_sequential",
 )
 parser.add_argument(
     "-o",
@@ -94,55 +102,19 @@ def read_stdin():
 stdin_thread = threading.Thread(target = read_stdin)
 stdin_thread.start()
 
-pipe = None
-refiner = None
-
-def set_scheduler(sampler_name):
-    if pipe is None:
-        return
-    if sampler_name == "ddim": sched = diffusers.DDIMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "plms": sched = diffusers.PNDMScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "lms": sched = diffusers.LMSDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "heun": sched = diffusers.HeunDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "euler": sched = diffusers.EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "k_euler": sched = diffusers.EulerDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
-    if sampler_name == "euler_a": sched = diffusers.EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpm_2": sched = diffusers.KDPM2DiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpm_2_a": sched = diffusers.KDPM2AncestralDiscreteScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpmpp_2s": sched = diffusers.DPMSolverSinglestepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    if sampler_name == "k_dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True)
-    if sampler_name == "dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False, algorithm_type="sde-dpmsolver++")
-    if sampler_name == "k_dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = True, algorithm_type="sde-dpmsolver++")
-    if sampler_name == "unipc": sched = diffusers.UniPCMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas = False)
-    print(f"Set base scheduler to {sampler_name}")
-    pipe.scheduler = sched
-    if refiner is not None:
-        print(f"Set refiner scheduler to {sampler_name}")
-        refiner.scheduler = sched
-
 def generate_from_json(argdict):
-    global pipe, refiner
-    mode = argdict.get("mode")
-    model = argdict.get("model")
-    sampler = argdict.get("sampler")
     # Load and run pipeline
     if args.pipeline == "InstructPix2Pix":
-        pipe = load_ip2p(pipe, model)
-        set_scheduler(sampler)
-        generate_ip2p(pipe, argdict, args.outpath)
+        generate_ip2p(argdict, args.outpath)
     if args.pipeline == "SdOnnx":
-        pipe = load_sd_onnx(pipe, model, mode)
-        set_scheduler(sampler)
-        generate_sd_onnx(pipe, argdict, args.outpath)
+        generate_sd_onnx(argdict, args.outpath)
     if args.pipeline == "SdXl":
-        pipe, refiner = load_sdxl(pipe, refiner, model, argdict.get("modelRefiner"), mode, args.sdxl_opt)
-        set_scheduler(sampler)
-        generate_sd_xl(pipe, refiner, argdict, args.outpath)
+        generate_sd_xl(argdict, args.outpath, args.offload, args.sdxl_sequential)
+        if args.sdxl_sequential:
+            nmkdiffusers_load.unload(True, True)
 
 def main():
     print(f"Ready.")
-    
     # Process messages from the queue
     while True:
         try:

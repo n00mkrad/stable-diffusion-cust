@@ -1,5 +1,7 @@
 import functools; print = functools.partial(print, flush = True)
 import torch
+import diffusers
+from diffusers import AutoencoderKL
 from diffusers import StableDiffusionInstructPix2PixPipeline # InstructPix2Pix
 from diffusers import OnnxStableDiffusionPipeline, OnnxStableDiffusionImg2ImgPipeline, OnnxStableDiffusionInpaintPipeline, OnnxStableDiffusionInpaintPipelineLegacy # SD ONNX
 from diffusers import StableDiffusionXLPipeline, StableDiffusionXLImg2ImgPipeline, StableDiffusionXLInpaintPipeline, DiffusionPipeline # SDXL
@@ -8,13 +10,27 @@ import numpy as np
 import os, sys, time
 from huggingface_hub import snapshot_download
 
+pipe = None
+refiner = None
+
 loaded_models = {}
+
+def unload(unload_base, unload_refiner):
+    global pipe, refiner
+    if unload_base and pipe is not None:
+        pipe.to("cpu")
+        pipe = None
+    if unload_refiner and refiner is not None:
+        refiner.to("cpu")
+        refiner = None
+    torch.cuda.empty_cache()
 
 class NoWatermark:
     def apply_watermark(self, img):
         return img
 
-def load_ip2p(pipe, path_mdl):
+def load_ip2p(path_mdl):
+    global pipe
     # Load model if not yet loaded
     if loaded_models.get("model") != path_mdl:
         default_mdl_id = "timbrooks/instruct-pix2pix"
@@ -34,9 +50,9 @@ def load_ip2p(pipe, path_mdl):
     # Save in loaded_models
     if pipe is not None:
         loaded_models["model"] = path_mdl
-    return pipe
 
-def load_sd_onnx(pipe, path_mdl, mode):
+def load_sd_onnx(path_mdl, mode):
+    global pipe
     prov = "DmlExecutionProvider"
     # Load model if not yet loaded
     if loaded_models.get("model") != path_mdl:
@@ -54,47 +70,81 @@ def load_sd_onnx(pipe, path_mdl, mode):
             pipe = OnnxStableDiffusionInpaintPipelineLegacy(**pipe.components)
         # pipe.safety_checker = lambda images, **kwargs: (images, False)
         loaded_models["model"] = path_mdl
-    return pipe
 
-def load_sdxl(pipe_base, pipe_refiner, path_base, path_refiner, mode, optimize):
+
+def load_sdxl(path_base, path_refiner, mode, optimize):
+    global pipe, refiner
     # Load base model if not yet loaded
-    if loaded_models.get("model") != path_base:
+    if (pipe is None or loaded_models.get("model") != path_base) and path_base is not None and os.path.exists(path_base):
         print(f'SDXL: Loading base model ({path_base}) [Optimize: {optimize}]')
         if path_base.endswith('.safetensors'):
-            pipe_base = StableDiffusionXLPipeline.from_single_file(path_base, local_files_only = True, use_safetensors = True, torch_dtype = torch.float16)
+            fp16_vae = AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16)
+            pipe = StableDiffusionXLPipeline.from_single_file(path_base, vae=fp16_vae, local_files_only = True, use_safetensors = True, torch_dtype = torch.float16)
         else:
-            pipe_base = DiffusionPipeline.from_pretrained(path_base, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
+            pipe = DiffusionPipeline.from_pretrained(path_base, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
         if(optimize):
-            pipe_base.enable_model_cpu_offload()
-            pipe_base.enable_vae_slicing()
-            pipe_base.enable_vae_tiling()
+            pipe.enable_model_cpu_offload()
+            pipe.enable_vae_slicing()
+            pipe.enable_vae_tiling()
         else:
-            pipe_base.to("cuda")
+            pipe.to("cuda")
     # Load refiner if required and not yet loaded
-    if loaded_models.get("model_refiner") != path_refiner and path_refiner is not None and os.path.exists(path_refiner):
+    if (refiner is None or loaded_models.get("model_refiner") != path_refiner) and path_refiner is not None and os.path.exists(path_refiner):
         print(f'SDXL: Loading refiner model ({path_refiner} [Optimize: {optimize}])')
         if path_refiner.endswith('.safetensors'):
-            pipe_refiner = StableDiffusionXLImg2ImgPipeline.from_single_file(path_refiner, local_files_only = True, use_safetensors = True, torch_dtype = torch.float16)
+            if pipe is None:
+                refiner = StableDiffusionXLImg2ImgPipeline.from_single_file(path_refiner, vae = AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16), local_files_only = True, use_safetensors = True, torch_dtype = torch.float16)
+            else:
+                refiner = StableDiffusionXLImg2ImgPipeline.from_single_file(path_refiner, text_encoder_2 = pipe.text_encoder_2, vae = pipe.vae, local_files_only = True, use_safetensors = True, torch_dtype = torch.float16)
         else:
-            pipe_refiner = StableDiffusionXLImg2ImgPipeline.from_pretrained(path_refiner, text_encoder_2 = pipe_base.text_encoder_2, vae = pipe_base.vae, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
-        pipe_refiner.watermark = NoWatermark()
+            if pipe is None:
+                refiner = StableDiffusionXLImg2ImgPipeline.from_pretrained(path_refiner, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
+            else:
+                refiner = StableDiffusionXLImg2ImgPipeline.from_pretrained(path_refiner, text_encoder_2 = pipe.text_encoder_2, vae = pipe.vae, torch_dtype = torch.float16, variant = "fp16", use_safetensors = True)
+        refiner.watermark = NoWatermark()
         if(optimize):
-            pipe_refiner.enable_model_cpu_offload()
-            pipe_refiner.enable_vae_slicing()
-            pipe_refiner.enable_vae_tiling()
+            refiner.enable_model_cpu_offload()
+            refiner.enable_vae_slicing()
+            refiner.enable_vae_tiling()
         else:
-            pipe_refiner.to("cuda")
+            refiner.to("cuda")
     # Cast to Text2Img/Img2Img/Inpaint Pipeline, remove watermark, save in loaded_models
-    if pipe_base is not None:
+    if pipe is not None:
         if mode == "txt2img":
-            pipe_base = StableDiffusionXLPipeline(**pipe_base.components)
+            pipe = StableDiffusionXLPipeline(**pipe.components)
         if mode == "img2img":
-            pipe_base = StableDiffusionXLImg2ImgPipeline(**pipe_base.components)
+            pipe = StableDiffusionXLImg2ImgPipeline(**pipe.components)
         if mode == "inpaint":
-            pipe_base = StableDiffusionXLInpaintPipeline(**pipe_base.components)
-        pipe_base.watermark = NoWatermark()
+            pipe = StableDiffusionXLInpaintPipeline(**pipe.components)
+        pipe.watermark = NoWatermark()
         loaded_models["model"] = path_base
     # Save in loaded_models
-    if pipe_refiner is not None:
+    if refiner is not None:
         loaded_models["model_refiner"] = path_refiner
-    return pipe_base, pipe_refiner
+        
+def set_scheduler(sampler_name):
+    global pipe, refiner
+    if pipe is None and refiner is None:
+        return
+    conf = pipe.scheduler.config if pipe is not None else refiner.scheduler.config
+    if sampler_name == "ddim": sched = diffusers.DDIMScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "plms": sched = diffusers.PNDMScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "lms": sched = diffusers.LMSDiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "heun": sched = diffusers.HeunDiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "euler": sched = diffusers.EulerDiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "k_euler": sched = diffusers.EulerDiscreteScheduler.from_config(conf, use_karras_sigmas = True)
+    if sampler_name == "euler_a": sched = diffusers.EulerAncestralDiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "dpm_2": sched = diffusers.KDPM2DiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "dpm_2_a": sched = diffusers.KDPM2AncestralDiscreteScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "dpmpp_2s": sched = diffusers.DPMSolverSinglestepScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(conf, use_karras_sigmas = False)
+    if sampler_name == "k_dpmpp_2m": sched = diffusers.DPMSolverMultistepScheduler.from_config(conf, use_karras_sigmas = True)
+    if sampler_name == "dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(conf, use_karras_sigmas = False, algorithm_type="sde-dpmsolver++")
+    if sampler_name == "k_dpmpp_2m_sde": sched = diffusers.DPMSolverMultistepScheduler.from_config(conf, use_karras_sigmas = True, algorithm_type="sde-dpmsolver++")
+    if sampler_name == "unipc": sched = diffusers.UniPCMultistepScheduler.from_config(conf, use_karras_sigmas = False)
+    if pipe is not None:
+        print(f"Set base scheduler to {sampler_name}")
+        pipe.scheduler = sched
+    if refiner is not None:
+        print(f"Set refiner scheduler to {sampler_name}")
+        refiner.scheduler = sched
