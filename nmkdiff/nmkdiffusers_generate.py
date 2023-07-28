@@ -11,6 +11,13 @@ import os, sys, time
 import json
 
 
+def get_pnginfo(argdict):
+    argdict_copy = dict(argdict)
+    argdict_copy["model"] = os.path.basename(argdict_copy.get("model")) # For privacy, only store model name instead of full path
+    info = PngImagePlugin.PngInfo()
+    info.add_text('Nmkdiffusers', json.dumps(argdict_copy, separators = (',', ':')))
+    return info
+
 def generate_ip2p(pipe, argdict, outpath):
     mode = argdict.get("mode")
     prompt = argdict.get("prompt")
@@ -23,13 +30,10 @@ def generate_ip2p(pipe, argdict, outpath):
     print(f'Generating (IP2P) - Prompt: {prompt} - Neg Prompt: {prompt_neg} - Steps: {steps} - Seed: {seed} - Text Scale {cfg_txt} - Image Scale {cfg_img}')
     start_time = time.time()
     rng = torch.manual_seed(seed)
-    info = PngImagePlugin.PngInfo()
     image = Image.open(init_img_path)
     image = PIL.ImageOps.exif_transpose(image).convert("RGB")
     image = pipe(prompt, negative_prompt = prompt_neg, image = image, num_inference_steps = steps, guidance_scale = cfg_txt, image_guidance_scale = cfg_img, generator = rng).images[0]
-    metadataDict = {"mode": mode, "model": argdict.get("model"), "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "steps": steps, "seed": seed, "scaleTxt": cfg_txt, "scaleImg": cfg_img}
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
+    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = get_pnginfo(argdict))
     print(f'Image generated in {(time.time() - start_time):.2f}s')
     image = None
 
@@ -49,8 +53,6 @@ def generate_sd_onnx(pipe, argdict, outpath):
     start_time = time.time()
     seed = int(seed)
     rng = np.random.RandomState(seed)
-    info = PngImagePlugin.PngInfo()
-    metadataDict = {"mode": mode, "model": argdict.get("model"), "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path}
     eta = 0.0
     if mode == "txt2img":
         image = pipe(prompt = prompt, height = height, width = width, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, generator = rng).images[0]
@@ -66,11 +68,10 @@ def generate_sd_onnx(pipe, argdict, outpath):
         mask = Image.open(mask_img_path)
         image = pipe(prompt = prompt, image = img, mask_image = mask, num_inference_steps = steps, guidance_scale = scale, negative_prompt = prompt_neg, eta = eta, strength = init_strength, generator = rng).images[0]
 
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
+    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = get_pnginfo(argdict))
     print(f'Image generated in {(time.time() - start_time):.2f}s')
     image = None
-    
+
 def generate_sd_xl(pipe, refiner, argdict, outpath):
     mode = argdict.get("mode")
     prompt = argdict.get("prompt")
@@ -89,9 +90,6 @@ def generate_sd_xl(pipe, refiner, argdict, outpath):
     refine_frac = float(argdict.get("refineFrac") or 1.0)
     g = torch.Generator()
     g.manual_seed(seed)
-    info = PngImagePlugin.PngInfo()
-    metadataDict = {"mode": mode, "model": argdict.get("model"), "refiner": argdict.get("modelRefiner"), "prompt": prompt, "promptNeg": prompt_neg, "initImg": init_img_path, "initStrength": init_strength, "w": width, "h": height, "steps": steps, "seed": seed, "scaleTxt": scale, "inpaintMask": mask_img_path, "sampler": argdict.get("sampler"), "refineFrac": refine_frac}
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
     do_refine = refiner is not None and refine_frac < 0.999
     refine_frac = refine_frac if do_refine else 1.0
     print(f'SDXL: Using refine_frac = {refine_frac}')
@@ -112,7 +110,6 @@ def generate_sd_xl(pipe, refiner, argdict, outpath):
         print(f'SDXL: Running refine model @ {refine_frac}')
         image = refiner(prompt = prompt, num_inference_steps = steps, denoising_start = refine_frac, guidance_scale = scale, negative_prompt = prompt_neg, generator = g, image = image[None, :]).images[0]
     # Add metadata and save
-    info.add_text('Nmkdiffusers',  json.dumps(metadataDict, separators = (',', ':')))
-    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = info)
+    image.save(os.path.join(outpath, f"{time.time_ns()}.png"), 'PNG', pnginfo = get_pnginfo(argdict))
     print(f'Image generated in {(time.time() - start_time):.2f}s')
     image = None
