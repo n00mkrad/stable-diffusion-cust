@@ -16,9 +16,9 @@ import queue
 import traceback
 import gc
 
-import nmkdiffusers_load
-from nmkdiffusers_load import load_sd_onnx, load_ip2p, load_sdxl
-from nmkdiffusers_generate import generate_ip2p, generate_sd_onnx, generate_sd_xl
+import load
+from load import load_sd_onnx, load_ip2p, load_sdxl
+from generate import generate_ip2p, generate_sd_onnx, generate_sd_xl
 
 os.chdir(sys.path[0])
 
@@ -111,7 +111,7 @@ def generate_from_json(argdict):
     if args.pipeline == "SdXl":
         generate_sd_xl(argdict, args.outpath, args.offload, args.sdxl_sequential)
         if args.sdxl_sequential:
-            nmkdiffusers_load.unload(True, True)
+            load.unload(True, True)
 
 def main():
     print(f"Ready.")
