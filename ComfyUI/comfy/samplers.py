@@ -89,9 +89,9 @@ def sampling_function(model_function, x, timestep, uncond, cond, cond_scale, con
                 gligen_type = gligen[0]
                 gligen_model = gligen[1]
                 if gligen_type == "position":
-                    gligen_patch = gligen_model.set_position(input_x.shape, gligen[2], input_x.device)
+                    gligen_patch = gligen_model.model.set_position(input_x.shape, gligen[2], input_x.device)
                 else:
-                    gligen_patch = gligen_model.set_empty(input_x.shape, input_x.device)
+                    gligen_patch = gligen_model.model.set_empty(input_x.shape, input_x.device)
 
                 patches['middle_patch'] = [gligen_patch]
 
@@ -166,9 +166,9 @@ def sampling_function(model_function, x, timestep, uncond, cond, cond_scale, con
                 c_crossattn_out.append(c)
 
             if len(c_crossattn_out) > 0:
-                out['c_crossattn'] = [torch.cat(c_crossattn_out)]
+                out['c_crossattn'] = torch.cat(c_crossattn_out)
             if len(c_concat) > 0:
-                out['c_concat'] = [torch.cat(c_concat)]
+                out['c_concat'] = torch.cat(c_concat)
             if len(c_adm) > 0:
                 out['c_adm'] = torch.cat(c_adm)
             return out
@@ -263,8 +263,6 @@ def sampling_function(model_function, x, timestep, uncond, cond, cond_scale, con
                 else:
                     output = model_function(input_x, timestep_, **c).chunk(batch_chunks)
                 del input_x
-
-                model_management.throw_exception_if_processing_interrupted()
 
                 for o in range(batch_chunks):
                     if cond_or_uncond[o] == COND:
@@ -391,11 +389,20 @@ def get_mask_aabb(masks):
 
     return bounding_boxes, is_empty
 
-def resolve_cond_masks(conditions, h, w, device):
+def resolve_areas_and_cond_masks(conditions, h, w, device):
     # We need to decide on an area outside the sampling loop in order to properly generate opposite areas of equal sizes.
     # While we're doing this, we can also resolve the mask device and scaling for performance reasons
     for i in range(len(conditions)):
         c = conditions[i]
+        if 'area' in c[1]:
+            area = c[1]['area']
+            if area[0] == "percentage":
+                modified = c[1].copy()
+                area = (max(1, round(area[1] * h)), max(1, round(area[2] * w)), round(area[3] * h), round(area[4] * w))
+                modified['area'] = area
+                c = [c[0], modified]
+                conditions[i] = c
+
         if 'mask' in c[1]:
             mask = c[1]['mask']
             mask = mask.to(device=device)
@@ -479,7 +486,7 @@ def pre_run_control(model, conds):
         timestep_end = None
         percent_to_timestep_function = lambda a: model.sigma_to_t(model.t_to_sigma(torch.tensor(a) * 999.0))
         if 'control' in x[1]:
-            x[1]['control'].pre_run(model.inner_model, percent_to_timestep_function)
+            x[1]['control'].pre_run(model.inner_model.inner_model, percent_to_timestep_function)
 
 def apply_empty_x_to_equal_area(conds, uncond, name, uncond_fill_func):
     cond_cnets = []
@@ -623,8 +630,8 @@ class KSampler:
         positive = positive[:]
         negative = negative[:]
 
-        resolve_cond_masks(positive, noise.shape[2], noise.shape[3], self.device)
-        resolve_cond_masks(negative, noise.shape[2], noise.shape[3], self.device)
+        resolve_areas_and_cond_masks(positive, noise.shape[2], noise.shape[3], self.device)
+        resolve_areas_and_cond_masks(negative, noise.shape[2], noise.shape[3], self.device)
 
         calculate_start_end_timesteps(self.model_wrap, negative)
         calculate_start_end_timesteps(self.model_wrap, positive)

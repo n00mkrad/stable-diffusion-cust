@@ -146,3 +146,6 @@ python -m pip install --no-deps voluptuous==0.13.1
 python -m pip install --no-deps lycoris-lora==0.1.5
 python -m pip install --no-deps toml==0.10.2
 python -m pip install --no-deps ./repo/src/InvokeAI-2.3.5
+python -m pip install --no-deps matplotlib==3.7.2
+python -m pip install --no-deps timm==0.9.7
+python -m pip install --no-deps mediapipe==0.10.3

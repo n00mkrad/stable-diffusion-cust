@@ -9,8 +9,6 @@ import torch.nn.functional as F
 
 from .util import (
     checkpoint,
-    conv_nd,
-    linear,
     avg_pool_nd,
     zero_module,
     normalization,
@@ -18,7 +16,7 @@ from .util import (
 )
 from ..attention import SpatialTransformer
 from comfy.ldm.util import exists
-
+import comfy.ops
 
 class TimestepBlock(nn.Module):
     """
@@ -73,14 +71,14 @@ class Upsample(nn.Module):
                  upsampling occurs in the inner-two dimensions.
     """
 
-    def __init__(self, channels, use_conv, dims=2, out_channels=None, padding=1, dtype=None, device=None):
+    def __init__(self, channels, use_conv, dims=2, out_channels=None, padding=1, dtype=None, device=None, operations=comfy.ops):
         super().__init__()
         self.channels = channels
         self.out_channels = out_channels or channels
         self.use_conv = use_conv
         self.dims = dims
         if use_conv:
-            self.conv = conv_nd(dims, self.channels, self.out_channels, 3, padding=padding, dtype=dtype, device=device)
+            self.conv = operations.conv_nd(dims, self.channels, self.out_channels, 3, padding=padding, dtype=dtype, device=device)
 
     def forward(self, x, output_shape=None):
         assert x.shape[1] == self.channels
@@ -109,7 +107,7 @@ class Downsample(nn.Module):
                  downsampling occurs in the inner-two dimensions.
     """
 
-    def __init__(self, channels, use_conv, dims=2, out_channels=None, padding=1, dtype=None, device=None):
+    def __init__(self, channels, use_conv, dims=2, out_channels=None, padding=1, dtype=None, device=None, operations=comfy.ops):
         super().__init__()
         self.channels = channels
         self.out_channels = out_channels or channels
@@ -117,7 +115,7 @@ class Downsample(nn.Module):
         self.dims = dims
         stride = 2 if dims != 3 else (1, 2, 2)
         if use_conv:
-            self.op = conv_nd(
+            self.op = operations.conv_nd(
                 dims, self.channels, self.out_channels, 3, stride=stride, padding=padding, dtype=dtype, device=device
             )
         else:
@@ -159,6 +157,7 @@ class ResBlock(TimestepBlock):
         down=False,
         dtype=None,
         device=None,
+        operations=comfy.ops
     ):
         super().__init__()
         self.channels = channels
@@ -172,7 +171,7 @@ class ResBlock(TimestepBlock):
         self.in_layers = nn.Sequential(
             nn.GroupNorm(32, channels, dtype=dtype, device=device),
             nn.SiLU(),
-            conv_nd(dims, channels, self.out_channels, 3, padding=1, dtype=dtype, device=device),
+            operations.conv_nd(dims, channels, self.out_channels, 3, padding=1, dtype=dtype, device=device),
         )
 
         self.updown = up or down
@@ -188,7 +187,7 @@ class ResBlock(TimestepBlock):
 
         self.emb_layers = nn.Sequential(
             nn.SiLU(),
-            linear(
+            operations.Linear(
                 emb_channels,
                 2 * self.out_channels if use_scale_shift_norm else self.out_channels, dtype=dtype, device=device
             ),
@@ -198,18 +197,18 @@ class ResBlock(TimestepBlock):
             nn.SiLU(),
             nn.Dropout(p=dropout),
             zero_module(
-                conv_nd(dims, self.out_channels, self.out_channels, 3, padding=1, dtype=dtype, device=device)
+                operations.conv_nd(dims, self.out_channels, self.out_channels, 3, padding=1, dtype=dtype, device=device)
             ),
         )
 
         if self.out_channels == channels:
             self.skip_connection = nn.Identity()
         elif use_conv:
-            self.skip_connection = conv_nd(
+            self.skip_connection = operations.conv_nd(
                 dims, channels, self.out_channels, 3, padding=1, dtype=dtype, device=device
             )
         else:
-            self.skip_connection = conv_nd(dims, channels, self.out_channels, 1, dtype=dtype, device=device)
+            self.skip_connection = operations.conv_nd(dims, channels, self.out_channels, 1, dtype=dtype, device=device)
 
     def forward(self, x, emb):
         """
@@ -318,6 +317,7 @@ class UNetModel(nn.Module):
         adm_in_channels=None,
         transformer_depth_middle=None,
         device=None,
+        operations=comfy.ops,
     ):
         super().__init__()
         assert use_spatial_transformer == True, "use_spatial_transformer has to be true"
@@ -380,9 +380,9 @@ class UNetModel(nn.Module):
 
         time_embed_dim = model_channels * 4
         self.time_embed = nn.Sequential(
-            linear(model_channels, time_embed_dim, dtype=self.dtype, device=device),
+            operations.Linear(model_channels, time_embed_dim, dtype=self.dtype, device=device),
             nn.SiLU(),
-            linear(time_embed_dim, time_embed_dim, dtype=self.dtype, device=device),
+            operations.Linear(time_embed_dim, time_embed_dim, dtype=self.dtype, device=device),
         )
 
         if self.num_classes is not None:
@@ -395,9 +395,9 @@ class UNetModel(nn.Module):
                 assert adm_in_channels is not None
                 self.label_emb = nn.Sequential(
                     nn.Sequential(
-                        linear(adm_in_channels, time_embed_dim, dtype=self.dtype, device=device),
+                        operations.Linear(adm_in_channels, time_embed_dim, dtype=self.dtype, device=device),
                         nn.SiLU(),
-                        linear(time_embed_dim, time_embed_dim, dtype=self.dtype, device=device),
+                        operations.Linear(time_embed_dim, time_embed_dim, dtype=self.dtype, device=device),
                     )
                 )
             else:
@@ -406,7 +406,7 @@ class UNetModel(nn.Module):
         self.input_blocks = nn.ModuleList(
             [
                 TimestepEmbedSequential(
-                    conv_nd(dims, in_channels, model_channels, 3, padding=1, dtype=self.dtype, device=device)
+                    operations.conv_nd(dims, in_channels, model_channels, 3, padding=1, dtype=self.dtype, device=device)
                 )
             ]
         )
@@ -427,6 +427,7 @@ class UNetModel(nn.Module):
                         use_scale_shift_norm=use_scale_shift_norm,
                         dtype=self.dtype,
                         device=device,
+                        operations=operations,
                     )
                 ]
                 ch = mult * model_channels
@@ -448,7 +449,7 @@ class UNetModel(nn.Module):
                         layers.append(SpatialTransformer(
                                 ch, num_heads, dim_head, depth=transformer_depth[level], context_dim=context_dim,
                                 disable_self_attn=disabled_sa, use_linear=use_linear_in_transformer,
-                                use_checkpoint=use_checkpoint, dtype=self.dtype, device=device
+                                use_checkpoint=use_checkpoint, dtype=self.dtype, device=device, operations=operations
                             )
                         )
                 self.input_blocks.append(TimestepEmbedSequential(*layers))
@@ -469,10 +470,11 @@ class UNetModel(nn.Module):
                             down=True,
                             dtype=self.dtype,
                             device=device,
+                            operations=operations
                         )
                         if resblock_updown
                         else Downsample(
-                            ch, conv_resample, dims=dims, out_channels=out_ch, dtype=self.dtype, device=device
+                            ch, conv_resample, dims=dims, out_channels=out_ch, dtype=self.dtype, device=device, operations=operations
                         )
                     )
                 )
@@ -499,11 +501,12 @@ class UNetModel(nn.Module):
                 use_scale_shift_norm=use_scale_shift_norm,
                 dtype=self.dtype,
                 device=device,
+                operations=operations
             ),
             SpatialTransformer(  # always uses a self-attn
                             ch, num_heads, dim_head, depth=transformer_depth_middle, context_dim=context_dim,
                             disable_self_attn=disable_middle_self_attn, use_linear=use_linear_in_transformer,
-                            use_checkpoint=use_checkpoint, dtype=self.dtype, device=device
+                            use_checkpoint=use_checkpoint, dtype=self.dtype, device=device, operations=operations
                         ),
             ResBlock(
                 ch,
@@ -514,6 +517,7 @@ class UNetModel(nn.Module):
                 use_scale_shift_norm=use_scale_shift_norm,
                 dtype=self.dtype,
                 device=device,
+                operations=operations
             ),
         )
         self._feature_size += ch
@@ -533,6 +537,7 @@ class UNetModel(nn.Module):
                         use_scale_shift_norm=use_scale_shift_norm,
                         dtype=self.dtype,
                         device=device,
+                        operations=operations
                     )
                 ]
                 ch = model_channels * mult
@@ -555,7 +560,7 @@ class UNetModel(nn.Module):
                             SpatialTransformer(
                                 ch, num_heads, dim_head, depth=transformer_depth[level], context_dim=context_dim,
                                 disable_self_attn=disabled_sa, use_linear=use_linear_in_transformer,
-                                use_checkpoint=use_checkpoint, dtype=self.dtype, device=device
+                                use_checkpoint=use_checkpoint, dtype=self.dtype, device=device, operations=operations
                             )
                         )
                 if level and i == self.num_res_blocks[level]:
@@ -572,9 +577,10 @@ class UNetModel(nn.Module):
                             up=True,
                             dtype=self.dtype,
                             device=device,
+                            operations=operations
                         )
                         if resblock_updown
-                        else Upsample(ch, conv_resample, dims=dims, out_channels=out_ch, dtype=self.dtype, device=device)
+                        else Upsample(ch, conv_resample, dims=dims, out_channels=out_ch, dtype=self.dtype, device=device, operations=operations)
                     )
                     ds //= 2
                 self.output_blocks.append(TimestepEmbedSequential(*layers))
@@ -583,12 +589,12 @@ class UNetModel(nn.Module):
         self.out = nn.Sequential(
             nn.GroupNorm(32, ch, dtype=self.dtype, device=device),
             nn.SiLU(),
-            zero_module(conv_nd(dims, model_channels, out_channels, 3, padding=1, dtype=self.dtype, device=device)),
+            zero_module(operations.conv_nd(dims, model_channels, out_channels, 3, padding=1, dtype=self.dtype, device=device)),
         )
         if self.predict_codebook_ids:
             self.id_predictor = nn.Sequential(
             nn.GroupNorm(32, ch, dtype=self.dtype, device=device),
-            conv_nd(dims, model_channels, n_embed, 1, dtype=self.dtype, device=device),
+            operations.conv_nd(dims, model_channels, n_embed, 1, dtype=self.dtype, device=device),
             #nn.LogSoftmax(dim=1)  # change to cross_entropy and produce non-normalized logits
         )
 
@@ -627,7 +633,9 @@ class UNetModel(nn.Module):
         transformer_options["block"] = ("middle", 0)
         h = forward_timestep_embed(self.middle_block, h, emb, context, transformer_options)
         if control is not None and 'middle' in control and len(control['middle']) > 0:
-            h += control['middle'].pop()
+            ctrl = control['middle'].pop()
+            if ctrl is not None:
+                h += ctrl
 
         for id, module in enumerate(self.output_blocks):
             transformer_options["block"] = ("output", id)

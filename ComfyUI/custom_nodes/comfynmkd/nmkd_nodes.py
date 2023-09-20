@@ -16,6 +16,7 @@ from io import BytesIO
 import os
 from comfy_extras.nodes_hypernetwork import load_hypernetwork_patch
 from .Fooocus import core
+from .Fooocus import patch
 from PIL.PngImagePlugin import PngInfo
 
 
@@ -183,6 +184,7 @@ class NmkdHybridSampler:
                     "start_at_step": ("INT", {"default": 0, "min": 0, "max": 10000}),
                     "end_at_step": ("INT", {"default": 10000, "min": 0, "max": 10000}),
                     "return_with_leftover_noise": (["disable", "enable"], ),
+                    "sharpness": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0}),
                     "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0}),
                 }}
 
@@ -191,13 +193,14 @@ class NmkdHybridSampler:
 
     CATEGORY = "Nmkd/Sampling"
 
-    def sample(self, model, refiner_model, add_noise, noise_seed, steps, refiner_switch_step, cfg, sampler_name, scheduler, positive, negative, refiner_positive, refiner_negative, latent_image, start_at_step, end_at_step, return_with_leftover_noise, denoise):
+    def sample(self, model, refiner_model, add_noise, noise_seed, steps, refiner_switch_step, cfg, sampler_name, scheduler, positive, negative, refiner_positive, refiner_negative, latent_image, start_at_step, end_at_step, return_with_leftover_noise, sharpness, denoise):
         force_full_denoise = True
         if return_with_leftover_noise == "enable":
             force_full_denoise = False
         disable_noise = False
         if add_noise == "disable":
             disable_noise = True
+        patch.sharpness = sharpness
         print(f"Sampling: Steps: {steps} - Switch at: {refiner_switch_step} - Add Noise: {add_noise} - Return with noise: {return_with_leftover_noise} - Denoise: {denoise} - Sampler: {sampler_name} - Scheduler: {scheduler}")
         return (core.ksampler_with_refiner(model, positive, negative, refiner_model, refiner_positive, refiner_negative, latent_image, noise_seed, steps, refiner_switch_step, cfg, sampler_name, scheduler, denoise=denoise, disable_noise=disable_noise, start_step=start_at_step, last_step=end_at_step, force_full_denoise=force_full_denoise), )
 
@@ -469,7 +472,7 @@ class NmkdControlNet:
                 img.save(buffer, format="WEBP", subsampling=2, quality=5)
                 print(f"PREVIEW_WEBP:{base64.b64encode(buffer.getvalue())}")
             
-            control_net = comfy.sd.load_controlnet(controlnet_path) if model is None else comfy.sd.load_controlnet(controlnet_path, model)
+            control_net = comfy.controlnet.load_controlnet(controlnet_path) if model is None else comfy.controlnet.load_controlnet(controlnet_path, model)
             
             c = []
             control_hint = image.movedim(-1,1)
@@ -483,8 +486,9 @@ class NmkdControlNet:
                 c.append(n)
             print(f"NmkdControlNet: Applied '{controlnet_path}' ({strength})")
             return (c, )
-        except:
+        except Exception as e:
             print(f"NmkdControlNet: Failed to apply '{controlnet_path}', returning original conditioning.")
+            print(e)
             return (conditioning, )
 
 # Hypernetwork Loader that can take absolute paths

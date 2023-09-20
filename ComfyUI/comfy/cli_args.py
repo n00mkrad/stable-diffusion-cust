@@ -1,7 +1,7 @@
 import functools; print = functools.partial(print, flush=True)
 import argparse
 import enum
-
+import comfy.options
 
 class EnumAction(argparse.Action):
     """
@@ -55,9 +55,12 @@ fp_group.add_argument("--force-fp16", action="store_true", help="Force fp16.")
 
 fpvae_group = parser.add_mutually_exclusive_group()
 fpvae_group.add_argument("--fp16-vae", action="store_true", help="Run the VAE in fp16, might cause black images.")
-fpvae_group.add_argument("--bf16-vae", action="store_true", help="Run the VAE in bf16, might lower quality.")
+fpvae_group.add_argument("--fp32-vae", action="store_true", help="Run the VAE in full precision fp32.")
+fpvae_group.add_argument("--bf16-vae", action="store_true", help="Run the VAE in bf16.")
 
 parser.add_argument("--directml", type=int, nargs="?", metavar="DIRECTML_DEVICE", const=-1, help="Use torch-directml.")
+
+parser.add_argument("--disable-ipex-optimize", action="store_true", help="Disables ipex.optimize when loading models with Intel GPUs.")
 
 class LatentPreviewMethod(enum.Enum):
     NoPreviews = "none"
@@ -83,13 +86,19 @@ vram_group.add_argument("--novram", action="store_true", help="When lowvram isn'
 vram_group.add_argument("--cpu", action="store_true", help="To use the CPU for everything (slow).")
 
 
+parser.add_argument("--disable-smart-memory", action="store_true", help="Force ComfyUI to agressively offload to regular ram instead of keeping models in vram when it can.")
+
+
 parser.add_argument("--dont-print-server", action="store_true", help="Don't print server output.")
 parser.add_argument("--quick-test-for-ci", action="store_true", help="Quick test for CI.")
 parser.add_argument("--windows-standalone-build", action="store_true", help="Windows standalone build: Enable convenient things that most people using the standalone windows build will probably enjoy (like auto opening the page on startup).")
 
 parser.add_argument("--disable-metadata", action="store_true", help="Disable saving prompt metadata in files.")
 
-args = parser.parse_args()
+if comfy.options.args_parsing:
+    args = parser.parse_args()
+else:
+    args = parser.parse_args([])
 
 if args.windows_standalone_build:
     args.auto_launch = True
