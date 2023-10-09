@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """
 Author: Zhuo Su, Wenzhe Liu
 Date: Feb 18, 2021

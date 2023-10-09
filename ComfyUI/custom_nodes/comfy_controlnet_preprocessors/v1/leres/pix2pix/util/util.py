@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """This module contains simple helper functions """
 from __future__ import print_function
 import torch

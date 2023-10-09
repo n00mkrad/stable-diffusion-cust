@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """Utils for monoDepth.
 """
 import sys

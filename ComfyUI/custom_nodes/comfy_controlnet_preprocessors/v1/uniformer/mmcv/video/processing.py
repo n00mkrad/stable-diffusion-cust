@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) OpenMMLab. All rights reserved.
 import os
 import os.path as osp

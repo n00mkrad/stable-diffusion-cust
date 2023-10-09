@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch.nn as nn
 import torch.nn.functional as F
 from custom_nodes.comfy_controlnet_preprocessors.v1.uniformer.mmcv.cnn import ConvModule, xavier_init

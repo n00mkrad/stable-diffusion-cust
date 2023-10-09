@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import os
 from time import sleep
 from importlib.util import spec_from_file_location, module_from_spec

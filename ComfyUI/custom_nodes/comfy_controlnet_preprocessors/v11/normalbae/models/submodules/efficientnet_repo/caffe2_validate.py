@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """ Caffe2 validation script
 
 This script is created to verify exported ONNX models running in Caffe2

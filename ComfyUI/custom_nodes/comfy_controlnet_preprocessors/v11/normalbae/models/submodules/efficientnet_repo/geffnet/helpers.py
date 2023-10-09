@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """ Checkpoint loading / state_dict helpers
 Copyright 2020 Ross Wightman
 """

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # ------------------------------------------------------------------------------
 # Reference: https://github.com/facebookresearch/detectron2/blob/main/detectron2/evaluation/coco_evaluation.py
 # Modified by Jitesh Jain (https://github.com/praeclarumjj3)

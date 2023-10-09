@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # ------------------------------------------------------------------------------
 # Reference: https://github.com/facebookresearch/Mask2Former/blob/main/mask2former/data/datasets/register_coco_panoptic_annos_semseg.py
 # Modified by Jitesh Jain (https://github.com/praeclarumjj3)

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import inspect
 import torch
 

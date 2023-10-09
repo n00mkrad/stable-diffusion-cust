@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from custom_nodes.comfy_controlnet_preprocessors.v1.uniformer.mmcv.cnn import (build_conv_layer, build_norm_layer, build_plugin_layer,

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) Facebook, Inc. and its affiliates.
 """ Utilities for developers only.
 These are not visible to users (not automatically imported). And should not

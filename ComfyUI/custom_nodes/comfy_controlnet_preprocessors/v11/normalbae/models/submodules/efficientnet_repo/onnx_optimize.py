@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """ ONNX optimization script
 
 Run ONNX models through the optimizer to prune unneeded nodes, fuse batchnorm layers into conv, etc.

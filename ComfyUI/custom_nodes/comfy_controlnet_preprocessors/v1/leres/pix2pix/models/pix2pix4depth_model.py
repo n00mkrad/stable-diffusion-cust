@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch
 from .base_model import BaseModel
 from . import networks

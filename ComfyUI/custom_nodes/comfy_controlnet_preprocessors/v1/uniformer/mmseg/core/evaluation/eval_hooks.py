@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import os.path as osp
 
 from custom_nodes.comfy_controlnet_preprocessors.v1.uniformer.mmcv.runner import DistEvalHook as _DistEvalHook

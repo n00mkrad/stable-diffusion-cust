@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) Open-MMLab. All rights reserved.
 import io
 import os

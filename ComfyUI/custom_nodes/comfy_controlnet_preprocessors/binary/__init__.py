@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 #Sauce: https://github.com/Mikubill/sd-webui-controlnet/blob/main/annotator/binary/__init__.py
 #https://github.com/Mikubill/sd-webui-controlnet/pull/495
 import cv2

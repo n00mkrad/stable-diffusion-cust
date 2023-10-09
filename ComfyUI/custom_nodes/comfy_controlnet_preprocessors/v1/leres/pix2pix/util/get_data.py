@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from __future__ import print_function
 import os
 import tarfile

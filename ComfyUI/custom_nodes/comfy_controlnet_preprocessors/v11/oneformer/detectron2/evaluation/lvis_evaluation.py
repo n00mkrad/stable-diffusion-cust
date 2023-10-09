@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) Facebook, Inc. and its affiliates.
 import copy
 import itertools

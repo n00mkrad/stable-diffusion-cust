@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 __author__ = 'tylin'
 __version__ = '2.0'
 # Interface for accessing the Microsoft COCO dataset.

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # MIT License
 
 # Copyright (c) 2022 Intelligent Systems Lab Org

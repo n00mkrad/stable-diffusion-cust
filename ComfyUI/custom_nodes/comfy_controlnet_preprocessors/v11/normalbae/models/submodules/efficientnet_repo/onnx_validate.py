@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """ ONNX-runtime validation script
 
 This script was created to verify accuracy and performance of exported ONNX

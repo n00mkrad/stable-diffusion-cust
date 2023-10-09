@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # ------------------------------------------------------------------------------------------------
 # Deformable DETR
 # Copyright (c) 2020 SenseTime. All Rights Reserved.

@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import argparse
 import os
 from ...pix2pix.util import util

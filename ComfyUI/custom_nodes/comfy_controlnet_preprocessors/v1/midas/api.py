@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # based on https://github.com/isl-org/MiDaS
 
 import cv2

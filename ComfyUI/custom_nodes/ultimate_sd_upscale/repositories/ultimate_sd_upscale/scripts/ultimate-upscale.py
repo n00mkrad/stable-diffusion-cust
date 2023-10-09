@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import math
 import gradio as gr
 from PIL import Image, ImageDraw, ImageOps

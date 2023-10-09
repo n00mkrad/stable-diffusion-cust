@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Copyright (c) Facebook, Inc. and its affiliates.
 # Autogen with
 # with open("lvis_v0.5_val.json", "r") as f:

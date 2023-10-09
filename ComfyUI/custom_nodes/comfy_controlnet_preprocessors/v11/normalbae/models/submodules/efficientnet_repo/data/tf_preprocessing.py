@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """ Tensorflow Preprocessing Adapter
 
 Allows use of Tensorflow preprocessing pipeline in PyTorch Transform

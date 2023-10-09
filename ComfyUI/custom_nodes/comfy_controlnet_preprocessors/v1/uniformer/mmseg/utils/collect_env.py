@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from custom_nodes.comfy_controlnet_preprocessors.v1.uniformer.mmcv.utils import collect_env as collect_base_env
 from custom_nodes.comfy_controlnet_preprocessors.v1.uniformer.mmcv.utils import get_git_hash
 

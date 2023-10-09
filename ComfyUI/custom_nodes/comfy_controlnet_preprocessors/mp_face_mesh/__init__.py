@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 #Sauce: https://github.com/Mikubill/sd-webui-controlnet/pull/688/files#diff-dce4b843581195325d011f589b0c9f34a0d2fd68f4d34c2091741ab8d46c08a6
 from typing import Mapping
 

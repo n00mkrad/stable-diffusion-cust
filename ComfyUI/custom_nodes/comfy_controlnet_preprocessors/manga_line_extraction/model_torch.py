@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch.nn as nn
 import numpy as np
 

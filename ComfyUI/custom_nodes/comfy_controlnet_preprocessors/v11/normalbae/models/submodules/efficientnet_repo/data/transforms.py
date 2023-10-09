@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 import torch
 from torchvision import transforms
 from PIL import Image

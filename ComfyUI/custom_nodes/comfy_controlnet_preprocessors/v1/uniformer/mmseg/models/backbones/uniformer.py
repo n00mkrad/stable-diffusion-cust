@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # --------------------------------------------------------
 # UniFormer
 # Copyright (c) 2022 SenseTime X-Lab

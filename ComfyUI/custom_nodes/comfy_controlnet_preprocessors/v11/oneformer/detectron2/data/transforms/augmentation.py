@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # -*- coding: utf-8 -*-
 # Copyright (c) Facebook, Inc. and its affiliates.
 

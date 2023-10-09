@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # flake8: noqa
 # Copyright (c) OpenMMLab. All rights reserved.
 from .config import Config, ConfigDict, DictAction

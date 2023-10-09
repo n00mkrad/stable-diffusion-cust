@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 #!/usr/bin/env python
 # coding: utf-8
 import torch.nn as nn

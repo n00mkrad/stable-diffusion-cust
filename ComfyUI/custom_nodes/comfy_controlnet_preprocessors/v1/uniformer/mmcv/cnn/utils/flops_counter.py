@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Modified from flops-counter.pytorch by Vladislav Sovrasov
 # original repo: https://github.com/sovrasov/flops-counter.pytorch
 

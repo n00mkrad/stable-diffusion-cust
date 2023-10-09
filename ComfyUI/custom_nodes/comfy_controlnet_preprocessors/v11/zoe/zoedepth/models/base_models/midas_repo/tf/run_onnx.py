@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 """Compute depth maps for images in the input folder.
 """
 import os

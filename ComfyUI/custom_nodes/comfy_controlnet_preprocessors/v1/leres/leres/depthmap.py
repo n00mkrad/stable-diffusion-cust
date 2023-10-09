@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 # Author: thygate
 # https://github.com/thygate/stable-diffusion-webui-depthmap-script
 

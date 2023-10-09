@@ -1,3 +1,4 @@
+import functools; print = functools.partial(print, flush=True)
 from .builder import RUNNER_BUILDERS, RUNNERS
 
 
