@@ -10,7 +10,7 @@ import re
 import traceback
 from typing import Callable
 from urllib import request, error as ul_error
-from huggingface_hub import HfFolder, hf_hub_url, ModelSearchArguments, ModelFilter, HfApi
+from huggingface_hub import get_token, hf_hub_url, HfApi
 from ldm.invoke.globals import Globals
 
 singleton = None
@@ -54,7 +54,7 @@ class HuggingFaceConceptsLibrary(object):
             return self.concept_list
         else:
             try:
-                models = self.hf_api.list_models(filter=ModelFilter(model_name='sd-concepts-library/'))
+                models = self.hf_api.list_models(model_name='sd-concepts-library/')
                 self.concept_list = [a.id.split('/')[1] for a in models if a.likes>=minimum_likes]
                 # when init, add all in dir. when not init, add only concepts added between init and now
                 self.concept_list.extend(list(local_concepts_to_add))
@@ -175,7 +175,7 @@ class HuggingFaceConceptsLibrary(object):
         repo_id = self._concept_id(concept_name)
         dest = self._concept_path(concept_name)
 
-        access_token = HfFolder.get_token()
+        access_token = get_token()
         header = [("Authorization", f'Bearer {access_token}')] if access_token else []
         opener = request.build_opener()
         opener.addheaders = header
